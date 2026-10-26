@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dokan &amp; WP Hisab</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1b1f24;--mut:#6b7380;--bd:#e1e4e8;--pl:#0a7d3b;--mi:#c0392b;--ac:#2456d6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14161a;--card:#1d2026;--tx:#eceff3;--mut:#9aa3af;--bd:#2d323a;--pl:#3ecf7b;--mi:#ff6b5b;--ac:#6c93ff}}
+:root[data-theme="dark"]{--bg:#14161a;--card:#1d2026;--tx:#eceff3;--mut:#9aa3af;--bd:#2d323a;--pl:#3ecf7b;--mi:#ff6b5b;--ac:#6c93ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;max-width:640px;margin-inline:auto;padding:12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px;margin-bottom:12px}
+.tabs{display:flex;gap:8px}
+.r2 .tabs{flex:none;gap:4px}.r2 .tabs button{flex:none;padding:9px 10px;font-size:14px}#top .tabs button{padding:11px 14px;font-size:15px}.clk{flex:1;min-width:0;font-size:13px;line-height:1.3;color:var(--mut)}.clk b{display:block;font-size:19px;color:var(--tx)}
+.tabs button{flex:1;padding:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:10px;font-size:17px;font-weight:600}
+.tabs button.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+.bal{font-size:30px;font-weight:700}
+.bx{display:flex;gap:10px}
+.bc{flex:1;min-width:0;padding:14px 12px;border-radius:14px;background:linear-gradient(135deg,#2456d6,#7a4df0);color:#fff;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;box-shadow:0 4px 14px rgba(36,86,214,.25);transition:transform .15s}
+.bc:active{transform:scale(.97)}
+#c-bal{background:linear-gradient(135deg,#0f9d78,#2bb5c8);box-shadow:0 4px 14px rgba(15,157,120,.25)}
+.bl{font-size:13px;opacity:.9;margin-bottom:6px}
+.bv{font-size:24px;font-weight:700;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bv.pop{animation:pop .7s ease}
+@keyframes pop{0%{filter:blur(8px);transform:scale(.7);opacity:.2}60%{transform:scale(1.08)}100%{filter:blur(0);transform:scale(1);opacity:1}}
+.mut{color:var(--mut);font-size:13px}
+input,select{width:100%;padding:11px;margin-top:8px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);font-size:16px}
+.io{display:flex;gap:8px;margin-top:8px}
+.io button{padding:8px 11px;border-radius:8px;border:2px solid var(--bd);background:var(--card);color:var(--tx);font-size:14px;font-weight:700;white-space:nowrap}
+.io button.on.in{background:var(--mi);border-color:var(--mi);color:#fff}
+.io button.on.out{background:var(--pl);border-color:var(--pl);color:#fff}
+.io.off{opacity:.35;pointer-events:none}
+.save{padding:9px 22px;border:0;border-radius:8px;background:var(--ac);color:#fff;font-size:15px;font-weight:700}.sv{display:flex;justify-content:flex-end;margin-top:10px}.r2{display:flex;gap:6px;margin-top:8px;align-items:center}.r2 input,.r2 select{flex:1;min-width:0;margin-top:0}.r2 .io{margin-top:0}.r2 .add{padding:8px 16px;border:0;border-radius:8px;background:var(--ac);color:#fff;font-size:22px;font-weight:700;line-height:1.2}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}
+.chip{white-space:nowrap;padding:6px 12px;border:1px solid var(--bd);border-radius:20px;background:var(--card);color:var(--tx);font-size:14px}
+.chip.on{background:var(--tx);color:var(--bg)}
+.row{display:flex;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid var(--bd)}
+.row:last-child{border:0}
+.nm{font-size:19px;font-weight:600}
+.num,.dt{font-size:12px;color:var(--mut)}
+.ty{align-self:center;font-size:13px;padding:3px 8px;border-radius:6px;background:var(--bg);color:var(--mut);text-align:center}
+.amt{font-size:21px;font-weight:700;text-align:right}
+.p{color:var(--pl)}.m{color:var(--mi)}
+.del{background:none;border:0;color:var(--mut);font-size:12px;padding:0}
+body{background:radial-gradient(1000px 360px at 50% -120px,rgba(122,77,240,.14),transparent),var(--bg);padding:14px 14px 40px;-webkit-text-size-adjust:100%}
+.card,#top{background:var(--card);border:1px solid var(--bd);border-radius:16px;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.card{padding:14px}
+#top{padding:10px 12px}
+input,select{height:46px;padding:0 12px;border:1.5px solid var(--bd);border-radius:10px;font-size:16px;outline:0;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(36,86,214,.15)}
+.r2 .add{height:46px;padding:0 16px;border-radius:10px;box-shadow:0 2px 6px rgba(36,86,214,.25)}
+.io button{height:46px;border-radius:10px}
+.save{height:46px;padding:0 30px;border-radius:10px;box-shadow:0 2px 8px rgba(36,86,214,.3)}
+#top .tabs{background:var(--bg);padding:3px;border-radius:12px;gap:2px}
+#top .tabs button{border:0;background:transparent;color:var(--mut);border-radius:9px;padding:9px 16px}
+#top .tabs button.on{background:var(--ac);color:#fff;box-shadow:0 2px 6px rgba(36,86,214,.3)}
+.bc{min-height:84px;padding:16px 14px}
+.bv{font-size:26px}
+.row{padding:12px 0;align-items:center;gap:10px}
+.row>div:first-child{flex:1;min-width:0}
+.row>div:last-child{flex:none;text-align:right}
+.nm{font-size:18px;word-break:break-word}
+.ty{flex:none;font-size:12px;padding:4px 10px;border-radius:20px;border:1px solid var(--bd)}
+.amt{font-size:20px}
+@media (max-width:420px){body{padding:10px 10px 40px}.card{padding:12px}.bc{min-height:76px;padding:13px 11px}.bv{font-size:21px}.bl{font-size:12px}.nm{font-size:16px}.amt{font-size:17px}.ty{font-size:11px;padding:3px 7px}#top{padding:8px 10px}#top .tabs button{padding:9px 12px;font-size:14px}.clk{font-size:11px}.clk b{font-size:16px}.r2 .add{padding:0 13px}.io button{padding:0 9px;font-size:13px}}
+.vt{margin-top:10px}.vt button{padding:11px;font-size:15px;border-radius:12px}.sc{margin-bottom:10px}.sh{font-size:17px;font-weight:700;margin-bottom:6px}.sr{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd);font-size:15px}.sr:last-child{border:0}.sr span{color:var(--mut)}.sb{font-size:17px}.sb span{color:var(--tx);font-weight:600}.sb b{color:var(--ac)}
+.wa{width:100%;height:48px;border:0;border-radius:12px;background:#25d366;color:#fff;font-size:16px;font-weight:700;margin-bottom:12px;box-shadow:0 3px 10px rgba(37,211,102,.35)}
+#ov{position:fixed;inset:0;background:rgba(0,0,0,.7);align-items:center;justify-content:center;z-index:50;padding:16px;overflow:auto}.ovb{background:var(--card);border-radius:14px;padding:12px;max-width:420px;width:100%;max-height:92vh;overflow:auto;text-align:center}.ovb img{width:100%;border-radius:8px;border:1px solid var(--bd);margin-bottom:8px}
+.r2 .add.dn{background:var(--mi);box-shadow:none}
+.dd{flex:1;min-width:0;position:relative}.ddb{height:46px;display:flex;align-items:center;padding:0 12px;border:1.5px solid var(--bd);border-radius:10px;background:var(--bg);font-size:16px;cursor:pointer;overflow:hidden;white-space:nowrap}.ddl{display:none;position:absolute;left:0;right:0;top:50px;z-index:20;background:var(--card);border:1px solid var(--bd);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.18);max-height:240px;overflow:auto}.ddi{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 6px 0 12px;border-bottom:1px solid var(--bd)}.ddi span{flex:1;padding:12px 0;font-size:16px;cursor:pointer}.ddx{border:0;background:none;color:var(--mi);font-size:16px;font-weight:700;padding:8px 10px;border-radius:8px}.ddx.sure{background:var(--mi);color:#fff;font-size:12px}
+.sv{gap:8px}.wpb{background:#25d366;padding:0 18px;box-shadow:0 2px 8px rgba(37,211,102,.35)}
+:root{--bg:#f1f4f9;--card:#fff;--tx:#0f172a;--mut:#64748b;--bd:#e2e8f0;--pl:#059669;--mi:#dc2626;--ac:#4f46e5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--card:#131c2e;--tx:#e5e9f2;--mut:#8a97ad;--bd:#243049;--pl:#34d399;--mi:#f87171;--ac:#818cf8}}
+body{background:radial-gradient(900px 340px at 50% -140px,rgba(79,70,229,.18),transparent),var(--bg);max-width:680px;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.card,#top{box-shadow:0 1px 2px rgba(15,23,42,.05),0 8px 24px rgba(15,23,42,.07)}
+.save,.r2 .add,.tabs button.on,#top .tabs button.on{background:linear-gradient(135deg,#4f46e5,#6d5ef0);color:#fff;box-shadow:0 4px 12px rgba(79,70,229,.32)}
+.tabs button.on{border-color:transparent}
+.wpb{background:linear-gradient(135deg,#059669,#10b981);box-shadow:0 4px 12px rgba(5,150,105,.32)}
+.wa{background:linear-gradient(135deg,#16a34a,#22c55e);box-shadow:0 4px 14px rgba(34,197,94,.35)}
+.bc{background:linear-gradient(135deg,#4f46e5,#7c3aed);box-shadow:0 8px 20px rgba(79,70,229,.3)}
+#c-bal{background:linear-gradient(135deg,#0891b2,#10b981);box-shadow:0 8px 20px rgba(8,145,178,.28)}
+input:focus,select:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.2)}
+.io button.on.in{background:linear-gradient(135deg,#dc2626,#ef4444)}.io button.on.out{background:linear-gradient(135deg,#059669,#10b981)}
+.sb b{color:var(--ac)}.sh{color:var(--ac)}
+.syn{text-align:center;color:var(--mut);font-size:12px;padding:6px 0 18px}
+button{font-family:inherit;cursor:pointer;transition:transform .12s ease,box-shadow .2s ease,filter .2s ease,background .2s ease}
+button:active{transform:scale(.94)}
+@media (hover:hover){button:hover{filter:brightness(1.08)}.bc:hover{transform:translateY(-2px)}}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes dd{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+@keyframes pulse{0%{transform:scale(.9)}100%{transform:scale(1)}}
+.card,#top,.bx .bc,.vt{animation:up .4s ease both}
+.row,.sc{animation:up .3s ease both}
+.ddl{animation:dd .16s ease}
+.tabs button.on{animation:pulse .25s ease}
+.ddi:hover{background:var(--bg)}
+@media (max-width:360px){.bx{gap:8px}.bv{font-size:19px}.bc{padding:12px 10px}#top .tabs button{padding:8px 10px;font-size:13px}.r2{gap:5px}.save{padding:0 18px}}
+@media (min-width:700px){body{padding-top:24px}}
+@media (max-width:400px){#top .tabs button{padding:8px 9px;font-size:13px}#top .tabs{gap:1px}.clk b{font-size:15px}}
+.bgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px}.bm{min-width:0;padding:12px 10px;border-radius:14px;background:var(--card);border:1px solid var(--bd);box-shadow:0 1px 2px rgba(15,23,42,.05),0 6px 16px rgba(15,23,42,.06);animation:up .35s ease both}.bm .bl{font-size:12px;color:var(--mut);opacity:1;margin-bottom:4px}.bn{font-size:18px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bm.tt{grid-column:1/-1;background:linear-gradient(135deg,#4f46e5,#7c3aed);border:0;color:#fff;box-shadow:0 8px 20px rgba(79,70,229,.3)}.bm.tt .bl{color:#fff;opacity:.9;font-size:13px}.bm.tt .bn{font-size:28px}
+.ts{display:flex;gap:6px;margin-top:12px}.ts div{flex:1;min-width:0;background:rgba(255,255,255,.16);border-radius:10px;padding:8px}.ts span{display:block;font-size:11px;opacity:.85}.ts b{font-size:15px;white-space:nowrap}.tn{font-size:11px;opacity:.75;margin-top:8px}
+.ts2{display:flex;gap:8px}.ts2 div{flex:1;min-width:0;padding:10px;border-radius:12px;background:var(--bg)}.ts2 span{display:block;font-size:12px;color:var(--mut)}.ts2 b{font-size:17px;white-space:nowrap}.in2 b{color:var(--mi)}.out2 b{color:var(--pl)}.cm2 b{color:var(--ac)}
+.sumb{background:linear-gradient(135deg,#0891b2,#06b6d4);padding:0 18px;box-shadow:0 4px 12px rgba(8,145,178,.32)}
+.sv{justify-content:flex-start}#sbtn{margin-left:auto}
+.bx .bc.sm{min-height:0;padding:10px 12px;flex:1.1}.bx .bc.sm .bv{font-size:20px}.side{flex:1;display:flex;flex-direction:column;gap:8px;min-width:0}.side button{flex:1;border:0;border-radius:12px;color:#fff;font-weight:700;font-size:14px;padding:8px 6px;animation:up .4s ease both}#b-med{background:linear-gradient(135deg,#f97316,#ef4444);box-shadow:0 4px 12px rgba(239,68,68,.3)}#b-rec{background:linear-gradient(135deg,#0ea5e9,#6366f1);box-shadow:0 4px 12px rgba(99,102,241,.3)}
+.pg{position:fixed;inset:0;background:var(--bg);z-index:60;overflow:auto;padding:14px;padding-top:calc(14px + env(safe-area-inset-top,0px))}.pgi{max-width:680px;margin:0 auto}.wa.back{background:var(--card);color:var(--tx);box-shadow:none;border:1px solid var(--bd)}
+.rrow{display:flex;gap:10px;margin-bottom:12px;align-items:stretch}.rrow .bc{flex:1.4}.rsb{flex:1;border:0;border-radius:14px;color:#fff;font-weight:700;font-size:16px;background:linear-gradient(135deg,#0891b2,#06b6d4);box-shadow:0 4px 12px rgba(8,145,178,.32)}
+</style>
+</head>
+<body>
+
+<div class="r2" id="top"><div id="clk" class="clk"></div><div class="tabs"><button id="t-dokan" onclick="setTab('dokan')">Dokan</button><button id="t-wp" onclick="setTab('wp')">WP</button><button id="t-bank" onclick="setTab('bank')">Bank</button></div></div>
+<div class="bx" style="margin-top:12px"><div class="bc" id="c-tot" onclick="rev('tot')"><div class="bl" id="tlab">Total Balance</div><div class="bv" id="tot">••••••</div></div><div class="bc" id="c-bal" onclick="rev('bal')"><div class="bl" id="blab">Dokan Balance</div><div class="bv" id="bal">••••••</div></div><div class="side" id="dside" style="display:none"><button id="b-med" onclick="openMed()">Medicin</button><button id="b-rec" onclick="openRec()">Rec</button></div></div>
+<div class="r2" style="margin:8px 0 12px"><select id="flt" onchange="flt=this.value;render()"></select><input id="dflt" type="date" onchange="dflt=this.value;render()"><button class="add" onclick="clrD()">×</button></div>
+
+
+<div class="card">
+<div class="r2"><div class="dd"><div class="ddb" id="ddb" onclick="ddT()">Name select korun</div><div class="ddl" id="ddl"></div></div><input id="name" type="hidden"><button class="add" onclick="toggleNN()">+</button></div>
+<div class="r2" id="nn" style="display:none"><input id="newname" placeholder="Notun name"><button class="add" onclick="addName()">OK</button></div>
+<input id="number" inputmode="tel" placeholder="Number">
+<input id="dt" type="hidden">
+<div class="r2"><input id="amount" inputmode="decimal" placeholder="Amount"><div class="io" id="io"><button class="in" id="b-in" onclick="setIO('in')">In (−)</button><button class="out" id="b-out" onclick="setIO('out')">Out (+)</button></div></div>
+<select id="other" onchange="otherChg()">
+<option value="">Other (lagle select korun)</option>
+<option value="b2bin">B2B In (+)</option>
+<option value="b2bout">B2B Out (−)</option>
+<option value="last">Last Balance (manual)</option>
+<option value="comm">Commission (+)</option>
+<option value="cash">Cash (Dokan er cash)</option>
+</select>
+<div id="msg" class="mut" style="color:var(--mi);margin-top:8px"></div><div class="sv"><button class="save sumb" onclick="openSum()">Summary</button><button class="save wpb" id="wpb" onclick="shareWP()">WP Text</button><button class="save" id="sbtn" onclick="save()">Save</button></div>
+</div>
+
+
+<div class="card" id="dstat" style="display:none"></div>
+<div class="tabs vt" id="vt" style="display:none"><button id="v-tx" class="on" onclick="setView('tx')">Transaction</button><button id="v-sum" onclick="setView('sum')">Summary</button></div>
+<div id="sumv" style="display:none"></div>
+<div id="recv" class="pg" style="display:none"><div class="pgi">
+<button class="wa back" onclick="closeRec()">← Ferot jan</button>
+<div class="rrow"><div class="bc" style="cursor:default"><div class="bl">Rec Balance</div><div class="bv" id="recbal">0</div></div>
+<button class="rsb" onclick="recSumT()">Summary</button></div>
+<div id="recsum" style="display:none"></div>
+<div class="card"><div class="sh">Rec</div>
+<div class="r2"><select id="rname"></select><button class="add" onclick="rToggleN()">+</button></div>
+<div class="r2" id="rnn" style="display:none"><input id="rnew" placeholder="Notun name"><button class="add" onclick="rAddN()">OK</button></div>
+<input id="rnum" inputmode="tel" placeholder="Number">
+<div class="r2"><input id="ramt" inputmode="decimal" placeholder="Amount"><div class="io" id="rio"><button class="in" id="r-in" onclick="rIO('in')">In (−)</button><button class="out" id="r-out" onclick="rIO('out')">Out (+)</button></div></div>
+<select id="roth" onchange="rOth()"><option value="">Other (lagle select korun)</option><option value="b2bin">B2B In (+)</option><option value="b2bout">B2B Out (−)</option><option value="last">Last Balance (manual)</option><option value="comm">Commission (+)</option></select>
+<div id="rmsg" class="mut" style="color:var(--mi);margin-top:8px"></div><div class="sv" style="justify-content:flex-end"><button class="save" onclick="saveRec()">Save</button></div></div>
+<div class="card" id="reclist"></div></div></div>
+<div id="medv" class="pg" style="display:none"><div class="pgi">
+<button class="wa back" onclick="closeMed()">← Ferot jan</button>
+<div class="card"><div class="sh">Medicin</div><input id="medamt" inputmode="decimal" placeholder="Amount"><div id="medmsg" class="mut" style="color:var(--mi);margin-top:8px"></div><div class="sv" style="justify-content:flex-end"><button class="save" onclick="saveMed()">Save</button></div></div>
+<div class="card" id="medlist"></div></div></div>
+<div id="ov" style="display:none"></div>
+<div class="card" id="list"></div>
+<div class="syn" id="syn"></div>
+
+<script>
+var LBL={in:"In",out:"Out",b2bin:"B2B In",b2bout:"B2B Out",last:"Last Balance",comm:"Commission",cash:"Cash"};
+var SIGN={in:-1,out:1,b2bin:1,b2bout:-1,last:1,comm:1,cash:0};
+function ac(e){if(data.dokan.indexOf(e)<0&&data.wp.indexOf(e)<0)return 0;return e.type==='in'?e.amt/1000*3.75:e.type==='out'?e.amt/1000*4:0}
+var data={dokan:[],wp:[]},tab='dokan',flt='',io='';
+try{var s=localStorage.getItem('hisab1');if(s)data=JSON.parse(s);}catch(e){}
+if(!data.names)data.names=[];if(!data.dokan)data.dokan=[];if(!data.wp)data.wp=[];if(!data.bank)data.bank=[];if(!data.bnames)data.bnames=[];if(!data.med)data.med=[];if(!data.rec)data.rec=[];if(!data.rnames)data.rnames=[];if(!data.ts)data.ts=0;
+var pdn='',pdt=null;var ddL=[];
+function ddT(){var l=$('ddl');l.style.display=l.style.display==='block'?'none':'block'}
+function pick(i){$('name').value=ddL[i];$('ddb').textContent=ddL[i];$('ddl').style.display='none'}
+function xdel(i){var n=ddL[i];
+ if(pdn!==n){pdn=n;clearTimeout(pdt);pdt=setTimeout(function(){pdn='';render()},4000);render();return}
+ clearTimeout(pdt);pdn='';
+ var rm=function(a){return a.filter(function(e){return e.name!==n})};if(tab==='bank'){data.bnames=data.bnames.filter(function(x){return x!==n});data.bank=rm(data.bank)}else{data.names=data.names.filter(function(x){return x!==n});data.dokan=rm(data.dokan);data.wp=rm(data.wp)}
+ if(flt===n)flt='';if($('name').value===n)$('name').value='';persist();render()}
+document.addEventListener('click',function(e){if(!e.target.closest('.dd'))$('ddl').style.display='none'});
+function delName(){var n=$('name').value;if(!n){alert('Age name select korun');return}
+ var c=data.dokan.concat(data.wp).filter(function(e){return e.name===n}).length;
+ if(pdn!==n){pdn=n;var m=$('msg');m.textContent='"'+n+'" delete korte abar − chapun'+(c?' (shob '+c+' ta entry o delete hobe)':'');clearTimeout(pdt);pdt=setTimeout(function(){pdn='';m.textContent=''},5000);return}
+ clearTimeout(pdt);pdn='';$('msg').textContent='';
+ data.names=data.names.filter(function(x){return x!==n});data.dokan=data.dokan.filter(function(e){return e.name!==n});data.wp=data.wp.filter(function(e){return e.name!==n});
+ if(flt===n)flt='';persist();$('name').value='';render()}
+function toggleNN(){var r=$('nn');r.style.display=r.style.display==='none'?'flex':'none';$('newname').focus()}
+function addName(){var n=$('newname').value.trim();if(!n)return;var L=tab==='bank'?data.bnames:data.names;if(L.indexOf(n)<0)L.push(n);persist();render();$('name').value=n;$('ddb').textContent=n;$('newname').value='';$('nn').style.display='none'}
+function persist(){data.ts=Date.now();saveLocal();pushRemote()}
+function saveLocal(){try{localStorage.setItem('hisab1',JSON.stringify(data));}catch(e){}}
+function $(i){return document.getElementById(i)}
+function fmt(n){return (Math.round(n*100)/100).toLocaleString('en-IN')}
+var editId=null;var dflt='';
+var view='tx',store={tx:'',sum:dkey(new Date())};
+function allRows(){return data.dokan.concat(data.wp,data.bank).filter(function(e){return e.type!=='cash'&&(!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt)})}
+function curRows(){return data[tab].filter(function(e){return (!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt)})}
+function sumOf(rows){var s={in:0,out:0,b2bin:0,b2bout:0,last:0,comm:0,cash:0,bal:0,tot:0};rows.forEach(function(e){s[e.type]+=e.amt;s.comm+=ac(e);s.bal+=SIGN[e.type]*e.amt+ac(e);if(e.type!=='last'&&e.type!=='cash')s.tot+=e.amt});return s}
+function sumCard(t,s){var r=[['Total',s.tot],['B2B In',s.b2bin],['B2B Out',s.b2bout],['In',s.in],['Out',s.out],['Commission',s.comm],['Balance',s.bal]];return '<div class="card sc"><div class="sh">'+esc(t)+'</div>'+r.map(function(x,i){return '<div class="sr'+(i===6?' sb':'')+'"><span>'+x[0]+'</span><b>'+fmt(x[1])+'</b></div>'}).join('')+'</div>'}
+function startFor(rows,d){var days={};rows.forEach(function(e){var k=dkey(e.ts);(days[k]=days[k]||[]).push(e)});
+ var ks=Object.keys(days).sort(),carry=0;
+ for(var i=0;i<ks.length&&ks[i]<d;i++){var r=days[ks[i]],x=sumOf(r),hl=r.some(function(e){return e.type==='last'});var st=hl?x.last:carry;carry=st+x.out+x.b2bin+x.comm-x.in-x.b2bout}
+ var rd=days[d],hd=rd&&rd.some(function(e){return e.type==='last'});return hd?sumOf(rd).last:carry}
+function acctSum(name,tbs,d){var rows=[];tbs.forEach(function(k){data[k].forEach(function(e){if(e.name===name&&e.type!=='cash')rows.push(e)})});
+ var act=rows.filter(function(e){return !d||dkey(e.ts)===d}),s=sumOf(act),last=d?startFor(rows,d):s.last;
+ return {last:last,in:s.in,out:s.out,b2bin:s.b2bin,b2bout:s.b2bout,comm:s.comm,act:act.length,tb:last+s.out+s.b2bin+s.comm-s.in-s.b2bout}}
+function allData(){var res=[];[['Dokan + WP',['dokan','wp']],['Bank',['bank']]].forEach(function(g){var names=[];g[1].forEach(function(k){data[k].forEach(function(e){if(e.type!=='cash'&&names.indexOf(e.name)<0&&(!flt||e.name===flt))names.push(e.name)})});
+  var list=names.map(function(n){return [n,acctSum(n,g[1],dflt)]}).filter(function(x){return !dflt||x[1].act>0||x[1].last!==0});
+  if(list.length)res.push([g[0],list])});return res}
+function acCard(t,a){var r=[['Last Balance',a.last],['Cash In',a.in],['Cash Out',a.out],['B2B In',a.b2bin],['B2B Out',a.b2bout],['Commission',a.comm],['Total Balance',a.tb]];return '<div class="card sc"><div class="sh">'+esc(t)+'</div>'+r.map(function(x,i){return '<div class="sr'+(i===6?' sb':'')+'"><span>'+x[0]+'</span><b>'+fmt(x[1])+'</b></div>'}).join('')+'</div>'}
+function renderAll(){var G=allData();
+ var h='<button class="wa" onclick="setView(\'tx\')">← Transaction e ferot jan</button><div class="mut" style="margin:0 2px 8px">Shob account — '+(dflt||'All dates')+'</div>';
+ G.forEach(function(g){var T={last:0,in:0,out:0,b2bin:0,b2bout:0,comm:0,tb:0};g[1].forEach(function(x){for(var k in T)T[k]+=x[1][k]});
+  h+='<div class="mut" style="margin:14px 2px 8px;font-weight:700">'+g[0]+'</div>';
+  if(g[1].length>1)h+=acCard('All accounts — '+g[0],T);
+  g[1].forEach(function(x){h+=acCard(x[0],x[1])})});
+ if(!G.length)h+='<div class="card mut">Kono entry nai</div>';
+ h+='<button class="wa" onclick="shareAll()">WhatsApp e text pathan</button>';$('sumv').innerHTML=h}
+function shareAll(){var G=allData(),t='*Summary — '+(dflt||'All dates')+'*';
+ G.forEach(function(g){t+='\n\n*'+g[0]+'*';g[1].forEach(function(x){var a=x[1],l=[['Last Balance',a.last],['Cash In',a.in],['Cash Out',a.out],['B2B In',a.b2bin],['B2B Out',a.b2bout],['Commission',a.comm]].filter(function(r){return r[1]!==0});l.push(['Total Balance',a.tb]);t+='\n\n_'+x[0]+'_'+l.map(function(r){return '\n'+r[0]+': '+fmt(r[1])}).join('')})});
+ if(!G.length)t+='\n\nKono entry nai';
+ var a=document.createElement('a');a.href='https://wa.me/8801866212500?text='+encodeURIComponent(t);a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()}
+function renderSum(rows){if(allSum){renderAll();return}var by={},order=[];rows.forEach(function(e){if(!by[e.name]){by[e.name]=[];order.push(e.name)}by[e.name].push(e)});
+ var h='<div class="mut" style="margin:0 2px 8px">'+(allSum?'Dokan + WP + Bank':(tab==='dokan'?'Dokan':tab==='wp'?'WP':'Bank'))+' — '+(dflt||'All dates')+'</div>';h='<button class="wa" onclick="setView(\'tx\')">← Transaction e ferot jan</button>'+h;
+ var bt={};['dokan','wp','bank'].forEach(function(k){bt[k]=0;data[k].forEach(function(e){if((!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt))bt[k]+=SIGN[e.type]*e.amt+ac(e)})});
+ var sx=sumOf(data.dokan.concat(data.wp).filter(function(e){return (!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt)}));var ex='<div class="ts"><div><span>Cash In</span><b>'+fmt(sx.in)+'</b></div><div><span>Out</span><b>'+fmt(sx.out)+'</b></div><div><span>Commission</span><b>'+fmt(sx.comm)+'</b></div></div><div class="tn">Cash In, Out, Commission: shudhu Dokan + WP er</div>';
+ var sr=sumOf(rows),ex2='<div class="ts"><div><span>Cash In</span><b>'+fmt(sr.in)+'</b></div><div><span>Out</span><b>'+fmt(sr.out)+'</b></div><div><span>Commission</span><b>'+fmt(sr.comm)+'</b></div></div>';
+ if(!allSum)h+='<div class="bgrid"><div class="bm tt"><div class="bl">'+(tab==='dokan'?'Dokan':tab==='wp'?'WP':'Bank')+' Balance</div><div class="bn">'+fmt(vals.bal)+'</div>'+ex2+'</div></div>';
+ else h+='<div class="bgrid">'+[['Total Balance',bt.dokan+bt.wp+bt.bank,1],['WP',bt.wp],['Bank',bt.bank]].map(function(x){return '<div class="bm'+(x[2]?' tt':'')+'"><div class="bl">'+x[0]+'</div><div class="bn">'+fmt(x[1])+'</div>'+(x[2]?ex:'')+'</div>'}).join('')+'</div>';
+ if(order.length>1)h+=sumCard('All accounts',sumOf(rows));order.forEach(function(n){h+=sumCard(n,sumOf(by[n]))});
+ if(!order.length)h+='<div class="card mut">Kono entry nai</div>';h+='<button class="wa" onclick="shareWA()">WhatsApp e text pathan</button>';$('sumv').innerHTML=h}
+function shareWA(){var rows=(allSum?data.dokan.concat(data.wp,data.bank):data[tab]).filter(function(e){return e.type!=='cash'&&(!dflt||dkey(e.ts)===dflt)}),by={},order=[];
+ rows.forEach(function(e){if(!by[e.name]){by[e.name]=[];order.push(e.name)}by[e.name].push(e)});
+ function blk(t,s){var l=[['Total',s.tot],['B2B In',s.b2bin],['B2B Out',s.b2bout],['In',s.in],['Out',s.out],['Commission',s.comm]].filter(function(r){return r[1]!==0});l.push(['Balance',s.bal]);return '*'+t+'*'+l.map(function(r){return '\n'+r[0]+': '+fmt(r[1])}).join('')}
+ var t='*'+(allSum?'Dokan + WP + Bank':(tab==='dokan'?'Dokan':tab==='wp'?'WP':'Bank'))+' Summary — '+(dflt||'All dates')+'*\n\n'+order.map(function(n){return blk(n,sumOf(by[n]))}).join('\n\n');
+ if(order.length>1)t+='\n\n'+blk('All accounts',sumOf(rows));
+ if(!order.length)t+='Kono entry nai';
+ var a=document.createElement('a');a.href='https://wa.me/8801866212500?text='+encodeURIComponent(t);a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()}
+function nf(n){return String(Math.round(n*100)/100)}
+function wpStart(d,tb){tb=tb||'wp';var days={};data[tb].forEach(function(e){var k=dkey(e.ts);var x=days[k]=days[k]||{in:0,out:0,last:0,hl:false};if(e.type==='in')x.in+=e.amt;else if(e.type==='out')x.out+=e.amt;else if(e.type==='last'){x.last+=e.amt;x.hl=true}});
+ var ks=Object.keys(days).sort(),carry=0;
+ for(var i=0;i<ks.length&&ks[i]<d;i++){var x=days[ks[i]];var st=x.hl?x.last:carry;carry=st+x.out-x.in}
+ var m=days[d];return m&&m.hl?m.last:carry}
+function shareWP(){var d=dflt||dkey(new Date());var rows=data.wp.filter(function(e){return dkey(e.ts)===d});
+ var s=sumOf(rows);var last=rows.slice().sort(function(a,b){return new Date(b.ts)-new Date(a.ts)})[0];
+ var dg=last?String(last.num||'').replace(/\D/g,'').slice(-4):'';if(!dg)dg='----';
+ var lb=wpStart(d),o=s.out,i=s.in,m=lb+o;
+ var dt=new Date(d+'T00:00:00').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
+ var t=dt+'\n'+dg+'-'+nf(i)+'\njoma-'+nf(o)+'\nBalance - '+nf(lb)+'+'+nf(o)+'='+nf(m)+'-'+nf(i)+'='+nf(m-i);
+ var a=document.createElement('a');a.href='https://wa.me/8801866212500?text='+encodeURIComponent(t);a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()}
+var rio='',rdel=null;
+function recSumT(){var e=$('recsum');e.style.display=e.style.display==='none'?'block':'none'}
+function openRec(){$('recv').style.display='block';renderRec();$('recv').scrollTop=0}
+function closeRec(){$('recv').style.display='none'}
+function rIO(v){rio=v;$('r-in').classList.toggle('on',v==='in');$('r-out').classList.toggle('on',v==='out')}
+function rOth(){var o=$('roth').value;$('rio').classList.toggle('off',!!o);if(o)rIO('')}
+function rToggleN(){var r=$('rnn');r.style.display=r.style.display==='none'?'flex':'none';$('rnew').focus()}
+function rAddN(){var n=$('rnew').value.trim();if(!n)return;if(data.rnames.indexOf(n)<0)data.rnames.push(n);persist();$('rnew').value='';$('rnn').style.display='none';renderRec();$('rname').value=n}
+function rMsg(m){var x=$('rmsg');x.textContent=m;setTimeout(function(){x.textContent=''},2500)}
+function saveRec(){var n=$('rname').value,num=$('rnum').value.trim(),a=parseFloat($('ramt').value),t=$('roth').value||rio;
+ if(!n){rMsg('Name select korun');return}if(isNaN(a)){rMsg('Amount din');return}if(!t){rMsg('In/Out ba Other select korun');return}
+ data.rec.unshift({id:Date.now(),name:n,num:num,amt:a,type:t,ts:new Date().toISOString()});persist();
+ $('ramt').value='';$('rnum').value='';$('roth').value='';$('rio').classList.remove('off');rIO('');renderRec()}
+function delRec(id){if(rdel!==id){rdel=id;renderRec();return}rdel=null;data.rec=data.rec.filter(function(e){return e.id!==id});persist();renderRec()}
+function renderRec(){var cur=$('rname').value;
+ $('rname').innerHTML='<option value="">Name select korun</option>'+data.rnames.map(function(n){return '<option>'+esc(n)+'</option>'}).join('');$('rname').value=cur;
+ var b=0;data.rec.forEach(function(e){b+=SIGN[e.type]*e.amt});
+ var rs=sumOf(data.rec);$('recbal').textContent=fmt(b);$('recsum').innerHTML='<div class="card"><div class="ts2"><div class="in2"><span>In</span><b>'+fmt(rs.in)+'</b></div><div class="out2"><span>Out</span><b>'+fmt(rs.out)+'</b></div><div class="cm2"><span>Commission</span><b>'+fmt(rs.comm)+'</b></div></div></div>';
+ $('reclist').innerHTML=(data.rec.length?data.rec.map(function(e){var d=new Date(e.ts),pos=SIGN[e.type]>0;return '<div class="row"><div><div class="nm">'+esc(e.name)+'</div><div class="num">'+esc(e.num||'-')+'</div><button class="del" onclick="delRec('+e.id+')">'+(rdel===e.id?'<b style="color:var(--mi)">sure? tap again</b>':'delete')+'</button></div><div class="ty">'+LBL[e.type]+'</div><div><div class="amt '+(pos?'p':'m')+'">'+(pos?'+':'−')+fmt(e.amt)+'</div><div class="dt">'+d.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:true})+'</div></div></div>'}).join(''):'<div class="mut">Kono entry nai</div>')}
+function openMed(){$('medv').style.display='block';renderMed();$('medv').scrollTop=0}
+function closeMed(){$('medv').style.display='none'}
+function saveMed(){var a=parseFloat($('medamt').value);if(isNaN(a)){var m=$('medmsg');m.textContent='Amount din';setTimeout(function(){m.textContent=''},2000);return}
+ data.med.unshift({id:Date.now(),amt:a,ts:new Date().toISOString()});persist();$('medamt').value='';renderMed()}
+var mdel=null;
+function delMed(id){if(mdel!==id){mdel=id;renderMed();return}mdel=null;data.med=data.med.filter(function(e){return e.id!==id});persist();renderMed()}
+function renderMed(){var t=0;data.med.forEach(function(e){t+=e.amt});
+ $('medlist').innerHTML='<div class="mut" style="margin-bottom:8px">Total: <b style="color:var(--tx);font-size:18px">'+fmt(t)+'</b></div>'+(data.med.length?data.med.map(function(e){var d=new Date(e.ts);return '<div class="row"><div><div class="amt" style="text-align:left">'+fmt(e.amt)+'</div><div class="dt">'+d.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:true})+'</div></div><div><button class="del" onclick="delMed('+e.id+')">'+(mdel===e.id?'<b style="color:var(--mi)">sure? tap again</b>':'delete')+'</button></div></div>'}).join(''):'<div class="mut">Kono entry nai</div>')}
+function closeOv(){$('ov').style.display='none'}
+function showImg(c){var o=$('ov');o.innerHTML='<div class="ovb"><img src="'+c.toDataURL('image/png')+'"><div class="mut" style="margin-bottom:8px">Image ta chepe dhore save korun, tarpor WhatsApp e pathan</div><button class="save" onclick="closeOv()">Close</button></div>';o.style.display='flex'}
+function shareImg(){
+ var rows=data[tab].filter(function(e){return !dflt||dkey(e.ts)===dflt}),by={},order=[];
+ rows.forEach(function(e){if(!by[e.name]){by[e.name]=[];order.push(e.name)}by[e.name].push(e)});
+ var groups=order.map(function(n){return [n,sumOf(by[n])]});if(order.length>1)groups.push(['All accounts',sumOf(rows)]);
+ var W=720,pad=36,lh=40,items=[];
+ groups.forEach(function(g){var s=g[1],l=[['Total',s.tot],['B2B In',s.b2bin],['B2B Out',s.b2bout],['In',s.in],['Out',s.out],['Commission',s.comm]].filter(function(r){return r[1]!==0});l.push(['Balance',s.bal]);items.push([g[0],l])});
+ var H=pad*2+110;items.forEach(function(it){H+=64+it[1].length*lh});if(!items.length)H+=40;
+ var S=2,c=document.createElement('canvas');c.width=W*S;c.height=H*S;var x=c.getContext('2d');x.scale(S,S);
+ x.fillStyle='#fff';x.fillRect(0,0,W,H);
+ var F='system-ui,-apple-system,Segoe UI,Arial,sans-serif';
+ x.textAlign='left';x.fillStyle='#111';x.font='700 30px '+F;x.fillText((tab==='dokan'?'Dokan':'WP')+' Summary',pad,pad+30);
+ x.fillStyle='#666';x.font='400 20px '+F;x.fillText(dflt?dflt:'All dates',pad,pad+62);
+ var y=pad+100;
+ if(!items.length){x.fillText('Kono entry nai',pad,y+20)}
+ items.forEach(function(it){
+  x.textAlign='left';x.fillStyle='#2456d6';x.font='700 24px '+F;x.fillText(it[0],pad,y+24);y+=40;
+  x.strokeStyle='#ddd';x.lineWidth=1;
+  it[1].forEach(function(r,i){var last=i===it[1].length-1;x.font=(last?'700 ':'400 ')+'22px '+F;x.fillStyle='#444';x.textAlign='left';x.fillText(r[0],pad,y+26);x.fillStyle='#111';x.textAlign='right';x.fillText(fmt(r[1]),W-pad,y+26);y+=lh;x.beginPath();x.moveTo(pad,y);x.lineTo(W-pad,y);x.stroke()});
+  y+=24});
+ c.toBlob(function(b){if(!b){showImg(c);return}var f=null;try{f=new File([b],'summary.png',{type:'image/png'})}catch(e){}
+  if(f&&navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f]}).catch(function(){showImg(c)})}else showImg(c)})}
+var allSum=false;function toggleAll(){allSum=!allSum;render()}
+function openSum(){allSum=true;setView('sum');window.scrollTo(0,0)}
+function tabRows(){return data[tab].filter(function(e){return e.type!=='cash'&&(!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt)})}
+var _r=render;render=function(){_r();if(view==='sum')renderSum(allSum?allRows():tabRows())};
+function setView(v){store[view]=dflt;view=v;dflt=store[v];$('dflt').value=dflt;var s=v==='sum';document.querySelector('.bx').style.display=s?'none':'';$('list').style.display=s?'none':'';$('name').closest('.card').style.display=s?'none':'';$('sumv').style.display=s?'':'none';$('v-tx').className=s?'':'on';$('v-sum').className=s?'on':'';cancelEdit();render()}
+function toLocal(ts){var d=new Date(ts);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,16)}
+function dkey(ts){return toLocal(ts).slice(0,10)}
+function setNow(){$('dt').value=toLocal(new Date())}
+function tick(){var d=new Date();$('clk').innerHTML='<b>'+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true})+'</b>'+d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}tick();setInterval(tick,1000);
+function clrD(){dflt='';$('dflt').value='';render()}
+setNow();
+var vals={tot:0,bal:0},shown={tot:false,bal:false};
+function paint(k){var el=$(k);el.className='bv';el.textContent=shown[k]?fmt(vals[k]):'••••••'}
+function rev(k){shown[k]=!shown[k];var el=$(k);if(!shown[k]){el.className='bv';el.textContent='••••••';return}
+ el.className='bv';void el.offsetWidth;el.className='bv pop';var v=vals[k],t0=null;
+ function st(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/700,1),e=1-Math.pow(1-p,3);el.textContent=fmt(p<1?v*e:v);if(p<1)requestAnimationFrame(st)}
+ requestAnimationFrame(st)}
+function cancelEdit(){editId=null;$('sbtn').textContent='Save'}
+function edit(id){var e=data[tab].filter(function(x){return x.id===id})[0];if(!e)return;editId=id;
+ $('name').value=e.name;$('ddb').textContent=e.name;$('number').value=e.num;$('amount').value=e.amt;
+ if(e.type==='in'||e.type==='out'){$('other').value='';$('io').classList.remove('off');setIO(e.type)}else{$('other').value=e.type;otherChg()}
+ $('dt').value=toLocal(e.ts);$('sbtn').textContent='Update';window.scrollTo(0,0)}
+function setTab(t){tab=t;flt='';allSum=false;cancelEdit();if(view==='sum'){setView('tx');return}render()}
+function setIO(v){io=v;$('b-in').classList.toggle('on',v==='in');$('b-out').classList.toggle('on',v==='out')}
+function otherChg(){var o=$('other').value;$('io').classList.toggle('off',!!o);if(o)setIO('')}
+function alert(m){var x=$('msg');x.textContent=m;setTimeout(function(){x.textContent=''},2500)}
+function save(){
+ var name=$('name').value.trim(),num=$('number').value.trim(),amt=parseFloat($('amount').value);
+ var type=$('other').value||io;
+ if(type==='cash')name='Cash';if(!name){alert('Name din');return}
+ if(isNaN(amt)){alert('Amount din');return}
+ if(!type){alert('In/Out ba Other select korun');return}
+ var ts=editId?new Date($('dt').value).toISOString():new Date().toISOString();
+ if(editId){var ed=data[tab].filter(function(x){return x.id===editId})[0];if(ed){ed.name=name;ed.num=num;ed.amt=amt;ed.type=type;ed.ts=ts}cancelEdit()}else data[tab].unshift({id:Date.now(),name:name,num:num,amt:amt,type:type,ts:ts});
+ persist();$('amount').value='';$('number').value='';$('other').value='';$('io').classList.remove('off');setIO('');setNow();render();
+}
+var delId=null;
+function del(id){if(delId!==id){delId=id;render();return}delId=null;data[tab]=data[tab].filter(function(e){return e.id!==id});persist();render()}
+function render(){
+ $('wpb').style.display=tab==='wp'?'':'none';$('dside').style.display=tab==='dokan'?'flex':'none';$('c-bal').classList.toggle('sm',tab==='dokan');$('c-tot').style.display=tab==='dokan'?'none':'';var co=$('other').querySelector('option[value="cash"]');co.hidden=co.disabled=tab!=='dokan';if(tab!=='dokan'&&$('other').value==='cash'){$('other').value='';otherChg()}
+ $('t-dokan').className=tab==='dokan'?'on':'';$('t-wp').className=tab==='wp'?'on':'';$('t-bank').className=tab==='bank'?'on':'';
+ var all=data[tab],names=[];
+ (view==='sum'&&allSum?data.dokan.concat(data.wp,data.bank):(tab==='bank'?data.bank:data.dokan.concat(data.wp))).forEach(function(e){if(e.type!=='cash'&&names.indexOf(e.name)<0)names.push(e.name)});
+ var all2=(tab==='bank'?data.bnames:data.names).slice();names.forEach(function(n){if(all2.indexOf(n)<0)all2.push(n)});var cur=$('name').value;if(cur&&all2.indexOf(cur)<0){cur='';$('name').value=''}
+ ddL=all2;$('ddb').textContent=cur||'Name select korun';
+ $('ddl').innerHTML=all2.length?all2.map(function(n,i){var cnt=(tab==='bank'?data.bank:data.dokan.concat(data.wp)).filter(function(e){return e.name===n}).length;return '<div class="ddi"><span onclick="pick('+i+')">'+esc(n)+'</span><button class="ddx'+(pdn===n?' sure':'')+'" onclick="event.stopPropagation();xdel('+i+')">'+(pdn===n?'sure? delete'+(cnt?' ('+cnt+' entry o jabe)':''):'−')+'</button></div>'}).join(''):'<div class="ddi mut" style="padding:12px">Kono name nai</div>';
+ var fo='<option value="">All</option>';names.forEach(function(n){fo+='<option'+(flt===n?' selected':'')+'>'+esc(n)+'</option>'});$('flt').innerHTML=fo;
+ var rows=all.filter(function(e){return (!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt)}).sort(function(a,b){return new Date(b.ts)-new Date(a.ts)});
+ var bal=0;rows.forEach(function(e){bal+=SIGN[e.type]*e.amt});
+ if(tab==='dokan'){var dr=data.dokan.filter(function(e){return !dflt||dkey(e.ts)===dflt}),q=sumOf(dr);var dm=0,ri=0;data.med.forEach(function(e){if(!dflt||dkey(e.ts)===dflt)dm+=e.amt});data.rec.forEach(function(e){if(e.type==='in'&&(!dflt||dkey(e.ts)===dflt))ri+=e.amt});bal=q.cash+dm+ri-q.out}
+ if(tab==='wp')bal=sumOf(rows).bal;
+ var ds=sumOf(rows),dst=$('dstat');dst.style.display=(view==='tx')?'':'none';dst.innerHTML='<div class="mut" style="margin-bottom:8px">Cash In / Out / Commission — '+esc(flt||'All accounts')+' — '+(dflt||'All dates')+'</div><div class="ts2"><div class="in2"><span>Cash In</span><b>'+fmt(ds.in)+'</b></div><div class="out2"><span>Cash Out</span><b>'+fmt(ds.out)+'</b></div><div class="cm2"><span>Commission</span><b>'+fmt(ds.comm)+'</b></div></div>';if(1){var dd=dflt||dkey(new Date()),ls=wpStart(dd,tab),w=sumOf(data[tab].filter(function(e){return dkey(e.ts)===dd}));dst.innerHTML+='<div class="mut" style="margin:12px 0 8px">Last Balance — '+dd+'</div><div class="ts2"><div><span>Last Balance (age er baki)</span><b>'+fmt(ls)+'</b></div><div><span>Closing (shesh baki)</span><b>'+fmt(ls+w.out-w.in)+'</b></div></div>'}
+ $('blab').textContent=(tab==='dokan'?'Dokan':'WP')+(flt?' — '+flt:'')+' Balance';
+ vals.bal=bal;paint('bal');$('blab').textContent=(tab==='dokan'?'Dokan':tab==='wp'?'WP':'Bank')+' Balance';
+ var tb={dokan:0,wp:0,bank:0};['dokan','wp','bank'].forEach(function(k){data[k].forEach(function(e){if((!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt))tb[k]+=SIGN[e.type]*e.amt+ac(e)})});var tt=tb.dokan+tb.wp+tb.bank;$('tlab').textContent=(flt?flt+' — ':'')+'Total Balance (Dokan + WP)';vals.tot=tt;paint('tot');$('tlab').textContent='Total Balance';
+ $('list').innerHTML=rows.length?rows.map(function(e){
+  var d=new Date(e.ts),pos=SIGN[e.type]>0||e.type==='cash';
+  return '<div class="row"><div><div class="nm">'+esc(e.name)+'</div><div class="num">'+esc(e.num||'-')+'</div><button class="del" onclick="edit('+e.id+')">edit</button> &nbsp; <button class="del" onclick="del('+e.id+')">'+(delId===e.id?'<b style="color:var(--mi)">sure? tap again</b>':'delete')+'</button></div>'+
+  '<div class="ty">'+LBL[e.type]+'</div>'+
+  '<div><div class="amt '+(pos?'p':'m')+'">'+(pos?'+':'−')+fmt(e.amt)+'</div><div class="dt">'+d.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})+'</div>'+(ac(e)?'<div class="dt" style="color:var(--ac)">comm +'+fmt(ac(e))+'</div>':'')+'</div></div>';
+ }).join(''):'<div class="mut">Kono entry nai</div>';
+}
+var DB=null,UID=null,sT=null;
+function setSyn(t){var e=$('syn');if(e)e.textContent=t}
+function cp(x){return JSON.parse(JSON.stringify(x||[]))}
+function ref(k){return DB.collection('data/users/'+UID).doc(k)}
+function pushRemote(){if(!DB||!UID)return;clearTimeout(sT);sT=setTimeout(function(){
+ Promise.all([ref('dokan').set({items:data.dokan}),ref('wp').set({items:data.wp}),ref('bank').set({items:data.bank}),ref('med').set({items:data.med}),ref('rec').set({items:data.rec,names:data.rnames}),ref('meta').set({names:data.names,bnames:data.bnames,ts:data.ts})]).then(function(){setSyn('✓ Data cloud e save ache')}).catch(function(){setSyn('Data ei browser e save ache (cloud save hoyni)')})},600)}
+function syncInit(){
+ if(!window.claude||!window.claude.use){setSyn('Data ei browser e save ache');return}
+ Promise.all([claude.use('db'),claude.use('user')]).then(function(r){
+  if(!r[0]||!r[1]){setSyn('Data ei browser e save ache');return null}
+  DB=r[0];return r[1].id()}).then(function(id){
+  if(!id){DB=null;setSyn('Data ei browser e save ache');return null}
+  UID=id;return Promise.all([ref('dokan').get(),ref('wp').get(),ref('meta').get(),ref('bank').get(),ref('med').get(),ref('rec').get()])}).then(function(s){
+  if(!s)return;
+  var d=s[0],w=s[1],m=s[2],b=s[3],md=s[4],rc=s[5];
+  if(d.exists||w.exists||m.exists){
+   var rm=m.exists?m.data():{},rts=rm.ts||0;
+   if(rts>=data.ts){data={dokan:d.exists?cp(d.data().items):[],wp:w.exists?cp(w.data().items):[],bank:b.exists?cp(b.data().items):[],med:md.exists?cp(md.data().items):[],rec:rc.exists?cp(rc.data().items):[],rnames:rc.exists?cp(rc.data().names):[],names:cp(rm.names),bnames:cp(rm.bnames),ts:rts};saveLocal();render();setSyn('✓ Data cloud e save ache')}
+   else{pushRemote();setSyn('✓ Data cloud e save hocche')}
+  }else if(data.dokan.length||data.wp.length||data.bank.length||data.med.length||data.rec.length||data.names.length){pushRemote();setSyn('✓ Data cloud e save hocche')}
+  else setSyn('✓ Data cloud e save hobe');
+ }).catch(function(){setSyn('Data ei browser e save ache')})}
+syncInit();
+function esc(s){return String(s).replace(/[&<>]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;'}[c]})}
+render();
+</script>
+</body>
+</html>
