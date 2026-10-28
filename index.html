@@ -106,13 +106,14 @@ button:active{transform:scale(.94)}
 .bx .bc.sm{min-height:0;padding:10px 12px;flex:1.1}.bx .bc.sm .bv{font-size:20px}.side{flex:1;display:flex;flex-direction:column;gap:8px;min-width:0}.side button{flex:1;border:0;border-radius:12px;color:#fff;font-weight:700;font-size:14px;padding:8px 6px;animation:up .4s ease both}#b-med{background:linear-gradient(135deg,#f97316,#ef4444);box-shadow:0 4px 12px rgba(239,68,68,.3)}#b-rec{background:linear-gradient(135deg,#0ea5e9,#6366f1);box-shadow:0 4px 12px rgba(99,102,241,.3)}
 .pg{position:fixed;inset:0;background:var(--bg);z-index:60;overflow:auto;padding:14px;padding-top:calc(14px + env(safe-area-inset-top,0px))}.pgi{max-width:680px;margin:0 auto}.wa.back{background:var(--card);color:var(--tx);box-shadow:none;border:1px solid var(--bd)}
 .rrow{display:flex;gap:10px;margin-bottom:12px;align-items:stretch}.rrow .bc{flex:1.4}.rsb{flex:1;border:0;border-radius:14px;color:#fff;font-weight:700;font-size:16px;background:linear-gradient(135deg,#0891b2,#06b6d4);box-shadow:0 4px 12px rgba(8,145,178,.32)}
+#c-bal{position:relative}#c-bal.sm{padding-right:52px}.eic{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:34px;height:34px;border:0;border-radius:10px;background:rgba(255,255,255,.24);color:#fff;font-size:17px;padding:0}.eic:active{transform:translateY(-50%) scale(.92)}
 </style>
 </head>
 <body>
 
 <div class="r2" id="top"><div id="clk" class="clk"></div><div class="tabs"><button id="t-dokan" onclick="setTab('dokan')">Dokan</button><button id="t-wp" onclick="setTab('wp')">WP</button><button id="t-bank" onclick="setTab('bank')">Bank</button></div></div>
-<div class="bx" style="margin-top:12px"><div class="bc" id="c-tot" onclick="rev('tot')"><div class="bl" id="tlab">Total Balance</div><div class="bv" id="tot">••••••</div></div><div class="bc" id="c-bal" onclick="rev('bal')"><div class="bl" id="blab">Dokan Balance</div><div class="bv" id="bal">••••••</div></div><div class="side" id="dside" style="display:none"><button id="b-med" onclick="openMed()">Medicin</button><button id="b-rec" onclick="openRec()">Rec</button></div></div>
-<div class="r2" style="margin:8px 0 12px"><select id="flt" onchange="flt=this.value;render()"></select><input id="dflt" type="date" onchange="dflt=this.value;render()"><button class="add" onclick="clrD()">×</button></div>
+<div class="bx" style="margin-top:12px"><div class="bc" id="c-tot" onclick="rev('tot')"><div class="bl" id="tlab">Total Balance</div><div class="bv" id="tot">••••••</div></div><div class="bc" id="c-bal" onclick="rev('bal')"><div class="bl" id="blab">Dokan Balance</div><div class="bv" id="bal">••••••</div><button class="eic" id="eic" onclick="event.stopPropagation();openAdj()">✎</button></div><div class="side" id="dside" style="display:none"><button id="b-med" onclick="openMed()">Medicin</button><button id="b-rec" onclick="openRec()">Rec</button></div></div>
+<div class="r2" style="margin:8px 0 12px"><select id="flt" onchange="flt=this.value;render()"></select><input id="dflt" type="date" onchange="dChg(this.value)"><button class="add" onclick="clrD()">×</button></div>
 
 
 <div class="card">
@@ -128,6 +129,7 @@ button:active{transform:scale(.94)}
 <option value="last">Last Balance (manual)</option>
 <option value="comm">Commission (+)</option>
 <option value="cash">Cash (Dokan er cash)</option>
+<option value="paybill">Pay Bill (−)</option>
 </select>
 <div id="msg" class="mut" style="color:var(--mi);margin-top:8px"></div><div class="sv"><button class="save sumb" onclick="openSum()">Summary</button><button class="save wpb" id="wpb" onclick="shareWP()">WP Text</button><button class="save" id="sbtn" onclick="save()">Save</button></div>
 </div>
@@ -149,21 +151,30 @@ button:active{transform:scale(.94)}
 <select id="roth" onchange="rOth()"><option value="">Other (lagle select korun)</option><option value="b2bin">B2B In (+)</option><option value="b2bout">B2B Out (−)</option><option value="last">Last Balance (manual)</option><option value="comm">Commission (+)</option></select>
 <div id="rmsg" class="mut" style="color:var(--mi);margin-top:8px"></div><div class="sv" style="justify-content:flex-end"><button class="save" onclick="saveRec()">Save</button></div></div>
 <div class="card" id="reclist"></div></div></div>
+<div id="adjv" class="pg" style="display:none"><div class="pgi">
+<button class="wa back" onclick="closeAdj()">← Ferot jan</button>
+<div class="bc" style="cursor:default;margin-bottom:12px"><div class="bl">Dokan Balance</div><div class="bv" id="adjbal">0</div></div>
+<div class="card"><div class="sh">Balance add / minus</div><input id="adjamt" inputmode="decimal" placeholder="Amount"><input id="adjnote" placeholder="Note (lagle)"><div id="adjmsg" class="mut" style="color:var(--mi);margin-top:8px"></div>
+<div class="sv" style="justify-content:flex-end"><button class="save" style="background:linear-gradient(135deg,#dc2626,#ef4444)" onclick="saveAdj(-1)">− Minus</button><button class="save" onclick="saveAdj(1)">+ Add</button></div></div>
+<div class="card" id="adjlist"></div></div></div>
 <div id="medv" class="pg" style="display:none"><div class="pgi">
 <button class="wa back" onclick="closeMed()">← Ferot jan</button>
-<div class="card"><div class="sh">Medicin</div><input id="medamt" inputmode="decimal" placeholder="Amount"><div id="medmsg" class="mut" style="color:var(--mi);margin-top:8px"></div><div class="sv" style="justify-content:flex-end"><button class="save" onclick="saveMed()">Save</button></div></div>
+<div class="bc" style="cursor:default;margin-bottom:12px"><div class="bl" id="medmlab">Monthly Medicin Sell</div><div class="bv" id="medmtot">0</div></div>
+<input id="medmon" type="month" onchange="renderMed()" style="margin:0 0 12px">
+<div class="card"><div class="sh">Medicin</div><input id="meddate" type="date"><input id="medamt" inputmode="decimal" placeholder="Amount"><div id="medmsg" class="mut" style="color:var(--mi);margin-top:8px"></div><div class="sv" style="justify-content:flex-end"><button class="save" onclick="saveMed()">Save</button></div></div>
+<div class="card" id="medrep"></div>
 <div class="card" id="medlist"></div></div></div>
 <div id="ov" style="display:none"></div>
 <div class="card" id="list"></div>
 <div class="syn" id="syn"></div>
 
 <script>
-var LBL={in:"In",out:"Out",b2bin:"B2B In",b2bout:"B2B Out",last:"Last Balance",comm:"Commission",cash:"Cash"};
-var SIGN={in:-1,out:1,b2bin:1,b2bout:-1,last:1,comm:1,cash:0};
+var LBL={in:"In",out:"Out",b2bin:"B2B In",b2bout:"B2B Out",last:"Last Balance",comm:"Commission",cash:"Cash",paybill:"Pay Bill"};
+var SIGN={in:-1,out:1,b2bin:1,b2bout:-1,last:1,comm:1,cash:0,paybill:-1};
 function ac(e){if(data.dokan.indexOf(e)<0&&data.wp.indexOf(e)<0)return 0;return e.type==='in'?e.amt/1000*3.75:e.type==='out'?e.amt/1000*4:0}
 var data={dokan:[],wp:[]},tab='dokan',flt='',io='';
 try{var s=localStorage.getItem('hisab1');if(s)data=JSON.parse(s);}catch(e){}
-if(!data.names)data.names=[];if(!data.dokan)data.dokan=[];if(!data.wp)data.wp=[];if(!data.bank)data.bank=[];if(!data.bnames)data.bnames=[];if(!data.med)data.med=[];if(!data.rec)data.rec=[];if(!data.rnames)data.rnames=[];if(!data.ts)data.ts=0;
+if(!data.names)data.names=[];if(!data.dokan)data.dokan=[];if(!data.wp)data.wp=[];if(!data.bank)data.bank=[];if(!data.bnames)data.bnames=[];if(!data.med)data.med=[];if(!data.rec)data.rec=[];if(!data.adj)data.adj=[];if(!data.rnames)data.rnames=[];if(!data.ts)data.ts=0;
 var pdn='',pdt=null;var ddL=[];
 function ddT(){var l=$('ddl');l.style.display=l.style.display==='block'?'none':'block'}
 function pick(i){$('name').value=ddL[i];$('ddb').textContent=ddL[i];$('ddl').style.display='none'}
@@ -185,33 +196,33 @@ function persist(){data.ts=Date.now();saveLocal();pushRemote()}
 function saveLocal(){try{localStorage.setItem('hisab1',JSON.stringify(data));}catch(e){}}
 function $(i){return document.getElementById(i)}
 function fmt(n){return (Math.round(n*100)/100).toLocaleString('en-IN')}
-var editId=null;var dflt='';
-var view='tx',store={tx:'',sum:dkey(new Date())};
+var editId=null;var dflt=dkey(new Date());var autoD=true;
+var view='tx',store={tx:dkey(new Date()),sum:dkey(new Date())};
 function allRows(){return data.dokan.concat(data.wp,data.bank).filter(function(e){return e.type!=='cash'&&(!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt)})}
 function curRows(){return data[tab].filter(function(e){return (!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt)})}
-function sumOf(rows){var s={in:0,out:0,b2bin:0,b2bout:0,last:0,comm:0,cash:0,bal:0,tot:0};rows.forEach(function(e){s[e.type]+=e.amt;s.comm+=ac(e);s.bal+=SIGN[e.type]*e.amt+ac(e);if(e.type!=='last'&&e.type!=='cash')s.tot+=e.amt});return s}
+function sumOf(rows){var s={in:0,out:0,b2bin:0,b2bout:0,last:0,comm:0,cash:0,paybill:0,bal:0,tot:0};rows.forEach(function(e){s[e.type]+=e.amt;s.comm+=ac(e);s.bal+=SIGN[e.type]*e.amt+ac(e);if(e.type!=='last'&&e.type!=='cash')s.tot+=e.amt});return s}
 function sumCard(t,s){var r=[['Total',s.tot],['B2B In',s.b2bin],['B2B Out',s.b2bout],['In',s.in],['Out',s.out],['Commission',s.comm],['Balance',s.bal]];return '<div class="card sc"><div class="sh">'+esc(t)+'</div>'+r.map(function(x,i){return '<div class="sr'+(i===6?' sb':'')+'"><span>'+x[0]+'</span><b>'+fmt(x[1])+'</b></div>'}).join('')+'</div>'}
 function startFor(rows,d){var days={};rows.forEach(function(e){var k=dkey(e.ts);(days[k]=days[k]||[]).push(e)});
  var ks=Object.keys(days).sort(),carry=0;
- for(var i=0;i<ks.length&&ks[i]<d;i++){var r=days[ks[i]],x=sumOf(r),hl=r.some(function(e){return e.type==='last'});var st=hl?x.last:carry;carry=st+x.out+x.b2bin+x.comm-x.in-x.b2bout}
+ for(var i=0;i<ks.length&&ks[i]<d;i++){var r=days[ks[i]],x=sumOf(r),hl=r.some(function(e){return e.type==='last'});var st=hl?x.last:carry;carry=st+x.out+x.b2bin+x.comm-x.in-x.b2bout-x.paybill}
  var rd=days[d],hd=rd&&rd.some(function(e){return e.type==='last'});return hd?sumOf(rd).last:carry}
 function acctSum(name,tbs,d){var rows=[];tbs.forEach(function(k){data[k].forEach(function(e){if(e.name===name&&e.type!=='cash')rows.push(e)})});
  var act=rows.filter(function(e){return !d||dkey(e.ts)===d}),s=sumOf(act),last=d?startFor(rows,d):s.last;
- return {last:last,in:s.in,out:s.out,b2bin:s.b2bin,b2bout:s.b2bout,comm:s.comm,act:act.length,tb:last+s.out+s.b2bin+s.comm-s.in-s.b2bout}}
+ return {last:last,in:s.in,out:s.out,b2bin:s.b2bin,b2bout:s.b2bout,comm:s.comm,pb:s.paybill,act:act.length,tb:last+s.out+s.b2bin+s.comm-s.in-s.b2bout-s.paybill}}
 function allData(){var res=[];[['Dokan + WP',['dokan','wp']],['Bank',['bank']]].forEach(function(g){var names=[];g[1].forEach(function(k){data[k].forEach(function(e){if(e.type!=='cash'&&names.indexOf(e.name)<0&&(!flt||e.name===flt))names.push(e.name)})});
   var list=names.map(function(n){return [n,acctSum(n,g[1],dflt)]}).filter(function(x){return !dflt||x[1].act>0||x[1].last!==0});
   if(list.length)res.push([g[0],list])});return res}
-function acCard(t,a){var r=[['Last Balance',a.last],['Cash In',a.in],['Cash Out',a.out],['B2B In',a.b2bin],['B2B Out',a.b2bout],['Commission',a.comm],['Total Balance',a.tb]];return '<div class="card sc"><div class="sh">'+esc(t)+'</div>'+r.map(function(x,i){return '<div class="sr'+(i===6?' sb':'')+'"><span>'+x[0]+'</span><b>'+fmt(x[1])+'</b></div>'}).join('')+'</div>'}
+function acCard(t,a){var r=[['Last Balance',a.last],['Cash In',a.in],['Cash Out',a.out],['B2B In',a.b2bin],['B2B Out',a.b2bout],['Commission',a.comm],['Pay Bill',a.pb],['Total Balance',a.tb]];return '<div class="card sc"><div class="sh">'+esc(t)+'</div>'+r.map(function(x,i){return '<div class="sr'+(i===7?' sb':'')+'"><span>'+x[0]+'</span><b>'+fmt(x[1])+'</b></div>'}).join('')+'</div>'}
 function renderAll(){var G=allData();
  var h='<button class="wa" onclick="setView(\'tx\')">← Transaction e ferot jan</button><div class="mut" style="margin:0 2px 8px">Shob account — '+(dflt||'All dates')+'</div>';
- G.forEach(function(g){var T={last:0,in:0,out:0,b2bin:0,b2bout:0,comm:0,tb:0};g[1].forEach(function(x){for(var k in T)T[k]+=x[1][k]});
+ G.forEach(function(g){var T={last:0,in:0,out:0,b2bin:0,b2bout:0,comm:0,pb:0,tb:0};g[1].forEach(function(x){for(var k in T)T[k]+=x[1][k]});
   h+='<div class="mut" style="margin:14px 2px 8px;font-weight:700">'+g[0]+'</div>';
   if(g[1].length>1)h+=acCard('All accounts — '+g[0],T);
   g[1].forEach(function(x){h+=acCard(x[0],x[1])})});
  if(!G.length)h+='<div class="card mut">Kono entry nai</div>';
  h+='<button class="wa" onclick="shareAll()">WhatsApp e text pathan</button>';$('sumv').innerHTML=h}
 function shareAll(){var G=allData(),t='*Summary — '+(dflt||'All dates')+'*';
- G.forEach(function(g){t+='\n\n*'+g[0]+'*';g[1].forEach(function(x){var a=x[1],l=[['Last Balance',a.last],['Cash In',a.in],['Cash Out',a.out],['B2B In',a.b2bin],['B2B Out',a.b2bout],['Commission',a.comm]].filter(function(r){return r[1]!==0});l.push(['Total Balance',a.tb]);t+='\n\n_'+x[0]+'_'+l.map(function(r){return '\n'+r[0]+': '+fmt(r[1])}).join('')})});
+ G.forEach(function(g){t+='\n\n*'+g[0]+'*';g[1].forEach(function(x){var a=x[1],l=[['Last Balance',a.last],['Cash In',a.in],['Cash Out',a.out],['B2B In',a.b2bin],['B2B Out',a.b2bout],['Commission',a.comm],['Pay Bill',a.pb]].filter(function(r){return r[1]!==0});l.push(['Total Balance',a.tb]);t+='\n\n_'+x[0]+'_'+l.map(function(r){return '\n'+r[0]+': '+fmt(r[1])}).join('')})});
  if(!G.length)t+='\n\nKono entry nai';
  var a=document.createElement('a');a.href='https://wa.me/8801866212500?text='+encodeURIComponent(t);a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()}
 function renderSum(rows){if(allSum){renderAll();return}var by={},order=[];rows.forEach(function(e){if(!by[e.name]){by[e.name]=[];order.push(e.name)}by[e.name].push(e)});
@@ -261,13 +272,30 @@ function renderRec(){var cur=$('rname').value;
  var b=0;data.rec.forEach(function(e){b+=SIGN[e.type]*e.amt});
  var rs=sumOf(data.rec);$('recbal').textContent=fmt(b);$('recsum').innerHTML='<div class="card"><div class="ts2"><div class="in2"><span>In</span><b>'+fmt(rs.in)+'</b></div><div class="out2"><span>Out</span><b>'+fmt(rs.out)+'</b></div><div class="cm2"><span>Commission</span><b>'+fmt(rs.comm)+'</b></div></div></div>';
  $('reclist').innerHTML=(data.rec.length?data.rec.map(function(e){var d=new Date(e.ts),pos=SIGN[e.type]>0;return '<div class="row"><div><div class="nm">'+esc(e.name)+'</div><div class="num">'+esc(e.num||'-')+'</div><button class="del" onclick="delRec('+e.id+')">'+(rdel===e.id?'<b style="color:var(--mi)">sure? tap again</b>':'delete')+'</button></div><div class="ty">'+LBL[e.type]+'</div><div><div class="amt '+(pos?'p':'m')+'">'+(pos?'+':'−')+fmt(e.amt)+'</div><div class="dt">'+d.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:true})+'</div></div></div>'}).join(''):'<div class="mut">Kono entry nai</div>')}
-function openMed(){$('medv').style.display='block';renderMed();$('medv').scrollTop=0}
+function openAdj(){$('adjv').style.display='block';renderAdj();$('adjv').scrollTop=0}
+function closeAdj(){$('adjv').style.display='none'}
+function saveAdj(sg){var a=parseFloat($('adjamt').value);if(isNaN(a)||a<=0){var m=$('adjmsg');m.textContent='Amount din';setTimeout(function(){m.textContent=''},2000);return}
+ data.adj.unshift({id:Date.now(),amt:sg*a,note:$('adjnote').value.trim(),ts:new Date().toISOString()});persist();$('adjamt').value='';$('adjnote').value='';render();renderAdj()}
+var adel=null;
+function delAdj(id){if(adel!==id){adel=id;renderAdj();return}adel=null;data.adj=data.adj.filter(function(e){return e.id!==id});persist();render();renderAdj()}
+function renderAdj(){$('adjbal').textContent=fmt(vals.bal);var t=0;data.adj.forEach(function(e){t+=e.amt});
+ $('adjlist').innerHTML='<div class="mut" style="margin-bottom:8px">Add/Minus er jog: <b style="color:var(--tx);font-size:18px">'+fmt(t)+'</b></div>'+(data.adj.length?data.adj.map(function(e){var d=new Date(e.ts),p=e.amt>0;return '<div class="row"><div><div class="amt '+(p?'p':'m')+'" style="text-align:left">'+(p?'+':'−')+fmt(Math.abs(e.amt))+'</div><div class="dt">'+esc(e.note||'')+(e.note?' · ':'')+d.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:true})+'</div></div><div><button class="del" onclick="delAdj('+e.id+')">'+(adel===e.id?'<b style="color:var(--mi)">sure? tap again</b>':'delete')+'</button></div></div>'}).join(''):'<div class="mut">Kono entry nai</div>')}
+function openMed(){$('medv').style.display='block';$('meddate').value=dkey(new Date());if(!$('medmon').value)$('medmon').value=dkey(new Date()).slice(0,7);renderMed();$('medv').scrollTop=0}
 function closeMed(){$('medv').style.display='none'}
 function saveMed(){var a=parseFloat($('medamt').value);if(isNaN(a)){var m=$('medmsg');m.textContent='Amount din';setTimeout(function(){m.textContent=''},2000);return}
- data.med.unshift({id:Date.now(),amt:a,ts:new Date().toISOString()});persist();$('medamt').value='';renderMed()}
+ var md=$('meddate').value;var mts=md?new Date(md+'T'+new Date().toTimeString().slice(0,8)).toISOString():new Date().toISOString();
+ data.med.unshift({id:Date.now(),amt:a,ts:mts});persist();$('medamt').value='';renderMed()}
 var mdel=null;
 function delMed(id){if(mdel!==id){mdel=id;renderMed();return}mdel=null;data.med=data.med.filter(function(e){return e.id!==id});persist();renderMed()}
-function renderMed(){var t=0;data.med.forEach(function(e){t+=e.amt});
+function renderMed(){var m=$('medmon').value||dkey(new Date()).slice(0,7);
+ var ents=data.med.filter(function(e){return dkey(e.ts).slice(0,7)===m}).sort(function(a,b){return new Date(b.ts)-new Date(a.ts)});
+ var tot=0,days={},ks=[];ents.forEach(function(e){tot+=e.amt;var k=dkey(e.ts);if(!days[k]){days[k]=[];ks.push(k)}days[k].push(e)});
+ $('medmlab').textContent='Monthly Medicin Sell — '+new Date(m+'-01T00:00:00').toLocaleDateString('en-GB',{month:'long',year:'numeric'});$('medmtot').textContent=fmt(tot);
+ var mm={},mk=[];data.med.forEach(function(e){var k=dkey(e.ts).slice(0,7);if(mm[k]==null){mm[k]=0;mk.push(k)}mm[k]+=e.amt});mk.sort().reverse();
+ $('medrep').innerHTML='<div class="sh">Month wise report</div>'+(mk.length?mk.map(function(k){return '<div class="sr"><span>'+new Date(k+'-01T00:00:00').toLocaleDateString('en-GB',{month:'long',year:'numeric'})+'</span><b>'+fmt(mm[k])+'</b></div>'}).join(''):'<div class="mut">Kono entry nai</div>');
+ $('medlist').innerHTML=ks.length?ks.map(function(k){var s=0;days[k].forEach(function(e){s+=e.amt});
+  return '<div class="mut" style="display:flex;justify-content:space-between;margin:10px 0 4px;font-weight:700"><span>'+new Date(k+'T00:00:00').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})+'</span><span>'+fmt(s)+'</span></div>'+days[k].map(function(e){var d=new Date(e.ts);return '<div class="row"><div><div class="amt" style="text-align:left">'+fmt(e.amt)+'</div><div class="dt">'+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true})+'</div></div><div><button class="del" onclick="delMed('+e.id+')">'+(mdel===e.id?'<b style="color:var(--mi)">sure? tap again</b>':'delete')+'</button></div></div>'}).join('')}).join(''):'<div class="mut">Ei mashe kono entry nai</div>'}
+function renderMedOld(){var t=0;data.med.forEach(function(e){t+=e.amt});
  $('medlist').innerHTML='<div class="mut" style="margin-bottom:8px">Total: <b style="color:var(--tx);font-size:18px">'+fmt(t)+'</b></div>'+(data.med.length?data.med.map(function(e){var d=new Date(e.ts);return '<div class="row"><div><div class="amt" style="text-align:left">'+fmt(e.amt)+'</div><div class="dt">'+d.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:true})+'</div></div><div><button class="del" onclick="delMed('+e.id+')">'+(mdel===e.id?'<b style="color:var(--mi)">sure? tap again</b>':'delete')+'</button></div></div>'}).join(''):'<div class="mut">Kono entry nai</div>')}
 function closeOv(){$('ov').style.display='none'}
 function showImg(c){var o=$('ov');o.innerHTML='<div class="ovb"><img src="'+c.toDataURL('image/png')+'"><div class="mut" style="margin-bottom:8px">Image ta chepe dhore save korun, tarpor WhatsApp e pathan</div><button class="save" onclick="closeOv()">Close</button></div>';o.style.display='flex'}
@@ -300,8 +328,10 @@ function setView(v){store[view]=dflt;view=v;dflt=store[v];$('dflt').value=dflt;v
 function toLocal(ts){var d=new Date(ts);d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,16)}
 function dkey(ts){return toLocal(ts).slice(0,10)}
 function setNow(){$('dt').value=toLocal(new Date())}
-function tick(){var d=new Date();$('clk').innerHTML='<b>'+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true})+'</b>'+d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}tick();setInterval(tick,1000);
-function clrD(){dflt='';$('dflt').value='';render()}
+function tick(){var d=new Date();var k=dkey(d);if(!tick.ld)tick.ld=k;if(k!==tick.ld){tick.ld=k;if(autoD&&view==='tx'){dflt=k;$('dflt').value=k;render()}}$('clk').innerHTML='<b>'+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true})+'</b>'+d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}tick();setInterval(tick,1000);
+function dChg(v){if(view==='tx'){if(!v)v=dkey(new Date());autoD=(v===dkey(new Date()))}dflt=v;$('dflt').value=v;render()}
+function clrD(){if(view==='sum'){dflt='';$('dflt').value='';render();return}dflt=dkey(new Date());autoD=true;$('dflt').value=dflt;render()}
+$('dflt').value=dflt;
 setNow();
 var vals={tot:0,bal:0},shown={tot:false,bal:false};
 function paint(k){var el=$(k);el.className='bv';el.textContent=shown[k]?fmt(vals[k]):'••••••'}
@@ -321,17 +351,17 @@ function alert(m){var x=$('msg');x.textContent=m;setTimeout(function(){x.textCon
 function save(){
  var name=$('name').value.trim(),num=$('number').value.trim(),amt=parseFloat($('amount').value);
  var type=$('other').value||io;
- if(type==='cash')name='Cash';if(!name){alert('Name din');return}
+ var sub='';if(type==='cash')name='Cash';if(!name){alert('Name din');return}
  if(isNaN(amt)){alert('Amount din');return}
  if(!type){alert('In/Out ba Other select korun');return}
  var ts=editId?new Date($('dt').value).toISOString():new Date().toISOString();
- if(editId){var ed=data[tab].filter(function(x){return x.id===editId})[0];if(ed){ed.name=name;ed.num=num;ed.amt=amt;ed.type=type;ed.ts=ts}cancelEdit()}else data[tab].unshift({id:Date.now(),name:name,num:num,amt:amt,type:type,ts:ts});
+ if(editId){var ed=data[tab].filter(function(x){return x.id===editId})[0];if(ed){ed.name=name;ed.num=num;ed.amt=amt;ed.type=type;ed.sub=sub;ed.ts=ts}cancelEdit()}else data[tab].unshift({id:Date.now(),name:name,num:num,amt:amt,type:type,sub:sub,ts:ts});
  persist();$('amount').value='';$('number').value='';$('other').value='';$('io').classList.remove('off');setIO('');setNow();render();
 }
 var delId=null;
 function del(id){if(delId!==id){delId=id;render();return}delId=null;data[tab]=data[tab].filter(function(e){return e.id!==id});persist();render()}
 function render(){
- $('wpb').style.display=tab==='wp'?'':'none';$('dside').style.display=tab==='dokan'?'flex':'none';$('c-bal').classList.toggle('sm',tab==='dokan');$('c-tot').style.display=tab==='dokan'?'none':'';var co=$('other').querySelector('option[value="cash"]');co.hidden=co.disabled=tab!=='dokan';if(tab!=='dokan'&&$('other').value==='cash'){$('other').value='';otherChg()}
+ $('wpb').style.display=tab==='wp'?'':'none';$('dside').style.display=tab==='dokan'?'flex':'none';$('c-bal').classList.toggle('sm',tab==='dokan');$('c-tot').style.display=(tab==='dokan'||tab==='wp')?'none':'';$('eic').style.display=tab==='dokan'?'':'none';var co=$('other').querySelector('option[value="cash"]'),co2=$('other').querySelector('option[value="paybill"]');co.hidden=co.disabled=co2.hidden=co2.disabled=tab!=='dokan';if(tab!=='dokan'&&($('other').value==='cash'||$('other').value==='paybill')){$('other').value='';otherChg()}
  $('t-dokan').className=tab==='dokan'?'on':'';$('t-wp').className=tab==='wp'?'on':'';$('t-bank').className=tab==='bank'?'on':'';
  var all=data[tab],names=[];
  (view==='sum'&&allSum?data.dokan.concat(data.wp,data.bank):(tab==='bank'?data.bank:data.dokan.concat(data.wp))).forEach(function(e){if(e.type!=='cash'&&names.indexOf(e.name)<0)names.push(e.name)});
@@ -339,18 +369,21 @@ function render(){
  ddL=all2;$('ddb').textContent=cur||'Name select korun';
  $('ddl').innerHTML=all2.length?all2.map(function(n,i){var cnt=(tab==='bank'?data.bank:data.dokan.concat(data.wp)).filter(function(e){return e.name===n}).length;return '<div class="ddi"><span onclick="pick('+i+')">'+esc(n)+'</span><button class="ddx'+(pdn===n?' sure':'')+'" onclick="event.stopPropagation();xdel('+i+')">'+(pdn===n?'sure? delete'+(cnt?' ('+cnt+' entry o jabe)':''):'−')+'</button></div>'}).join(''):'<div class="ddi mut" style="padding:12px">Kono name nai</div>';
  var fo='<option value="">All</option>';names.forEach(function(n){fo+='<option'+(flt===n?' selected':'')+'>'+esc(n)+'</option>'});$('flt').innerHTML=fo;
+
+
+
  var rows=all.filter(function(e){return (!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt)}).sort(function(a,b){return new Date(b.ts)-new Date(a.ts)});
- var bal=0;rows.forEach(function(e){bal+=SIGN[e.type]*e.amt});
- if(tab==='dokan'){var dr=data.dokan.filter(function(e){return !dflt||dkey(e.ts)===dflt}),q=sumOf(dr);var dm=0,ri=0;data.med.forEach(function(e){if(!dflt||dkey(e.ts)===dflt)dm+=e.amt});data.rec.forEach(function(e){if(e.type==='in'&&(!dflt||dkey(e.ts)===dflt))ri+=e.amt});bal=q.cash+dm+ri-q.out}
- if(tab==='wp')bal=sumOf(rows).bal;
+ var bd=(autoD&&tab!=='dokan')?'':dflt,rowsB=all.filter(function(e){return (!flt||e.name===flt)&&(!bd||dkey(e.ts)===bd)});var bal=0;rowsB.forEach(function(e){bal+=SIGN[e.type]*e.amt});
+ if(tab==='dokan'){var dr=data.dokan.filter(function(e){return !bd||dkey(e.ts)===bd}),q=sumOf(dr);var cs=q.cash,pbs=q.paybill;var dm=0,ri=0;data.med.forEach(function(e){if(!bd||dkey(e.ts)===bd)dm+=e.amt});data.rec.forEach(function(e){if(e.type==='in'&&(!bd||dkey(e.ts)===bd))ri+=e.amt});var aj=0;data.adj.forEach(function(e){if(!bd||dkey(e.ts)===bd)aj+=e.amt});bal=(cs+q.in+q.b2bout+pbs+dm+ri)-(q.out+q.b2bin)+aj}
+ if(tab==='wp')bal=sumOf(rowsB).bal;
  var ds=sumOf(rows),dst=$('dstat');dst.style.display=(view==='tx')?'':'none';dst.innerHTML='<div class="mut" style="margin-bottom:8px">Cash In / Out / Commission — '+esc(flt||'All accounts')+' — '+(dflt||'All dates')+'</div><div class="ts2"><div class="in2"><span>Cash In</span><b>'+fmt(ds.in)+'</b></div><div class="out2"><span>Cash Out</span><b>'+fmt(ds.out)+'</b></div><div class="cm2"><span>Commission</span><b>'+fmt(ds.comm)+'</b></div></div>';if(1){var dd=dflt||dkey(new Date()),ls=wpStart(dd,tab),w=sumOf(data[tab].filter(function(e){return dkey(e.ts)===dd}));dst.innerHTML+='<div class="mut" style="margin:12px 0 8px">Last Balance — '+dd+'</div><div class="ts2"><div><span>Last Balance (age er baki)</span><b>'+fmt(ls)+'</b></div><div><span>Closing (shesh baki)</span><b>'+fmt(ls+w.out-w.in)+'</b></div></div>'}
  $('blab').textContent=(tab==='dokan'?'Dokan':'WP')+(flt?' — '+flt:'')+' Balance';
  vals.bal=bal;paint('bal');$('blab').textContent=(tab==='dokan'?'Dokan':tab==='wp'?'WP':'Bank')+' Balance';
- var tb={dokan:0,wp:0,bank:0};['dokan','wp','bank'].forEach(function(k){data[k].forEach(function(e){if((!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt))tb[k]+=SIGN[e.type]*e.amt+ac(e)})});var tt=tb.dokan+tb.wp+tb.bank;$('tlab').textContent=(flt?flt+' — ':'')+'Total Balance (Dokan + WP)';vals.tot=tt;paint('tot');$('tlab').textContent='Total Balance';
+ var tb={dokan:0,wp:0,bank:0};['dokan','wp','bank'].forEach(function(k){data[k].forEach(function(e){if((!flt||e.name===flt)&&(!bd||dkey(e.ts)===bd))tb[k]+=SIGN[e.type]*e.amt+ac(e)})});var tt=tb.dokan+tb.wp+tb.bank;$('tlab').textContent=(flt?flt+' — ':'')+'Total Balance (Dokan + WP)';vals.tot=tt;paint('tot');$('tlab').textContent='Total Balance';
  $('list').innerHTML=rows.length?rows.map(function(e){
-  var d=new Date(e.ts),pos=SIGN[e.type]>0||e.type==='cash';
+  var d=new Date(e.ts),pos=SIGN[e.type]>0||(e.type==='cash'&&e.sub!=='pb');
   return '<div class="row"><div><div class="nm">'+esc(e.name)+'</div><div class="num">'+esc(e.num||'-')+'</div><button class="del" onclick="edit('+e.id+')">edit</button> &nbsp; <button class="del" onclick="del('+e.id+')">'+(delId===e.id?'<b style="color:var(--mi)">sure? tap again</b>':'delete')+'</button></div>'+
-  '<div class="ty">'+LBL[e.type]+'</div>'+
+  '<div class="ty">'+(e.sub==='pb'?'Pay Bill':LBL[e.type])+'</div>'+
   '<div><div class="amt '+(pos?'p':'m')+'">'+(pos?'+':'−')+fmt(e.amt)+'</div><div class="dt">'+d.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})+'</div>'+(ac(e)?'<div class="dt" style="color:var(--ac)">comm +'+fmt(ac(e))+'</div>':'')+'</div></div>';
  }).join(''):'<div class="mut">Kono entry nai</div>';
 }
@@ -359,7 +392,7 @@ function setSyn(t){var e=$('syn');if(e)e.textContent=t}
 function cp(x){return JSON.parse(JSON.stringify(x||[]))}
 function ref(k){return DB.collection('data/users/'+UID).doc(k)}
 function pushRemote(){if(!DB||!UID)return;clearTimeout(sT);sT=setTimeout(function(){
- Promise.all([ref('dokan').set({items:data.dokan}),ref('wp').set({items:data.wp}),ref('bank').set({items:data.bank}),ref('med').set({items:data.med}),ref('rec').set({items:data.rec,names:data.rnames}),ref('meta').set({names:data.names,bnames:data.bnames,ts:data.ts})]).then(function(){setSyn('✓ Data cloud e save ache')}).catch(function(){setSyn('Data ei browser e save ache (cloud save hoyni)')})},600)}
+ Promise.all([ref('dokan').set({items:data.dokan}),ref('wp').set({items:data.wp}),ref('bank').set({items:data.bank}),ref('med').set({items:data.med}),ref('rec').set({items:data.rec,names:data.rnames}),ref('meta').set({names:data.names,bnames:data.bnames,adj:data.adj,ts:data.ts})]).then(function(){setSyn('✓ Data cloud e save ache')}).catch(function(){setSyn('Data ei browser e save ache (cloud save hoyni)')})},600)}
 function syncInit(){
  if(!window.claude||!window.claude.use){setSyn('Data ei browser e save ache');return}
  Promise.all([claude.use('db'),claude.use('user')]).then(function(r){
@@ -371,7 +404,7 @@ function syncInit(){
   var d=s[0],w=s[1],m=s[2],b=s[3],md=s[4],rc=s[5];
   if(d.exists||w.exists||m.exists){
    var rm=m.exists?m.data():{},rts=rm.ts||0;
-   if(rts>=data.ts){data={dokan:d.exists?cp(d.data().items):[],wp:w.exists?cp(w.data().items):[],bank:b.exists?cp(b.data().items):[],med:md.exists?cp(md.data().items):[],rec:rc.exists?cp(rc.data().items):[],rnames:rc.exists?cp(rc.data().names):[],names:cp(rm.names),bnames:cp(rm.bnames),ts:rts};saveLocal();render();setSyn('✓ Data cloud e save ache')}
+   if(rts>=data.ts){data={dokan:d.exists?cp(d.data().items):[],wp:w.exists?cp(w.data().items):[],bank:b.exists?cp(b.data().items):[],med:md.exists?cp(md.data().items):[],rec:rc.exists?cp(rc.data().items):[],rnames:rc.exists?cp(rc.data().names):[],names:cp(rm.names),bnames:cp(rm.bnames),adj:cp(rm.adj),ts:rts};saveLocal();render();setSyn('✓ Data cloud e save ache')}
    else{pushRemote();setSyn('✓ Data cloud e save hocche')}
   }else if(data.dokan.length||data.wp.length||data.bank.length||data.med.length||data.rec.length||data.names.length){pushRemote();setSyn('✓ Data cloud e save hocche')}
   else setSyn('✓ Data cloud e save hobe');
