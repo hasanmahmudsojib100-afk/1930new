@@ -107,6 +107,8 @@ button:active{transform:scale(.94)}
 .pg{position:fixed;inset:0;background:var(--bg);z-index:60;overflow:auto;padding:14px;padding-top:calc(14px + env(safe-area-inset-top,0px))}.pgi{max-width:680px;margin:0 auto}.wa.back{background:var(--card);color:var(--tx);box-shadow:none;border:1px solid var(--bd)}
 .rrow{display:flex;gap:10px;margin-bottom:12px;align-items:stretch}.rrow .bc{flex:1.4}.rsb{flex:1;border:0;border-radius:14px;color:#fff;font-weight:700;font-size:16px;background:linear-gradient(135deg,#0891b2,#06b6d4);box-shadow:0 4px 12px rgba(8,145,178,.32)}
 #c-bal{position:relative}#c-bal.sm{padding-right:52px}.eic{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:34px;height:34px;border:0;border-radius:10px;background:rgba(255,255,255,.24);color:#fff;font-size:17px;padding:0}.eic:active{transform:translateY(-50%) scale(.92)}
+.ddb{display:none}.ddl{display:flex!important;position:static;flex-wrap:wrap;gap:6px;box-shadow:none;border:0;border-radius:0;max-height:160px;overflow:auto;background:transparent;animation:none}.ddi{border:1.5px solid var(--bd);border-radius:20px;background:var(--card);padding:0 4px 0 12px;gap:2px}.ddi span{padding:9px 0;font-size:15px}.ddi.sel{background:linear-gradient(135deg,#4f46e5,#6d5ef0);color:#fff;border-color:transparent}.ddi.sel .ddx{color:#fff}.ddi:hover{background:var(--card)}.ddi.sel:hover{background:linear-gradient(135deg,#4f46e5,#6d5ef0)}.r2:has(.dd){align-items:flex-start}
+.cmb{flex:none;height:46px;padding:0 12px;border:1.5px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--mut);font-weight:700;font-size:13px;white-space:nowrap}.cmb.on{background:linear-gradient(135deg,#059669,#10b981);color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(5,150,105,.32)}
 </style>
 </head>
 <body>
@@ -122,7 +124,7 @@ button:active{transform:scale(.94)}
 <input id="number" inputmode="tel" placeholder="Number">
 <input id="dt" type="hidden">
 <div class="r2"><input id="amount" inputmode="decimal" placeholder="Amount"><div class="io" id="io"><button class="in" id="b-in" onclick="setIO('in')">In (−)</button><button class="out" id="b-out" onclick="setIO('out')">Out (+)</button></div></div>
-<select id="other" onchange="otherChg()">
+<div class="r2"><select id="other" onchange="otherChg()">
 <option value="">Other (lagle select korun)</option>
 <option value="b2bin">B2B In (+)</option>
 <option value="b2bout">B2B Out (−)</option>
@@ -130,7 +132,7 @@ button:active{transform:scale(.94)}
 <option value="comm">Commission (+)</option>
 <option value="cash">Cash (Dokan er cash)</option>
 <option value="paybill">Pay Bill (−)</option>
-</select>
+</select><button class="cmb" id="cmb" onclick="cmT()">Add Commission</button></div>
 <div id="msg" class="mut" style="color:var(--mi);margin-top:8px"></div><div class="sv"><button class="save sumb" onclick="openSum()">Summary</button><button class="save wpb" id="wpb" onclick="shareWP()">WP Text</button><button class="save" id="sbtn" onclick="save()">Save</button></div>
 </div>
 
@@ -140,11 +142,11 @@ button:active{transform:scale(.94)}
 <div id="sumv" style="display:none"></div>
 <div id="recv" class="pg" style="display:none"><div class="pgi">
 <button class="wa back" onclick="closeRec()">← Ferot jan</button>
-<div class="rrow"><div class="bc" style="cursor:default"><div class="bl">Rec Balance</div><div class="bv" id="recbal">0</div></div>
+<div class="rrow"><div class="bc" style="cursor:default"><div class="bl" id="reclab">Rec Balance</div><div class="bv" id="recbal">0</div></div>
 <button class="rsb" onclick="recSumT()">Summary</button></div>
 <div id="recsum" style="display:none"></div>
 <div class="card"><div class="sh">Rec</div>
-<div class="r2"><select id="rname"></select><button class="add" onclick="rToggleN()">+</button></div>
+<div class="r2"><select id="rname" onchange="renderRec()"></select><button class="add" onclick="rToggleN()">+</button></div>
 <div class="r2" id="rnn" style="display:none"><input id="rnew" placeholder="Notun name"><button class="add" onclick="rAddN()">OK</button></div>
 <input id="rnum" inputmode="tel" placeholder="Number">
 <div class="r2"><input id="ramt" inputmode="decimal" placeholder="Amount"><div class="io" id="rio"><button class="in" id="r-in" onclick="rIO('in')">In (−)</button><button class="out" id="r-out" onclick="rIO('out')">Out (+)</button></div></div>
@@ -159,9 +161,9 @@ button:active{transform:scale(.94)}
 <div class="card" id="adjlist"></div></div></div>
 <div id="medv" class="pg" style="display:none"><div class="pgi">
 <button class="wa back" onclick="closeMed()">← Ferot jan</button>
-<div class="bc" style="cursor:default;margin-bottom:12px"><div class="bl" id="medmlab">Monthly Medicin Sell</div><div class="bv" id="medmtot">0</div></div>
+<div class="bc" style="cursor:default;margin-bottom:12px"><div class="bl" id="medmlab">Monthly Medicin Sell</div><div class="bv" id="medmtot">0</div><div class="ts" style="margin-top:10px"><div><span id="meddlab">Day</span><b id="meddtot">0</b></div><div><span>Mashe koto din sell</span><b id="medcnt">0</b></div></div></div>
 <input id="medmon" type="month" onchange="renderMed()" style="margin:0 0 12px">
-<div class="card"><div class="sh">Medicin</div><input id="meddate" type="date"><input id="medamt" inputmode="decimal" placeholder="Amount"><div id="medmsg" class="mut" style="color:var(--mi);margin-top:8px"></div><div class="sv" style="justify-content:flex-end"><button class="save" onclick="saveMed()">Save</button></div></div>
+<div class="card"><div class="sh">Medicin</div><input id="meddate" type="date" onchange="var d=this.value;if(d)$('medmon').value=d.slice(0,7);renderMed()"><input id="medamt" inputmode="decimal" placeholder="Amount"><div id="medmsg" class="mut" style="color:var(--mi);margin-top:8px"></div><div class="sv" style="justify-content:flex-end"><button class="save" onclick="saveMed()">Save</button></div></div>
 <div class="card" id="medrep"></div>
 <div class="card" id="medlist"></div></div></div>
 <div id="ov" style="display:none"></div>
@@ -171,19 +173,19 @@ button:active{transform:scale(.94)}
 <script>
 var LBL={in:"In",out:"Out",b2bin:"B2B In",b2bout:"B2B Out",last:"Last Balance",comm:"Commission",cash:"Cash",paybill:"Pay Bill"};
 var SIGN={in:-1,out:1,b2bin:1,b2bout:-1,last:1,comm:1,cash:0,paybill:-1};
-function ac(e){if(data.dokan.indexOf(e)<0&&data.wp.indexOf(e)<0)return 0;return e.type==='in'?e.amt/1000*3.75:e.type==='out'?e.amt/1000*4:0}
+function ac(e){if(data.dokan.indexOf(e)<0&&data.wp.indexOf(e)<0)return 0;if(e.cm===false)return 0;return e.type==='in'?e.amt/1000*3.75:e.type==='out'?e.amt/1000*4:0}
 var data={dokan:[],wp:[]},tab='dokan',flt='',io='';
 try{var s=localStorage.getItem('hisab1');if(s)data=JSON.parse(s);}catch(e){}
 if(!data.names)data.names=[];if(!data.dokan)data.dokan=[];if(!data.wp)data.wp=[];if(!data.bank)data.bank=[];if(!data.bnames)data.bnames=[];if(!data.med)data.med=[];if(!data.rec)data.rec=[];if(!data.adj)data.adj=[];if(!data.rnames)data.rnames=[];if(!data.ts)data.ts=0;
 var pdn='',pdt=null;var ddL=[];
 function ddT(){var l=$('ddl');l.style.display=l.style.display==='block'?'none':'block'}
-function pick(i){$('name').value=ddL[i];$('ddb').textContent=ddL[i];$('ddl').style.display='none'}
+function pick(i){$('name').value=ddL[i];$('ddb').textContent=ddL[i];render()}
 function xdel(i){var n=ddL[i];
  if(pdn!==n){pdn=n;clearTimeout(pdt);pdt=setTimeout(function(){pdn='';render()},4000);render();return}
  clearTimeout(pdt);pdn='';
  var rm=function(a){return a.filter(function(e){return e.name!==n})};if(tab==='bank'){data.bnames=data.bnames.filter(function(x){return x!==n});data.bank=rm(data.bank)}else{data.names=data.names.filter(function(x){return x!==n});data.dokan=rm(data.dokan);data.wp=rm(data.wp)}
  if(flt===n)flt='';if($('name').value===n)$('name').value='';persist();render()}
-document.addEventListener('click',function(e){if(!e.target.closest('.dd'))$('ddl').style.display='none'});
+
 function delName(){var n=$('name').value;if(!n){alert('Age name select korun');return}
  var c=data.dokan.concat(data.wp).filter(function(e){return e.name===n}).length;
  if(pdn!==n){pdn=n;var m=$('msg');m.textContent='"'+n+'" delete korte abar − chapun'+(c?' (shob '+c+' ta entry o delete hobe)':'');clearTimeout(pdt);pdt=setTimeout(function(){pdn='';m.textContent=''},5000);return}
@@ -260,7 +262,7 @@ function closeRec(){$('recv').style.display='none'}
 function rIO(v){rio=v;$('r-in').classList.toggle('on',v==='in');$('r-out').classList.toggle('on',v==='out')}
 function rOth(){var o=$('roth').value;$('rio').classList.toggle('off',!!o);if(o)rIO('')}
 function rToggleN(){var r=$('rnn');r.style.display=r.style.display==='none'?'flex':'none';$('rnew').focus()}
-function rAddN(){var n=$('rnew').value.trim();if(!n)return;if(data.rnames.indexOf(n)<0)data.rnames.push(n);persist();$('rnew').value='';$('rnn').style.display='none';renderRec();$('rname').value=n}
+function rAddN(){var n=$('rnew').value.trim();if(!n)return;if(data.rnames.indexOf(n)<0)data.rnames.push(n);persist();$('rnew').value='';$('rnn').style.display='none';renderRec();$('rname').value=n;renderRec()}
 function rMsg(m){var x=$('rmsg');x.textContent=m;setTimeout(function(){x.textContent=''},2500)}
 function saveRec(){var n=$('rname').value,num=$('rnum').value.trim(),a=parseFloat($('ramt').value),t=$('roth').value||rio;
  if(!n){rMsg('Name select korun');return}if(isNaN(a)){rMsg('Amount din');return}if(!t){rMsg('In/Out ba Other select korun');return}
@@ -269,8 +271,8 @@ function saveRec(){var n=$('rname').value,num=$('rnum').value.trim(),a=parseFloa
 function delRec(id){if(rdel!==id){rdel=id;renderRec();return}rdel=null;data.rec=data.rec.filter(function(e){return e.id!==id});persist();renderRec()}
 function renderRec(){var cur=$('rname').value;
  $('rname').innerHTML='<option value="">Name select korun</option>'+data.rnames.map(function(n){return '<option>'+esc(n)+'</option>'}).join('');$('rname').value=cur;
- var b=0;data.rec.forEach(function(e){b+=SIGN[e.type]*e.amt});
- var rs=sumOf(data.rec);$('recbal').textContent=fmt(b);$('recsum').innerHTML='<div class="card"><div class="ts2"><div class="in2"><span>In</span><b>'+fmt(rs.in)+'</b></div><div class="out2"><span>Out</span><b>'+fmt(rs.out)+'</b></div><div class="cm2"><span>Commission</span><b>'+fmt(rs.comm)+'</b></div></div></div>';
+ var rowsR=cur?data.rec.filter(function(e){return e.name===cur}):data.rec;$('reclab').textContent=cur?'Rec Balance — '+cur:'Rec Balance — All';var b=0;rowsR.forEach(function(e){b+=SIGN[e.type]*e.amt});
+ var rs=sumOf(rowsR);$('recbal').textContent=fmt(b);$('recsum').innerHTML='<div class="card"><div class="ts2"><div class="in2"><span>In</span><b>'+fmt(rs.in)+'</b></div><div class="out2"><span>Out</span><b>'+fmt(rs.out)+'</b></div><div class="cm2"><span>Commission</span><b>'+fmt(rs.comm)+'</b></div></div></div>';
  $('reclist').innerHTML=(data.rec.length?data.rec.map(function(e){var d=new Date(e.ts),pos=SIGN[e.type]>0;return '<div class="row"><div><div class="nm">'+esc(e.name)+'</div><div class="num">'+esc(e.num||'-')+'</div><button class="del" onclick="delRec('+e.id+')">'+(rdel===e.id?'<b style="color:var(--mi)">sure? tap again</b>':'delete')+'</button></div><div class="ty">'+LBL[e.type]+'</div><div><div class="amt '+(pos?'p':'m')+'">'+(pos?'+':'−')+fmt(e.amt)+'</div><div class="dt">'+d.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:true})+'</div></div></div>'}).join(''):'<div class="mut">Kono entry nai</div>')}
 function openAdj(){$('adjv').style.display='block';renderAdj();$('adjv').scrollTop=0}
 function closeAdj(){$('adjv').style.display='none'}
@@ -290,7 +292,7 @@ function delMed(id){if(mdel!==id){mdel=id;renderMed();return}mdel=null;data.med=
 function renderMed(){var m=$('medmon').value||dkey(new Date()).slice(0,7);
  var ents=data.med.filter(function(e){return dkey(e.ts).slice(0,7)===m}).sort(function(a,b){return new Date(b.ts)-new Date(a.ts)});
  var tot=0,days={},ks=[];ents.forEach(function(e){tot+=e.amt;var k=dkey(e.ts);if(!days[k]){days[k]=[];ks.push(k)}days[k].push(e)});
- $('medmlab').textContent='Monthly Medicin Sell — '+new Date(m+'-01T00:00:00').toLocaleDateString('en-GB',{month:'long',year:'numeric'});$('medmtot').textContent=fmt(tot);
+ $('medmlab').textContent='Monthly Medicin Sell — '+new Date(m+'-01T00:00:00').toLocaleDateString('en-GB',{month:'long',year:'numeric'});$('medmtot').textContent=fmt(tot);var dsel=$('meddate').value||dkey(new Date()),dtot=0;data.med.forEach(function(e){if(dkey(e.ts)===dsel)dtot+=e.amt});$('meddlab').textContent='Day — '+new Date(dsel+'T00:00:00').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});$('meddtot').textContent=fmt(dtot);$('medcnt').textContent=ks.length;
  var mm={},mk=[];data.med.forEach(function(e){var k=dkey(e.ts).slice(0,7);if(mm[k]==null){mm[k]=0;mk.push(k)}mm[k]+=e.amt});mk.sort().reverse();
  $('medrep').innerHTML='<div class="sh">Month wise report</div>'+(mk.length?mk.map(function(k){return '<div class="sr"><span>'+new Date(k+'-01T00:00:00').toLocaleDateString('en-GB',{month:'long',year:'numeric'})+'</span><b>'+fmt(mm[k])+'</b></div>'}).join(''):'<div class="mut">Kono entry nai</div>');
  $('medlist').innerHTML=ks.length?ks.map(function(k){var s=0;days[k].forEach(function(e){s+=e.amt});
@@ -343,8 +345,11 @@ function cancelEdit(){editId=null;$('sbtn').textContent='Save'}
 function edit(id){var e=data[tab].filter(function(x){return x.id===id})[0];if(!e)return;editId=id;
  $('name').value=e.name;$('ddb').textContent=e.name;$('number').value=e.num;$('amount').value=e.amt;
  if(e.type==='in'||e.type==='out'){$('other').value='';$('io').classList.remove('off');setIO(e.type)}else{$('other').value=e.type;otherChg()}
- $('dt').value=toLocal(e.ts);$('sbtn').textContent='Update';window.scrollTo(0,0)}
+ $('dt').value=toLocal(e.ts);cmSet(e.cm!==false);$('sbtn').textContent='Update';window.scrollTo(0,0)}
 function setTab(t){tab=t;flt='';allSum=false;cancelEdit();if(view==='sum'){setView('tx');return}render()}
+var cmOn=false;function cmSet(v){cmOn=v;var b=$('cmb');b.classList.toggle('on',v);b.textContent=v?'Commission ON':'Add Commission'}
+function cmT(){cmSet(!cmOn)}
+function cmReset(){cmSet(false)}
 function setIO(v){io=v;$('b-in').classList.toggle('on',v==='in');$('b-out').classList.toggle('on',v==='out')}
 function otherChg(){var o=$('other').value;$('io').classList.toggle('off',!!o);if(o)setIO('')}
 function alert(m){var x=$('msg');x.textContent=m;setTimeout(function(){x.textContent=''},2500)}
@@ -355,26 +360,26 @@ function save(){
  if(isNaN(amt)){alert('Amount din');return}
  if(!type){alert('In/Out ba Other select korun');return}
  var ts=editId?new Date($('dt').value).toISOString():new Date().toISOString();
- if(editId){var ed=data[tab].filter(function(x){return x.id===editId})[0];if(ed){ed.name=name;ed.num=num;ed.amt=amt;ed.type=type;ed.sub=sub;ed.ts=ts}cancelEdit()}else data[tab].unshift({id:Date.now(),name:name,num:num,amt:amt,type:type,sub:sub,ts:ts});
- persist();$('amount').value='';$('number').value='';$('other').value='';$('io').classList.remove('off');setIO('');setNow();render();
+ if(editId){var ed=data[tab].filter(function(x){return x.id===editId})[0];if(ed){ed.name=name;ed.num=num;ed.amt=amt;ed.type=type;ed.sub=sub;ed.cm=cmOn;ed.ts=ts}cancelEdit()}else data[tab].unshift({id:Date.now(),name:name,num:num,amt:amt,type:type,sub:sub,cm:cmOn,ts:ts});
+ persist();$('amount').value='';$('number').value='';$('other').value='';$('io').classList.remove('off');setIO('');setNow();cmReset();render();
 }
 var delId=null;
 function del(id){if(delId!==id){delId=id;render();return}delId=null;data[tab]=data[tab].filter(function(e){return e.id!==id});persist();render()}
 function render(){
- $('wpb').style.display=tab==='wp'?'':'none';$('dside').style.display=tab==='dokan'?'flex':'none';$('c-bal').classList.toggle('sm',tab==='dokan');$('c-tot').style.display=(tab==='dokan'||tab==='wp')?'none':'';$('eic').style.display=tab==='dokan'?'':'none';var co=$('other').querySelector('option[value="cash"]'),co2=$('other').querySelector('option[value="paybill"]');co.hidden=co.disabled=co2.hidden=co2.disabled=tab!=='dokan';if(tab!=='dokan'&&($('other').value==='cash'||$('other').value==='paybill')){$('other').value='';otherChg()}
+ $('wpb').style.display=tab==='wp'?'':'none';$('dside').style.display=tab==='dokan'?'flex':'none';$('c-bal').classList.toggle('sm',tab==='dokan');$('c-tot').style.display=(tab==='dokan'||tab==='wp')?'none':'';$('eic').style.display=tab==='dokan'?'':'none';$('cmb').style.display=tab==='bank'?'none':'';var co=$('other').querySelector('option[value="cash"]'),co2=$('other').querySelector('option[value="paybill"]');co.hidden=co.disabled=co2.hidden=co2.disabled=tab!=='dokan';if(tab!=='dokan'&&($('other').value==='cash'||$('other').value==='paybill')){$('other').value='';otherChg()}
  $('t-dokan').className=tab==='dokan'?'on':'';$('t-wp').className=tab==='wp'?'on':'';$('t-bank').className=tab==='bank'?'on':'';
  var all=data[tab],names=[];
  (view==='sum'&&allSum?data.dokan.concat(data.wp,data.bank):(tab==='bank'?data.bank:data.dokan.concat(data.wp))).forEach(function(e){if(e.type!=='cash'&&names.indexOf(e.name)<0)names.push(e.name)});
  var all2=(tab==='bank'?data.bnames:data.names).slice();names.forEach(function(n){if(all2.indexOf(n)<0)all2.push(n)});var cur=$('name').value;if(cur&&all2.indexOf(cur)<0){cur='';$('name').value=''}
  ddL=all2;$('ddb').textContent=cur||'Name select korun';
- $('ddl').innerHTML=all2.length?all2.map(function(n,i){var cnt=(tab==='bank'?data.bank:data.dokan.concat(data.wp)).filter(function(e){return e.name===n}).length;return '<div class="ddi"><span onclick="pick('+i+')">'+esc(n)+'</span><button class="ddx'+(pdn===n?' sure':'')+'" onclick="event.stopPropagation();xdel('+i+')">'+(pdn===n?'sure? delete'+(cnt?' ('+cnt+' entry o jabe)':''):'−')+'</button></div>'}).join(''):'<div class="ddi mut" style="padding:12px">Kono name nai</div>';
+ $('ddl').innerHTML=all2.length?all2.map(function(n,i){var cnt=(tab==='bank'?data.bank:data.dokan.concat(data.wp)).filter(function(e){return e.name===n}).length;return '<div class="ddi'+(n===cur?' sel':'')+'"><span onclick="pick('+i+')">'+esc(n)+'</span><button class="ddx'+(pdn===n?' sure':'')+'" onclick="event.stopPropagation();xdel('+i+')">'+(pdn===n?'sure? delete'+(cnt?' ('+cnt+' entry o jabe)':''):'−')+'</button></div>'}).join(''):'<div class="ddi mut" style="padding:12px">Kono name nai</div>';
  var fo='<option value="">All</option>';names.forEach(function(n){fo+='<option'+(flt===n?' selected':'')+'>'+esc(n)+'</option>'});$('flt').innerHTML=fo;
 
 
 
  var rows=all.filter(function(e){return (!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt)}).sort(function(a,b){return new Date(b.ts)-new Date(a.ts)});
  var bd=(autoD&&tab!=='dokan')?'':dflt,rowsB=all.filter(function(e){return (!flt||e.name===flt)&&(!bd||dkey(e.ts)===bd)});var bal=0;rowsB.forEach(function(e){bal+=SIGN[e.type]*e.amt});
- if(tab==='dokan'){var dr=data.dokan.filter(function(e){return !bd||dkey(e.ts)===bd}),q=sumOf(dr);var cs=q.cash,pbs=q.paybill;var dm=0,ri=0;data.med.forEach(function(e){if(!bd||dkey(e.ts)===bd)dm+=e.amt});data.rec.forEach(function(e){if(e.type==='in'&&(!bd||dkey(e.ts)===bd))ri+=e.amt});var aj=0;data.adj.forEach(function(e){if(!bd||dkey(e.ts)===bd)aj+=e.amt});bal=(cs+q.in+q.b2bout+pbs+dm+ri)-(q.out+q.b2bin)+aj}
+ if(tab==='dokan'){var dr=data.dokan.filter(function(e){return !bd||dkey(e.ts)===bd}),q=sumOf(dr);var cs=q.cash,pbs=q.paybill;var dm=0,ri=0;data.med.forEach(function(e){if(!bd||dkey(e.ts)===bd)dm+=e.amt});data.rec.forEach(function(e){if(e.type==='in'&&(!bd||dkey(e.ts)===bd))ri+=e.amt});var aj=0;data.adj.forEach(function(e){if(!bd||dkey(e.ts)===bd)aj+=e.amt});bal=(cs+q.in+pbs+dm+ri)-q.out+aj}
  if(tab==='wp')bal=sumOf(rowsB).bal;
  var ds=sumOf(rows),dst=$('dstat');dst.style.display=(view==='tx')?'':'none';dst.innerHTML='<div class="mut" style="margin-bottom:8px">Cash In / Out / Commission — '+esc(flt||'All accounts')+' — '+(dflt||'All dates')+'</div><div class="ts2"><div class="in2"><span>Cash In</span><b>'+fmt(ds.in)+'</b></div><div class="out2"><span>Cash Out</span><b>'+fmt(ds.out)+'</b></div><div class="cm2"><span>Commission</span><b>'+fmt(ds.comm)+'</b></div></div>';if(1){var dd=dflt||dkey(new Date()),ls=wpStart(dd,tab),w=sumOf(data[tab].filter(function(e){return dkey(e.ts)===dd}));dst.innerHTML+='<div class="mut" style="margin:12px 0 8px">Last Balance — '+dd+'</div><div class="ts2"><div><span>Last Balance (age er baki)</span><b>'+fmt(ls)+'</b></div><div><span>Closing (shesh baki)</span><b>'+fmt(ls+w.out-w.in)+'</b></div></div>'}
  $('blab').textContent=(tab==='dokan'?'Dokan':'WP')+(flt?' — '+flt:'')+' Balance';
