@@ -109,12 +109,25 @@ button:active{transform:scale(.94)}
 #c-bal{position:relative}#c-bal.sm{padding-right:52px}.eic{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:34px;height:34px;border:0;border-radius:10px;background:rgba(255,255,255,.24);color:#fff;font-size:17px;padding:0}.eic:active{transform:translateY(-50%) scale(.92)}
 .ddb{display:none}.ddl{display:flex!important;position:static;flex-wrap:wrap;gap:6px;box-shadow:none;border:0;border-radius:0;max-height:160px;overflow:auto;background:transparent;animation:none}.ddi{border:1.5px solid var(--bd);border-radius:20px;background:var(--card);padding:0 4px 0 12px;gap:2px}.ddi span{padding:9px 0;font-size:15px}.ddi.sel{background:linear-gradient(135deg,#4f46e5,#6d5ef0);color:#fff;border-color:transparent}.ddi.sel .ddx{color:#fff}.ddi:hover{background:var(--card)}.ddi.sel:hover{background:linear-gradient(135deg,#4f46e5,#6d5ef0)}.r2:has(.dd){align-items:flex-start}
 .cmb{flex:none;height:46px;padding:0 12px;border:1.5px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--mut);font-weight:700;font-size:13px;white-space:nowrap}.cmb.on{background:linear-gradient(135deg,#059669,#10b981);color:#fff;border-color:transparent;box-shadow:0 4px 12px rgba(5,150,105,.32)}
+:root{--bg:#f3f5fb;--tx:#0f1b3d;--mut:#64708f;--bd:#e3e8f4}
+body{background:linear-gradient(180deg,#e8ecff 0,#f3f5fb 240px);color-scheme:light}
+.hdr{display:flex;align-items:center;gap:12px;margin:2px 2px 14px}.hdr b{font-size:21px;letter-spacing:.2px}.hdr span{display:block;font-size:12px;color:var(--mut)}.hdr i{width:44px;height:44px;border-radius:14px;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:grid;place-items:center;font-style:normal;font-size:22px;box-shadow:0 8px 18px rgba(79,70,229,.35)}
+.card,#top{border-radius:20px;border:1px solid #e8ecf7;box-shadow:0 1px 2px rgba(15,27,61,.04),0 12px 30px rgba(15,27,61,.07)}
+.card{padding:16px}
+.sh{font-size:15px;text-transform:uppercase;letter-spacing:.6px}
+input,select{background:#f8f9fe;border-radius:12px}
+.bc{border-radius:18px}
+.ddb{display:flex!important;align-items:center;justify-content:space-between;background:#f8f9fe}.ddb::after{content:"\25be";color:var(--mut)}
+.ddl{display:none!important;position:absolute;left:0;right:0;top:52px;z-index:30;flex-direction:column;flex-wrap:nowrap;gap:0;background:#fff;border:1px solid var(--bd);border-radius:14px;box-shadow:0 14px 34px rgba(15,27,61,.2);max-height:260px;overflow:auto}.ddl.open{display:flex!important}
+.ddi{border:0;border-bottom:1px solid var(--bd);border-radius:0;background:#fff;padding:0 6px 0 14px}.ddi.sel{background:#eef0ff}.ddi.sel span{color:var(--ac);font-weight:700}.ddi.sel .ddx{color:var(--mi)}.ddi:hover,.ddi.sel:hover{background:#f5f6ff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--card:#131c2e;--tx:#e5e9f2;--mut:#8a97ad;--bd:#243049;--pl:#34d399;--mi:#f87171;--ac:#818cf8}body{background:radial-gradient(900px 340px at 50% -140px,rgba(79,70,229,.2),transparent),#0b1220;color-scheme:dark}.card,#top{border-color:#243049;box-shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px rgba(0,0,0,.35)}input,select,.ddb{background:#0b1220}.ddl,.ddi{background:#131c2e}.ddi.sel{background:#232b4a}.ddi:hover,.ddi.sel:hover{background:#1c2540}}
 </style>
 </head>
 <body>
 
+<div class="hdr"><i>📒</i><div><b>Hisab Khata</b><span>Dokan · WP · Bank</span></div></div>
 <div class="r2" id="top"><div id="clk" class="clk"></div><div class="tabs"><button id="t-dokan" onclick="setTab('dokan')">Dokan</button><button id="t-wp" onclick="setTab('wp')">WP</button><button id="t-bank" onclick="setTab('bank')">Bank</button></div></div>
-<div class="bx" style="margin-top:12px"><div class="bc" id="c-tot" onclick="rev('tot')"><div class="bl" id="tlab">Total Balance</div><div class="bv" id="tot">••••••</div></div><div class="bc" id="c-bal" onclick="rev('bal')"><div class="bl" id="blab">Dokan Balance</div><div class="bv" id="bal">••••••</div><button class="eic" id="eic" onclick="event.stopPropagation();openAdj()">✎</button></div><div class="side" id="dside" style="display:none"><button id="b-med" onclick="openMed()">Medicin</button><button id="b-rec" onclick="openRec()">Rec</button></div></div>
+<div class="bx" style="margin-top:12px"><div class="bc" id="c-tot" onclick="rev('tot')"><div class="bl" id="tlab">Total Balance</div><div class="bv" id="tot">••••••</div></div><div class="bc" id="c-bal" onclick="rev('bal')"><div class="bl" id="blab">Dokan Balance</div><div class="bv" id="bal">••••••</div><button class="eic" id="eic" onclick="event.stopPropagation();openAdj()">✎</button></div><div class="side" id="dside" style="display:none"><button id="b-med" onclick="openMed()">Medicin</button><button id="b-rec" onclick="openRec()">Recharge</button></div></div>
 <div class="r2" style="margin:8px 0 12px"><select id="flt" onchange="flt=this.value;render()"></select><input id="dflt" type="date" onchange="dChg(this.value)"><button class="add" onclick="clrD()">×</button></div>
 
 
@@ -145,7 +158,7 @@ button:active{transform:scale(.94)}
 <div class="rrow"><div class="bc" style="cursor:default"><div class="bl" id="reclab">Rec Balance</div><div class="bv" id="recbal">0</div></div>
 <button class="rsb" onclick="recSumT()">Summary</button></div>
 <div id="recsum" style="display:none"></div>
-<div class="card"><div class="sh">Rec</div>
+<div class="card"><div class="sh">Recharge</div>
 <div class="r2"><select id="rname" onchange="renderRec()"></select><button class="add" onclick="rToggleN()">+</button></div>
 <div class="r2" id="rnn" style="display:none"><input id="rnew" placeholder="Notun name"><button class="add" onclick="rAddN()">OK</button></div>
 <input id="rnum" inputmode="tel" placeholder="Number">
@@ -163,7 +176,7 @@ button:active{transform:scale(.94)}
 <button class="wa back" onclick="closeMed()">← Ferot jan</button>
 <div class="bc" style="cursor:default;margin-bottom:12px"><div class="bl" id="medmlab">Monthly Medicin Sell</div><div class="bv" id="medmtot">0</div><div class="ts" style="margin-top:10px"><div><span id="meddlab">Day</span><b id="meddtot">0</b></div><div><span>Mashe koto din sell</span><b id="medcnt">0</b></div></div></div>
 <input id="medmon" type="month" onchange="renderMed()" style="margin:0 0 12px">
-<div class="card"><div class="sh">Medicin</div><input id="meddate" type="date" onchange="var d=this.value;if(d)$('medmon').value=d.slice(0,7);renderMed()"><input id="medamt" inputmode="decimal" placeholder="Amount"><div id="medmsg" class="mut" style="color:var(--mi);margin-top:8px"></div><div class="sv" style="justify-content:flex-end"><button class="save" onclick="saveMed()">Save</button></div></div>
+<div class="card"><div class="sh">Medicin</div><input id="meddate" type="date" onchange="var d=this.value;if(d)$('medmon').value=d.slice(0,7);renderMed()"><input id="medamt" inputmode="decimal" placeholder="Amount"><input id="mednote" placeholder="Note (lagle)"><div id="medmsg" class="mut" style="color:var(--mi);margin-top:8px"></div><div class="sv" style="justify-content:flex-end"><button class="save" onclick="saveMed()">Save</button></div></div>
 <div class="card" id="medrep"></div>
 <div class="card" id="medlist"></div></div></div>
 <div id="ov" style="display:none"></div>
@@ -178,8 +191,9 @@ var data={dokan:[],wp:[]},tab='dokan',flt='',io='';
 try{var s=localStorage.getItem('hisab1');if(s)data=JSON.parse(s);}catch(e){}
 if(!data.names)data.names=[];if(!data.dokan)data.dokan=[];if(!data.wp)data.wp=[];if(!data.bank)data.bank=[];if(!data.bnames)data.bnames=[];if(!data.med)data.med=[];if(!data.rec)data.rec=[];if(!data.adj)data.adj=[];if(!data.rnames)data.rnames=[];if(!data.ts)data.ts=0;
 var pdn='',pdt=null;var ddL=[];
-function ddT(){var l=$('ddl');l.style.display=l.style.display==='block'?'none':'block'}
-function pick(i){$('name').value=ddL[i];$('ddb').textContent=ddL[i];render()}
+function ddT(){$('ddl').classList.toggle('open')}
+document.addEventListener('click',function(e){if(!e.target.closest('.dd'))$('ddl').classList.remove('open')});
+function pick(i){$('name').value=ddL[i];$('ddb').textContent=ddL[i];$('ddl').classList.remove('open');render()}
 function xdel(i){var n=ddL[i];
  if(pdn!==n){pdn=n;clearTimeout(pdt);pdt=setTimeout(function(){pdn='';render()},4000);render();return}
  clearTimeout(pdt);pdn='';
@@ -208,6 +222,20 @@ function startFor(rows,d){var days={};rows.forEach(function(e){var k=dkey(e.ts);
  var ks=Object.keys(days).sort(),carry=0;
  for(var i=0;i<ks.length&&ks[i]<d;i++){var r=days[ks[i]],x=sumOf(r),hl=r.some(function(e){return e.type==='last'});var st=hl?x.last:carry;carry=st+x.out+x.b2bin+x.comm-x.in-x.b2bout-x.paybill}
  var rd=days[d],hd=rd&&rd.some(function(e){return e.type==='last'});return hd?sumOf(rd).last:carry}
+function rechargeBalance(rows){var b=0;rows.forEach(function(e){if(e.type==='in')b+=e.amt;else if(e.type==='out')b-=e.amt;else b+=(SIGN[e.type]||0)*e.amt});return b}
+function dokanBalanceAt(d,account){
+ var useGlobal=!account,dr=data.dokan.filter(function(e){return !account||e.name===account}),days={};
+ function day(k){return days[k]||(days[k]={tx:[],med:0,rec:[],adj:0})}
+ dr.forEach(function(e){day(dkey(e.ts)).tx.push(e)});
+ if(useGlobal){data.med.forEach(function(e){day(dkey(e.ts)).med+=e.amt});data.rec.forEach(function(e){day(dkey(e.ts)).rec.push(e)});data.adj.forEach(function(e){day(dkey(e.ts)).adj+=e.amt})}
+ var keys=Object.keys(days).sort(),carry=0;
+ for(var i=0;i<keys.length;i++){var k=keys[i];if(d&&k>d)break;var x=days[k],manual=x.tx.filter(function(e){return e.type==='last'}),start=manual.length?manual.reduce(function(a,e){return a+e.amt},0):carry;
+  var net=0;x.tx.forEach(function(e){if(e.type!=='last')net+=(SIGN[e.type]||0)*e.amt+ac(e)});
+  if(useGlobal){net+=x.med;net+=rechargeBalance(x.rec);net+=x.adj}
+  carry=start+net;
+ }
+ return carry;
+}
 function acctSum(name,tbs,d){var rows=[];tbs.forEach(function(k){data[k].forEach(function(e){if(e.name===name&&e.type!=='cash')rows.push(e)})});
  var act=rows.filter(function(e){return !d||dkey(e.ts)===d}),s=sumOf(act),last=d?startFor(rows,d):s.last;
  return {last:last,in:s.in,out:s.out,b2bin:s.b2bin,b2bout:s.b2bout,comm:s.comm,pb:s.paybill,act:act.length,tb:last+s.out+s.b2bin+s.comm-s.in-s.b2bout-s.paybill}}
@@ -222,6 +250,8 @@ function renderAll(){var G=allData();
   if(g[1].length>1)h+=acCard('All accounts — '+g[0],T);
   g[1].forEach(function(x){h+=acCard(x[0],x[1])})});
  if(!G.length)h+='<div class="card mut">Kono entry nai</div>';
+ var mt=0;data.med.forEach(function(e){if(!dflt||dkey(e.ts)===dflt)mt+=e.amt});var rr=sumOf(data.rec.filter(function(e){return (!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt)}));var rbal=rechargeBalance(data.rec.filter(function(e){return (!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt)}));
+ h+='<div class="mut" style="margin:14px 2px 8px;font-weight:700">Medicin ar Recharge</div><div class="card sc"><div class="sh">Medicin Sell</div><div class="sr sb"><span>Total</span><b>'+fmt(mt)+'</b></div></div><div class="card sc"><div class="sh">Recharge</div><div class="sr"><span>In</span><b>'+fmt(rr.in)+'</b></div><div class="sr"><span>Out</span><b>'+fmt(rr.out)+'</b></div><div class="sr"><span>Commission</span><b>'+fmt(rr.comm)+'</b></div><div class="sr sb"><span>Balance</span><b>'+fmt(rbal)+'</b></div></div>';
  h+='<button class="wa" onclick="shareAll()">WhatsApp e text pathan</button>';$('sumv').innerHTML=h}
 function shareAll(){var G=allData(),t='*Summary — '+(dflt||'All dates')+'*';
  G.forEach(function(g){t+='\n\n*'+g[0]+'*';g[1].forEach(function(x){var a=x[1],l=[['Last Balance',a.last],['Cash In',a.in],['Cash Out',a.out],['B2B In',a.b2bin],['B2B Out',a.b2bout],['Commission',a.comm],['Pay Bill',a.pb]].filter(function(r){return r[1]!==0});l.push(['Total Balance',a.tb]);t+='\n\n_'+x[0]+'_'+l.map(function(r){return '\n'+r[0]+': '+fmt(r[1])}).join('')})});
@@ -229,12 +259,12 @@ function shareAll(){var G=allData(),t='*Summary — '+(dflt||'All dates')+'*';
  var a=document.createElement('a');a.href='https://wa.me/8801866212500?text='+encodeURIComponent(t);a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()}
 function renderSum(rows){if(allSum){renderAll();return}var by={},order=[];rows.forEach(function(e){if(!by[e.name]){by[e.name]=[];order.push(e.name)}by[e.name].push(e)});
  var h='<div class="mut" style="margin:0 2px 8px">'+(allSum?'Dokan + WP + Bank':(tab==='dokan'?'Dokan':tab==='wp'?'WP':'Bank'))+' — '+(dflt||'All dates')+'</div>';h='<button class="wa" onclick="setView(\'tx\')">← Transaction e ferot jan</button>'+h;
- var bt={};['dokan','wp','bank'].forEach(function(k){bt[k]=0;data[k].forEach(function(e){if((!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt))bt[k]+=SIGN[e.type]*e.amt+ac(e)})});
+ var bt={dokan:dokanBalanceAt(dflt,flt),wp:0,bank:0};['wp','bank'].forEach(function(k){bt[k]=0;data[k].forEach(function(e){if((!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt))bt[k]+=SIGN[e.type]*e.amt+ac(e)})});
  var sx=sumOf(data.dokan.concat(data.wp).filter(function(e){return (!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt)}));var ex='<div class="ts"><div><span>Cash In</span><b>'+fmt(sx.in)+'</b></div><div><span>Out</span><b>'+fmt(sx.out)+'</b></div><div><span>Commission</span><b>'+fmt(sx.comm)+'</b></div></div><div class="tn">Cash In, Out, Commission: shudhu Dokan + WP er</div>';
  var sr=sumOf(rows),ex2='<div class="ts"><div><span>Cash In</span><b>'+fmt(sr.in)+'</b></div><div><span>Out</span><b>'+fmt(sr.out)+'</b></div><div><span>Commission</span><b>'+fmt(sr.comm)+'</b></div></div>';
  if(!allSum)h+='<div class="bgrid"><div class="bm tt"><div class="bl">'+(tab==='dokan'?'Dokan':tab==='wp'?'WP':'Bank')+' Balance</div><div class="bn">'+fmt(vals.bal)+'</div>'+ex2+'</div></div>';
  else h+='<div class="bgrid">'+[['Total Balance',bt.dokan+bt.wp+bt.bank,1],['WP',bt.wp],['Bank',bt.bank]].map(function(x){return '<div class="bm'+(x[2]?' tt':'')+'"><div class="bl">'+x[0]+'</div><div class="bn">'+fmt(x[1])+'</div>'+(x[2]?ex:'')+'</div>'}).join('')+'</div>';
- if(order.length>1)h+=sumCard('All accounts',sumOf(rows));order.forEach(function(n){h+=sumCard(n,sumOf(by[n]))});
+ if(order.length>1){var allAccountSum=sumOf(rows);if(tab==='dokan'&&!allSum)allAccountSum.bal=dokanBalanceAt(dflt,flt);h+=sumCard('All accounts',allAccountSum)}order.forEach(function(n){h+=sumCard(n,sumOf(by[n]))});
  if(!order.length)h+='<div class="card mut">Kono entry nai</div>';h+='<button class="wa" onclick="shareWA()">WhatsApp e text pathan</button>';$('sumv').innerHTML=h}
 function shareWA(){var rows=(allSum?data.dokan.concat(data.wp,data.bank):data[tab]).filter(function(e){return e.type!=='cash'&&(!dflt||dkey(e.ts)===dflt)}),by={},order=[];
  rows.forEach(function(e){if(!by[e.name]){by[e.name]=[];order.push(e.name)}by[e.name].push(e)});
@@ -271,9 +301,9 @@ function saveRec(){var n=$('rname').value,num=$('rnum').value.trim(),a=parseFloa
 function delRec(id){if(rdel!==id){rdel=id;renderRec();return}rdel=null;data.rec=data.rec.filter(function(e){return e.id!==id});persist();renderRec()}
 function renderRec(){var cur=$('rname').value;
  $('rname').innerHTML='<option value="">Name select korun</option>'+data.rnames.map(function(n){return '<option>'+esc(n)+'</option>'}).join('');$('rname').value=cur;
- var rowsR=cur?data.rec.filter(function(e){return e.name===cur}):data.rec;$('reclab').textContent=cur?'Rec Balance — '+cur:'Rec Balance — All';var b=0;rowsR.forEach(function(e){b+=SIGN[e.type]*e.amt});
+ var rowsR=cur?data.rec.filter(function(e){return e.name===cur}):data.rec;$('reclab').textContent=cur?'Recharge Balance — '+cur:'Recharge Balance — All';var b=rechargeBalance(rowsR);
  var rs=sumOf(rowsR);$('recbal').textContent=fmt(b);$('recsum').innerHTML='<div class="card"><div class="ts2"><div class="in2"><span>In</span><b>'+fmt(rs.in)+'</b></div><div class="out2"><span>Out</span><b>'+fmt(rs.out)+'</b></div><div class="cm2"><span>Commission</span><b>'+fmt(rs.comm)+'</b></div></div></div>';
- $('reclist').innerHTML=(data.rec.length?data.rec.map(function(e){var d=new Date(e.ts),pos=SIGN[e.type]>0;return '<div class="row"><div><div class="nm">'+esc(e.name)+'</div><div class="num">'+esc(e.num||'-')+'</div><button class="del" onclick="delRec('+e.id+')">'+(rdel===e.id?'<b style="color:var(--mi)">sure? tap again</b>':'delete')+'</button></div><div class="ty">'+LBL[e.type]+'</div><div><div class="amt '+(pos?'p':'m')+'">'+(pos?'+':'−')+fmt(e.amt)+'</div><div class="dt">'+d.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:true})+'</div></div></div>'}).join(''):'<div class="mut">Kono entry nai</div>')}
+ $('reclist').innerHTML=(rowsR.length?rowsR.map(function(e){var d=new Date(e.ts),pos=SIGN[e.type]>0;return '<div class="row"><div><div class="nm">'+esc(e.name)+'</div><div class="num">'+esc(e.num||'-')+'</div><button class="del" onclick="delRec('+e.id+')">'+(rdel===e.id?'<b style="color:var(--mi)">sure? tap again</b>':'delete')+'</button></div><div class="ty">'+LBL[e.type]+'</div><div><div class="amt '+(pos?'p':'m')+'">'+(pos?'+':'−')+fmt(e.amt)+'</div><div class="dt">'+d.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:true})+'</div></div></div>'}).join(''):'<div class="mut">Kono entry nai</div>')}
 function openAdj(){$('adjv').style.display='block';renderAdj();$('adjv').scrollTop=0}
 function closeAdj(){$('adjv').style.display='none'}
 function saveAdj(sg){var a=parseFloat($('adjamt').value);if(isNaN(a)||a<=0){var m=$('adjmsg');m.textContent='Amount din';setTimeout(function(){m.textContent=''},2000);return}
@@ -286,7 +316,7 @@ function openMed(){$('medv').style.display='block';$('meddate').value=dkey(new D
 function closeMed(){$('medv').style.display='none'}
 function saveMed(){var a=parseFloat($('medamt').value);if(isNaN(a)){var m=$('medmsg');m.textContent='Amount din';setTimeout(function(){m.textContent=''},2000);return}
  var md=$('meddate').value;var mts=md?new Date(md+'T'+new Date().toTimeString().slice(0,8)).toISOString():new Date().toISOString();
- data.med.unshift({id:Date.now(),amt:a,ts:mts});persist();$('medamt').value='';renderMed()}
+ data.med.unshift({id:Date.now(),amt:a,note:$('mednote').value.trim(),ts:mts});persist();$('medamt').value='';$('mednote').value='';renderMed()}
 var mdel=null;
 function delMed(id){if(mdel!==id){mdel=id;renderMed();return}mdel=null;data.med=data.med.filter(function(e){return e.id!==id});persist();renderMed()}
 function renderMed(){var m=$('medmon').value||dkey(new Date()).slice(0,7);
@@ -296,7 +326,7 @@ function renderMed(){var m=$('medmon').value||dkey(new Date()).slice(0,7);
  var mm={},mk=[];data.med.forEach(function(e){var k=dkey(e.ts).slice(0,7);if(mm[k]==null){mm[k]=0;mk.push(k)}mm[k]+=e.amt});mk.sort().reverse();
  $('medrep').innerHTML='<div class="sh">Month wise report</div>'+(mk.length?mk.map(function(k){return '<div class="sr"><span>'+new Date(k+'-01T00:00:00').toLocaleDateString('en-GB',{month:'long',year:'numeric'})+'</span><b>'+fmt(mm[k])+'</b></div>'}).join(''):'<div class="mut">Kono entry nai</div>');
  $('medlist').innerHTML=ks.length?ks.map(function(k){var s=0;days[k].forEach(function(e){s+=e.amt});
-  return '<div class="mut" style="display:flex;justify-content:space-between;margin:10px 0 4px;font-weight:700"><span>'+new Date(k+'T00:00:00').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})+'</span><span>'+fmt(s)+'</span></div>'+days[k].map(function(e){var d=new Date(e.ts);return '<div class="row"><div><div class="amt" style="text-align:left">'+fmt(e.amt)+'</div><div class="dt">'+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true})+'</div></div><div><button class="del" onclick="delMed('+e.id+')">'+(mdel===e.id?'<b style="color:var(--mi)">sure? tap again</b>':'delete')+'</button></div></div>'}).join('')}).join(''):'<div class="mut">Ei mashe kono entry nai</div>'}
+  return '<div class="mut" style="display:flex;justify-content:space-between;margin:10px 0 4px;font-weight:700"><span>'+new Date(k+'T00:00:00').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})+'</span><span>'+fmt(s)+'</span></div>'+days[k].map(function(e){var d=new Date(e.ts);return '<div class="row"><div><div class="amt" style="text-align:left">'+fmt(e.amt)+'</div><div class="dt">'+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true})+(e.note?' · '+esc(e.note):'')+'</div></div><div><button class="del" onclick="delMed('+e.id+')">'+(mdel===e.id?'<b style="color:var(--mi)">sure? tap again</b>':'delete')+'</button></div></div>'}).join('')}).join(''):'<div class="mut">Ei mashe kono entry nai</div>'}
 function renderMedOld(){var t=0;data.med.forEach(function(e){t+=e.amt});
  $('medlist').innerHTML='<div class="mut" style="margin-bottom:8px">Total: <b style="color:var(--tx);font-size:18px">'+fmt(t)+'</b></div>'+(data.med.length?data.med.map(function(e){var d=new Date(e.ts);return '<div class="row"><div><div class="amt" style="text-align:left">'+fmt(e.amt)+'</div><div class="dt">'+d.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:true})+'</div></div><div><button class="del" onclick="delMed('+e.id+')">'+(mdel===e.id?'<b style="color:var(--mi)">sure? tap again</b>':'delete')+'</button></div></div>'}).join(''):'<div class="mut">Kono entry nai</div>')}
 function closeOv(){$('ov').style.display='none'}
@@ -379,12 +409,12 @@ function render(){
 
  var rows=all.filter(function(e){return (!flt||e.name===flt)&&(!dflt||dkey(e.ts)===dflt)}).sort(function(a,b){return new Date(b.ts)-new Date(a.ts)});
  var bd=(autoD&&tab!=='dokan')?'':dflt,rowsB=all.filter(function(e){return (!flt||e.name===flt)&&(!bd||dkey(e.ts)===bd)});var bal=0;rowsB.forEach(function(e){bal+=SIGN[e.type]*e.amt});
- if(tab==='dokan'){var dr=data.dokan.filter(function(e){return !bd||dkey(e.ts)===bd}),q=sumOf(dr);var cs=q.cash,pbs=q.paybill;var dm=0,ri=0;data.med.forEach(function(e){if(!bd||dkey(e.ts)===bd)dm+=e.amt});data.rec.forEach(function(e){if(e.type==='in'&&(!bd||dkey(e.ts)===bd))ri+=e.amt});var aj=0;data.adj.forEach(function(e){if(!bd||dkey(e.ts)===bd)aj+=e.amt});bal=(cs+q.in+pbs+dm+ri)-q.out+aj}
+ if(tab==='dokan'){bal=dokanBalanceAt(bd,flt)}
  if(tab==='wp')bal=sumOf(rowsB).bal;
  var ds=sumOf(rows),dst=$('dstat');dst.style.display=(view==='tx')?'':'none';dst.innerHTML='<div class="mut" style="margin-bottom:8px">Cash In / Out / Commission — '+esc(flt||'All accounts')+' — '+(dflt||'All dates')+'</div><div class="ts2"><div class="in2"><span>Cash In</span><b>'+fmt(ds.in)+'</b></div><div class="out2"><span>Cash Out</span><b>'+fmt(ds.out)+'</b></div><div class="cm2"><span>Commission</span><b>'+fmt(ds.comm)+'</b></div></div>';if(1){var dd=dflt||dkey(new Date()),ls=wpStart(dd,tab),w=sumOf(data[tab].filter(function(e){return dkey(e.ts)===dd}));dst.innerHTML+='<div class="mut" style="margin:12px 0 8px">Last Balance — '+dd+'</div><div class="ts2"><div><span>Last Balance (age er baki)</span><b>'+fmt(ls)+'</b></div><div><span>Closing (shesh baki)</span><b>'+fmt(ls+w.out-w.in)+'</b></div></div>'}
  $('blab').textContent=(tab==='dokan'?'Dokan':'WP')+(flt?' — '+flt:'')+' Balance';
  vals.bal=bal;paint('bal');$('blab').textContent=(tab==='dokan'?'Dokan':tab==='wp'?'WP':'Bank')+' Balance';
- var tb={dokan:0,wp:0,bank:0};['dokan','wp','bank'].forEach(function(k){data[k].forEach(function(e){if((!flt||e.name===flt)&&(!bd||dkey(e.ts)===bd))tb[k]+=SIGN[e.type]*e.amt+ac(e)})});var tt=tb.dokan+tb.wp+tb.bank;$('tlab').textContent=(flt?flt+' — ':'')+'Total Balance (Dokan + WP)';vals.tot=tt;paint('tot');$('tlab').textContent='Total Balance';
+ var tb={dokan:dokanBalanceAt(bd,flt),wp:0,bank:0};['wp','bank'].forEach(function(k){data[k].forEach(function(e){if((!flt||e.name===flt)&&(!bd||dkey(e.ts)===bd))tb[k]+=SIGN[e.type]*e.amt+ac(e)})});var tt=tb.dokan+tb.wp+tb.bank;$('tlab').textContent=(flt?flt+' — ':'')+'Total Balance (Dokan + WP)';vals.tot=tt;paint('tot');$('tlab').textContent='Total Balance';
  $('list').innerHTML=rows.length?rows.map(function(e){
   var d=new Date(e.ts),pos=SIGN[e.type]>0||(e.type==='cash'&&e.sub!=='pb');
   return '<div class="row"><div><div class="nm">'+esc(e.name)+'</div><div class="num">'+esc(e.num||'-')+'</div><button class="del" onclick="edit('+e.id+')">edit</button> &nbsp; <button class="del" onclick="del('+e.id+')">'+(delId===e.id?'<b style="color:var(--mi)">sure? tap again</b>':'delete')+'</button></div>'+
