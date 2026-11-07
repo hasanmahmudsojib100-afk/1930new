@@ -125,7 +125,7 @@ input,select{background:#f8f9fe;border-radius:12px}
 </head>
 <body>
 
-<div class="hdr"><i>📒</i><div><b>Hisab Khata</b><span>Dokan · WP · Bank</span></div></div>
+
 <div class="r2" id="top"><div id="clk" class="clk"></div><div class="tabs"><button id="t-dokan" onclick="setTab('dokan')">Dokan</button><button id="t-wp" onclick="setTab('wp')">WP</button><button id="t-bank" onclick="setTab('bank')">Bank</button></div></div>
 <div class="bx" style="margin-top:12px"><div class="bc" id="c-tot" onclick="rev('tot')"><div class="bl" id="tlab">Total Balance</div><div class="bv" id="tot">••••••</div></div><div class="bc" id="c-bal" onclick="rev('bal')"><div class="bl" id="blab">Dokan Balance</div><div class="bv" id="bal">••••••</div><button class="eic" id="eic" onclick="event.stopPropagation();openAdj()">✎</button></div><div class="side" id="dside" style="display:none"><button id="b-med" onclick="openMed()">Medicin</button><button id="b-rec" onclick="openRec()">Recharge</button></div></div>
 <div class="r2" style="margin:8px 0 12px"><select id="flt" onchange="flt=this.value;render()"></select><input id="dflt" type="date" onchange="dChg(this.value)"><button class="add" onclick="clrD()">×</button></div>
