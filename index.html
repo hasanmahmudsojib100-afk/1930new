@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>হিসাব খাতা</title>
+<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>H.Mahmud</title>
 <style>
 :root{--bg:#f3f5fb;--c:#fff;--tx:#0f1b3d;--m:#64708f;--bd:#e3e8f4;--ac:#4f46e5;--g:#059669;--r:#dc2626;color-scheme:light}
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#e8ecff,#f3f5fb 240px) fixed;color:var(--tx);font:15px system-ui,"Noto Sans Bengali","Segoe UI",sans-serif;max-width:680px;margin:auto;padding:12px 12px 88px}
@@ -53,16 +53,16 @@ img,svg{max-width:100%}
 }
 @media(min-width:681px){body{padding-top:20px}}
 </style></head><body>
-<div class="h"><i>📒</i><div><b>হিসাব খাতা</b><span>দোকান · ডব্লিউপি · ব্যাংক</span></div><div class="clk"><b id="ck-t"></b><span id="ck-d"></span></div></div>
+<div class="h"><i>📒</i><div><b>H.Mahmud</b></div><div class="clk"><b id="ck-t"></b><span id="ck-d"></span></div></div>
 
 <div id="pg-in" class="pgx">
-<div class="seg" id="kseg"><button data-k="tx" onclick="setK('tx')">লেনদেন</button><button data-k="cash" onclick="setK('cash')">ক্যাশ ±</button><button data-k="med" onclick="setK('med')">মেডিসিন</button><button data-k="rec" onclick="setK('rec')">রিচার্জ</button></div>
+<div class="seg" id="kseg"><button data-k="tx" onclick="setK('tx')">লেনদেন</button><button data-k="cash" onclick="setK('cash')">ক্যাশ</button><button data-k="med" onclick="setK('med')">মেডিসিন</button><button data-k="rec" onclick="setK('rec')">রিচার্জ</button></div>
 <div class="card" style="margin-top:12px"><span class="lb" style="margin:0">তারিখ</span><input type="date" id="edate"></div>
 
 <div class="card fx" id="f-tx"><div class="hd" id="txh">লেনদেন ইনপুট</div>
-<div class="seg" id="tseg"><button data-t="dokan" onclick="setT('dokan')">দোকান</button><button data-t="wp" onclick="setT('wp')">ডব্লিউপি</button><button data-t="bank" onclick="setT('bank')">ব্যাংক</button></div>
+<div class="seg" id="tseg"><button data-t="dokan" onclick="setT('dokan')">দোকান</button><button data-t="wp" onclick="setT('wp')"> W.app</button><button data-t="bank" onclick="setT('bank')">ব্যাংক</button></div>
 <div class="row2"><select id="acc"></select><button class="b" onclick="tg('na')">+</button></div>
-<div id="na" class="sub" style="display:none"><input id="nn" placeholder="অ্যাকাউন্টের নাম"><div class="seg"><button id="nt-a" class="on" onclick="setNT('a')">এজেন্ট (অটো কমিশন)</button><button id="nt-p" onclick="setNT('p')">পারসোনাল (কমিশন নেই)</button></div><input id="nl" inputmode="decimal" placeholder="শেষ ব্যালেন্স (শুরুর ব্যালেন্স)"><button class="b g" style="width:100%;margin-top:8px" onclick="addAcc()">অ্যাকাউন্ট যোগ করুন</button></div>
+<div id="na" class="sub" style="display:none"><input id="nn" placeholder="অ্যাকাউন্টের নাম"><div class="seg"><button id="nt-a" class="on" onclick="setNT('a')">এজেন্ট </button><button id="nt-p" onclick="setNT('p')">পারসোনাল </button></div><input id="nl" inputmode="decimal" placeholder="শেষ ব্যালেন্স (শুরুর ব্যালেন্স)"><button class="b g" style="width:100%;margin-top:8px" onclick="addAcc()">অ্যাকাউন্ট যোগ করুন</button></div>
 <input id="num" inputmode="tel" placeholder="নম্বর">
 <div class="row2 amtrow"><input id="amt" inputmode="decimal" placeholder="টাকা"><div class="seg ioseg" id="ioseg"><button data-i="in" onclick="setIO('in')">ইন (−)</button><button data-i="out" onclick="setIO('out')">আউট (+)</button></div></div>
 <select id="oth" onchange="if(this.value)setIO('')"><option value="">অন্যান্য (দরকার হলে)</option><option value="b2bin">বিটুবি ইন (+)</option><option value="b2bout">বিটুবি আউট</option><option value="last">শেষ ব্যালেন্স (ম্যানুয়াল)</option><option value="comm">কমিশন (ম্যানুয়াল)</option><option value="paybill">পে বিল (−) — শুধু দোকান</option></select>
@@ -77,7 +77,7 @@ img,svg{max-width:100%}
 
 <div id="main" class="pgx"></div>
 <div class="syn" id="syn"></div><div id="toast"></div>
-<div class="nav" id="nav"><button data-p="in" onclick="go('in')">✏️<br>ইনপুট</button><button data-p="dokan" onclick="go('dokan')">🏪<br>দোকান</button><button data-p="wp" onclick="go('wp')">📱<br>ডব্লিউপি</button><button data-p="bank" onclick="go('bank')">🏦<br>ব্যাংক</button><button data-p="sum" onclick="go('sum')">📊<br>সামারি</button></div>
+<div class="nav" id="nav"><button data-p="in" onclick="go('in')">✏️<br>ইনপুট</button><button data-p="dokan" onclick="go('dokan')">🏪<br>দোকান</button><button data-p="wp" onclick="go('wp')">📱<br>W.app</button><button data-p="bank" onclick="go('bank')">🏦<br>ব্যাংক</button><button data-p="sum" onclick="go('sum')">📊<br>সামারি</button></div>
 
 <script>
 const $=i=>document.getElementById(i),E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
