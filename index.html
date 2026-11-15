@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>H.Mahmud</title>
+<html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>হিসাব খাতা</title>
 <style>
 :root{--bg:#f3f5fb;--c:#fff;--tx:#0f1b3d;--m:#64708f;--bd:#e3e8f4;--ac:#4f46e5;--g:#059669;--r:#dc2626;color-scheme:light}
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#e8ecff,#f3f5fb 240px) fixed;color:var(--tx);font:15px system-ui,"Noto Sans Bengali","Segoe UI",sans-serif;max-width:680px;margin:auto;padding:12px 12px 88px}
 .h{display:flex;align-items:center;gap:10px;margin:2px 0 12px}.h i{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:grid;place-items:center;font-style:normal;font-size:21px}.h b{font-size:20px}.h span{display:block;font-size:12px;color:var(--m)}
-.h .clk{margin-left:auto;text-align:right;min-width:0}.h .clk b{font-size:16px;display:block;color:var(--ac);font-variant-numeric:tabular-nums;white-space:nowrap}.h .clk span{font-size:11px}
 .card{background:var(--c);border:1px solid var(--bd);border-radius:18px;padding:14px;margin-bottom:12px;box-shadow:0 8px 24px rgba(15,27,61,.06)}
 .big{border-radius:18px;padding:16px;color:#fff;background:linear-gradient(135deg,#4f46e5,#7c3aed);margin-bottom:12px;box-shadow:0 10px 24px rgba(79,70,229,.3)}.big small{opacity:.9}.big>b{display:block;font-size:28px;margin-top:4px}
 .ts{display:flex;gap:6px;margin-top:10px}.ts div{flex:1;background:rgba(255,255,255,.18);border-radius:10px;padding:8px;min-width:0}.ts span{display:block;font-size:11px;opacity:.9}.ts b{font-size:15px}
@@ -22,64 +21,32 @@ button{font:inherit;cursor:pointer;transition:transform .12s}button:active{trans
 .syn{text-align:center;color:var(--m);font-size:12px;padding:4px}
 #toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,20px);background:#0f1b3d;color:#fff;padding:10px 16px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;font-size:14px;max-width:90%;text-align:center}#toast.show{opacity:1;transform:translate(-50%,0)}#toast.bad{background:#dc2626}
 .pgx{display:none;animation:u .3s}@keyframes u{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-/* মোবাইল রেসপন্সিভ */
-html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
-body{overflow-x:hidden;-webkit-tap-highlight-color:transparent;padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right));padding-bottom:calc(88px + env(safe-area-inset-bottom))}
-img,svg{max-width:100%}
-.h>div:first-of-type{min-width:0}.h .clk span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:55vw}
-.ioseg{margin:8px 0 0;flex:none;width:170px}
-.nav{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
-#toast{bottom:calc(84px + env(safe-area-inset-bottom))}
-@media(max-width:480px){
- body{font-size:14px;padding-top:8px;padding-left:max(10px,env(safe-area-inset-left));padding-right:max(10px,env(safe-area-inset-right))}
- .h{gap:8px}.h i{width:36px;height:36px;font-size:18px;border-radius:11px;flex:none}.h b{font-size:17px}.h .clk b{font-size:14px}.h .clk span{font-size:10px}
- .card{padding:12px;border-radius:16px}.big{padding:14px;border-radius:16px}.big>b{font-size:24px}
- .ts{flex-wrap:wrap}.ts div{flex:1 1 30%}.ts b{font-size:14px}
- .seg button{font-size:13px;height:42px}
- .ln{gap:8px}.am{font-size:16px}
- .sr.t{font-size:16px}
- .b{padding:0 14px}
- #toast{font-size:13px}
- .nav button{font-size:11px}
-}
-@media(max-width:400px){
- .amtrow{flex-wrap:wrap}.amtrow input{flex:1 1 100%}.amtrow .ioseg{width:100%}
-}
-@media(max-width:360px){
- .h>div:first-of-type span{display:none}
- .h b{font-size:16px}.h .clk b{font-size:13px}
- .big>b{font-size:22px}
- .seg button{font-size:12px;padding:0 2px}
-}
-@media(min-width:681px){body{padding-top:20px}}
 </style></head><body>
-<div class="h"><i>📒</i><div><b>H.Mahmud</b></div><div class="clk"><b id="ck-t"></b><span id="ck-d"></span></div></div>
+<div class="h"><i>📒</i><div><b>হিসাব খাতা</b><span>দোকান · ডব্লিউপি · ব্যাংক</span></div></div>
 
 <div id="pg-in" class="pgx">
-<div class="seg" id="kseg"><button data-k="tx" onclick="setK('tx')">লেনদেন</button><button data-k="cash" onclick="setK('cash')">ক্যাশ</button><button data-k="med" onclick="setK('med')">মেডিসিন</button>
-    
-</div>
+<div class="seg" id="kseg"><button data-k="tx" onclick="setK('tx')">লেনদেন</button><button data-k="cash" onclick="setK('cash')">ক্যাশ ±</button><button data-k="med" onclick="setK('med')">মেডিসিন</button><button data-k="rec" onclick="setK('rec')">রিচার্জ</button></div>
 <div class="card" style="margin-top:12px"><span class="lb" style="margin:0">তারিখ</span><input type="date" id="edate"></div>
 
 <div class="card fx" id="f-tx"><div class="hd" id="txh">লেনদেন ইনপুট</div>
-<div class="seg" id="tseg"><button data-t="dokan" onclick="setT('dokan')">দোকান</button><button data-t="wp" onclick="setT('wp')"> W.app</button><button data-t="bank" onclick="setT('bank')">ব্যাংক</button></div>
-<div class="row2"><select id="acc"></select><button class="b" onclick="tg('na')">+</button></div>
-<div id="na" class="sub" style="display:none"><input id="nn" placeholder="অ্যাকাউন্টের নাম"><div class="seg"><button id="nt-a" class="on" onclick="setNT('a')">এজেন্ট </button><button id="nt-p" onclick="setNT('p')">পারসোনাল </button></div><input id="nl" inputmode="decimal" placeholder="শেষ ব্যালেন্স (শুরুর ব্যালেন্স)"><button class="b g" style="width:100%;margin-top:8px" onclick="addAcc()">অ্যাকাউন্ট যোগ করুন</button></div>
+<div class="seg" id="tseg"><button data-t="dokan" onclick="setT('dokan')">দোকান</button><button data-t="wp" onclick="setT('wp')">ডব্লিউপি</button><button data-t="bank" onclick="setT('bank')">ব্যাংক</button></div>
+<div class="row2"><select id="acc"></select><button class="b" onclick="tg('na')">+</button><button class="b r" onclick="delAcc()">🗑</button></div>
+<div id="na" class="sub" style="display:none"><input id="nn" placeholder="অ্যাকাউন্টের নাম"><div class="seg"><button id="nt-a" class="on" onclick="setNT('a')">এজেন্ট (অটো কমিশন)</button><button id="nt-p" onclick="setNT('p')">পারসোনাল (কমিশন নেই)</button></div><input id="nl" inputmode="decimal" placeholder="শেষ ব্যালেন্স (শুরুর ব্যালেন্স)"><button class="b g" style="width:100%;margin-top:8px" onclick="addAcc()">অ্যাকাউন্ট যোগ করুন</button></div>
 <input id="num" inputmode="tel" placeholder="নম্বর">
-<div class="row2 amtrow"><input id="amt" inputmode="decimal" placeholder="টাকা"><div class="seg ioseg" id="ioseg"><button data-i="in" onclick="setIO('in')">ইন (−)</button><button data-i="out" onclick="setIO('out')">আউট (+)</button></div></div>
+<div class="row2"><input id="amt" inputmode="decimal" placeholder="টাকা"><div class="seg" style="margin:8px 0 0;flex:none;width:170px" id="ioseg"><button data-i="in" onclick="setIO('in')">ইন (−)</button><button data-i="out" onclick="setIO('out')">আউট (+)</button></div></div>
 <select id="oth" onchange="if(this.value)setIO('')"><option value="">অন্যান্য (দরকার হলে)</option><option value="b2bin">বিটুবি ইন (+)</option><option value="b2bout">বিটুবি আউট</option><option value="last">শেষ ব্যালেন্স (ম্যানুয়াল)</option><option value="comm">কমিশন (ম্যানুয়াল)</option><option value="paybill">পে বিল (−) — শুধু দোকান</option></select>
-<div class="row2" style="margin-top:10px"><button class="lk" onclick="delAcc()" style="flex:1;text-align:left">নির্বাচিত অ্যাকাউন্ট মুছুন</button><button class="b" id="svtx" onclick="saveTx()">সেভ</button></div></div>
+<button class="b" id="svtx" onclick="saveTx()" style="width:100%;margin-top:10px">সেভ</button></div>
 
 <div class="card fx" id="f-cash" style="display:none"><div class="hd">দোকানের ক্যাশ (+/−)</div><input id="ca" inputmode="decimal" placeholder="টাকা"><input id="cn" placeholder="নোট (লাগলে)"><div class="row2" style="margin-top:10px"><button class="b r" onclick="saveAdj(-1)">− বিয়োগ</button><button class="b g" onclick="saveAdj(1)">+ যোগ</button></div></div>
 
 <div class="card fx" id="f-med" style="display:none"><div class="hd">মেডিসিন</div><input id="ma" inputmode="decimal" placeholder="টাকা"><input id="mn" placeholder="নোট (লাগলে)"><div class="row2" style="margin-top:10px"><button class="b r" onclick="saveMed('buy')">ক্রয় (−)</button><button class="b g" onclick="saveMed('sell')">বিক্রি (+)</button></div></div>
 
-<div class="card fx" id="f-rec" style="display:none"><div class="hd">রিচার্জ</div><input id="rn" list="rl" placeholder="অ্যাকাউন্টের নাম"><datalist id="rl"></datalist><input id="ra" inputmode="decimal" placeholder="টাকা"><input id="rt" placeholder="নোট (লাগলে)"><div class="row2" style="margin-top:10px"><button class="b r" onclick="saveRec(-1)">− বিয়োগ</button><button class="b g" onclick="saveRec(1)">+ যোগ</button></div></div>
+<div class="card fx" id="f-rec" style="display:none"><div class="hd">রিচার্জ</div><div class="row2"><select id="rn"></select><button class="b" onclick="tg('rna')">+</button><button class="b r" onclick="delRAcc()">🗑</button></div><div id="rna" class="sub" style="display:none"><input id="rnn" placeholder="অ্যাকাউন্টের নাম"><button class="b g" style="width:100%;margin-top:8px" onclick="addRAcc()">অ্যাকাউন্ট যোগ করুন</button></div><input id="ra" inputmode="decimal" placeholder="টাকা"><input id="rt" placeholder="নোট (লাগলে)"><div class="row2" style="margin-top:10px"><button class="b r" onclick="saveRec(-1)">− বিয়োগ</button><button class="b g" onclick="saveRec(1)">+ যোগ</button></div></div>
 </div>
 
 <div id="main" class="pgx"></div>
 <div class="syn" id="syn"></div><div id="toast"></div>
-<div class="nav" id="nav"><button data-p="in" onclick="go('in')">✏️<br>ইনপুট</button><button data-p="dokan" onclick="go('dokan')">🏪<br>দোকান</button><button data-p="wp" onclick="go('wp')">📱<br>W.app</button><button data-p="bank" onclick="go('bank')">🏦<br>ব্যাংক</button><button data-p="sum" onclick="go('sum')">📊<br>সামারি</button></div>
+<div class="nav" id="nav"><button data-p="in" onclick="go('in')">✏️<br>ইনপুট</button><button data-p="dokan" onclick="go('dokan')">🏪<br>দোকান</button><button data-p="wp" onclick="go('wp')">📱<br>ডব্লিউপি</button><button data-p="bank" onclick="go('bank')">🏦<br>ব্যাংক</button><button data-p="sum" onclick="go('sum')">📊<br>সামারি</button></div>
 
 <script>
 const $=i=>document.getElementById(i),E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -102,7 +69,7 @@ const rs=e=>e.sg!=null?e.sg*e.amt:(e.type==='in'?e.amt:0);
 function cashDay(d){const days={};const add=(k,f,v)=>{(days[k]=days[k]||{cin:0,pb:0,man:0,med:0,rec:0,cout:0})[f]+=v};
  D.dokan.forEach(e=>{const k=dk(e.ts);if(e.type==='in')add(k,'cin',e.amt);else if(e.type==='out')add(k,'cout',e.amt);else if(e.type==='paybill')add(k,'pb',e.amt);else if(e.type==='cash')add(k,'man',e.amt)});
  D.adj.forEach(e=>add(dk(e.ts),'man',e.amt));D.med.forEach(e=>add(dk(e.ts),'med',e.k==='buy'?-e.amt:e.amt));D.rec.forEach(e=>add(dk(e.ts),'rec',rs(e)));
- let open=0;for(const k of Object.keys(days).sort()){if(k>=d)break;const x=days[k];open+=x.cin+x.pb+x.man+x.med+x.rec-x.cout}
+ const open=0;
  const x=days[d]||{cin:0,pb:0,man:0,med:0,rec:0,cout:0};return {...x,open,close:open+x.cin+x.pb+x.man+x.med+x.rec-x.cout}}
 function wpStart(d,tb){const days={};D[tb].forEach(e=>{const x=days[dk(e.ts)]=days[dk(e.ts)]||{in:0,out:0,last:0,hl:0};if(e.type==='in')x.in+=e.amt;else if(e.type==='out')x.out+=e.amt;else if(e.type==='last'){x.last+=e.amt;x.hl=1}});
  let c=0;for(const k of Object.keys(days).sort()){if(k>=d)break;const x=days[k];c=(x.hl?x.last:c)+x.out-x.in}const m=days[d];return m&&m.hl?m.last:c}
@@ -138,12 +105,12 @@ function del(k){const t=k[0],id=+k.slice(1);if(t==='t')['dokan','wp','bank'].for
 /* দোকান */
 function rDokan(){const c=cashDay(day);return dbar(day,'sday')+`<div class="big"><small>দোকানের ক্যাশ — ${dlab(day)}</small><b>${fmt(c.close)}</b></div><div class="seg">${[['cash','ক্যাশ'],['med','মেডিসিন'],['rec','রিচার্জ'],['tx','লেনদেন']].map(x=>`<button class="${ds===x[0]?'on':''}" onclick="ds='${x[0]}';render()">${x[1]}</button>`).join('')}</div><div style="height:12px"></div>`+{cash:()=>vCash(c),med:vMed,rec:vRec,tx:()=>vTx('dokan')}[ds]()}
 const sr=(l,v,c='')=>`<div class="sr ${c}"><span>${l}</span><b>${v}</b></div>`;
-function vCash(c){const ad=D.adj.filter(e=>dk(e.ts)===day);return `<div class="card"><div class="hd">ক্যাশের হিসাব</div>${sr('শুরুর ক্যাশ (আগের দিনের)',fmt(c.open))}${sr('ক্যাশ ইন',fmt(c.cin))}${sr('পে বিল',fmt(c.pb))}${sr('ম্যানুয়াল ক্যাশ (+/−)',fmt(c.man))}${sr('মেডিসিন (+/−)',fmt(c.med))}${sr('রিচার্জ (+/−)',fmt(c.rec))}${sr('ক্যাশ আউট (−)',fmt(-c.cout))}${sr('ক্যাশ',fmt(c.close),'t')}</div><div class="card"><div class="hd">ম্যানুয়াল ক্যাশ এন্ট্রি</div>${ad.length?ad.map(e=>`<div class="ln"><div><small>${E(e.note||'—')} · ${tlab(e.ts)}</small>${dbtn('a'+e.id)}</div><div class="am ${e.amt>0?'p':'m'}">${e.amt>0?'+':'−'}${fmt(Math.abs(e.amt))}</div></div>`).join(''):'<small style="color:var(--m)">এই দিনে কোনো এন্ট্রি নেই</small>'}</div>`}
+function vCash(c){const ad=D.adj.filter(e=>dk(e.ts)===day);return `<div class="card"><div class="hd">ক্যাশের হিসাব</div>${sr('ক্যাশ ইন',fmt(c.cin))}${sr('পে বিল',fmt(c.pb))}${sr('ম্যানুয়াল ক্যাশ (+/−)',fmt(c.man))}${sr('মেডিসিন (+/−)',fmt(c.med))}${sr('রিচার্জ (+/−)',fmt(c.rec))}${sr('ক্যাশ আউট (−)',fmt(-c.cout))}${sr('ক্যাশ',fmt(c.close),'t')}</div><div class="card"><div class="hd">ম্যানুয়াল ক্যাশ এন্ট্রি</div>${ad.length?ad.map(e=>`<div class="ln"><div><small>${E(e.note||'—')} · ${tlab(e.ts)}</small>${dbtn('a'+e.id)}</div><div class="am ${e.amt>0?'p':'m'}">${e.amt>0?'+':'−'}${fmt(Math.abs(e.amt))}</div></div>`).join(''):'<small style="color:var(--m)">এই দিনে কোনো এন্ট্রি নেই</small>'}</div>`}
 function vMed(){const ents=D.med.filter(e=>dk(e.ts).slice(0,7)===mon).sort((a,b)=>new Date(b.ts)-new Date(a.ts));let se=0,bu=0,ds1=0,db=0;ents.forEach(e=>e.k==='buy'?bu+=e.amt:se+=e.amt);D.med.forEach(e=>{if(dk(e.ts)===day)e.k==='buy'?db+=e.amt:ds1+=e.amt});
  const days={};ents.forEach(e=>(days[dk(e.ts)]=days[dk(e.ts)]||[]).push(e));
  return `<input type="month" value="${mon}" onchange="mon=this.value||mon;render()" style="margin:0 0 12px"><div class="big"><small>মেডিসিন — ${mlab(mon)} (বিক্রি − ক্রয়)</small><b>${fmt(se-bu)}</b><div class="ts"><div><span>মাসে বিক্রি</span><b>${fmt(se)}</b></div><div><span>মাসে ক্রয়</span><b>${fmt(bu)}</b></div></div><div class="ts"><div><span>${dlab(day)} বিক্রি</span><b>${fmt(ds1)}</b></div><div><span>${dlab(day)} ক্রয়</span><b>${fmt(db)}</b></div></div></div><div class="card">${Object.keys(days).length?Object.keys(days).sort().reverse().map(k=>{let n=0;days[k].forEach(e=>n+=e.k==='buy'?-e.amt:e.amt);return `<div class="sr t"><span>${dlab(k)}</span><b>${fmt(n)}</b></div>`+days[k].map(e=>`<div class="ln"><div><small>${e.k==='buy'?'ক্রয়':'বিক্রি'} · ${E(e.note||'—')} · ${tlab(e.ts)}</small>${dbtn('m'+e.id)}</div><div class="am ${e.k==='buy'?'m':'p'}">${e.k==='buy'?'−':'+'}${fmt(e.amt)}</div></div>`).join('')}).join(''):'<small style="color:var(--m)">এই মাসে কোনো এন্ট্রি নেই</small>'}</div>`}
 function vRec(){const nm=[...new Set([...D.rnames,...D.rec.map(e=>e.name)])],rows=D.rec.filter(e=>!rf||e.name===rf).sort((a,b)=>new Date(b.ts)-new Date(a.ts));let b=0;rows.forEach(e=>b+=rs(e));
- return `<select onchange="rf=this.value;render()" style="margin:0 0 12px"><option value="">সব অ্যাকাউন্ট</option>${nm.map(n=>`<option${n===rf?' selected':''}>${E(n)}</option>`).join('')}</select><div class="big"><small>রিচার্জ ব্যালেন্স — ${rf?E(rf):'সব'}</small><b>${fmt(b)}</b></div><div class="card">${rows.length?rows.map(e=>{const v=rs(e);return `<div class="ln"><div><b>${E(e.name)}</b><small>${E(e.note||'—')} · ${dlab(dk(e.ts))} ${tlab(e.ts)}</small>${dbtn('r'+e.id)}</div><div class="am ${v>=0?'p':'m'}">${v>=0?'+':'−'}${fmt(Math.abs(v))}</div></div>`}).join(''):'<small style="color:var(--m)">কোনো এন্ট্রি নেই</small>'}</div>`}
+ return `<button class="b w" onclick="openRA()">+ নতুন রিচার্জ অ্যাকাউন্ট যোগ করুন</button><select onchange="rf=this.value;render()" style="margin:0 0 12px"><option value="">সব অ্যাকাউন্ট</option>${nm.map(n=>`<option${n===rf?' selected':''}>${E(n)}</option>`).join('')}</select><div class="big"><small>রিচার্জ ব্যালেন্স — ${rf?E(rf):'সব'}</small><b>${fmt(b)}</b></div><div class="card">${rows.length?rows.map(e=>{const v=rs(e);return `<div class="ln"><div><b>${E(e.name)}</b><small>${E(e.note||'—')} · ${dlab(dk(e.ts))} ${tlab(e.ts)}</small>${dbtn('r'+e.id)}</div><div class="am ${v>=0?'p':'m'}">${v>=0?'+':'−'}${fmt(Math.abs(v))}</div></div>`}).join(''):'<small style="color:var(--m)">কোনো এন্ট্রি নেই</small>'}</div>`}
 function trow(tb,e){const a=ac(e),p=POS[e.type];return `<div class="ln"><div><b>${E(e.name)}</b><small>${E(e.num||'-')} · ${TL[e.type]}${a?` · কমিশন +${fmt(a)}`:''}</small><button class="lk" onclick="ed('${tb}',${e.id})">সম্পাদনা</button>${dbtn('t'+e.id)}</div><div class="am ${p?'p':'m'}">${p?'+':'−'}${fmt(e.amt)}<small>${tlab(e.ts)}</small></div></div>`}
 function vTx(tb){const rows=D[tb].filter(e=>dk(e.ts)===day).sort((a,b)=>new Date(b.ts)-new Date(a.ts)),s=sm(rows);
  return `<div class="card"><div class="ts" style="margin:0">${[['ক্যাশ ইন',s.in],['ক্যাশ আউট',s.out],['কমিশন',s.comm]].map(x=>`<div style="background:#f3f5fb"><span style="color:var(--m)">${x[0]}</span><b>${fmt(x[1])}</b></div>`).join('')}</div></div><div class="card">${rows.length?rows.map(e=>trow(tb,e)).join(''):'<small style="color:var(--m)">এই দিনে কোনো লেনদেন নেই</small>'}</div>`}
@@ -157,13 +124,13 @@ const aLines=a=>[['শেষ ব্যালেন্স',a.last],['ক্যা
 function rSum(){const G=sumData();let h=dbar(sd,'ssd',1)+`<div class="mut" style="margin:0 2px 8px;color:var(--m)">${sd?dlab(sd):'সব তারিখ'}</div>`;
  G.forEach(g=>{h+=`<div class="hd" style="margin:14px 2px 8px">${g[0]}</div>`;g[1].forEach(x=>{h+=`<div class="card"><div class="hd">${E(x[0])} <small style="color:var(--m);font-weight:400">· ${(D.acc[x[0]]||{}).t==='p'?'পারসোনাল':'এজেন্ট'}</small></div>${aLines(x[1]).map((l,i)=>sr(l[0],fmt(l[1]),i===7?'t':'')).join('')}</div>`})});
  if(!G.length)h+='<div class="card"><small style="color:var(--m)">কোনো এন্ট্রি নেই</small></div>';
- if(sd){const c=cashDay(sd);h+=`<div class="hd" style="margin:14px 2px 8px">দোকানের ক্যাশ</div><div class="card">${sr('শুরুর ক্যাশ',fmt(c.open))}${sr('ক্যাশ',fmt(c.close),'t')}</div>`}
+ if(sd){const c=cashDay(sd);h+=`<div class="hd" style="margin:14px 2px 8px">দোকানের ক্যাশ</div><div class="card">${sr('ক্যাশ',fmt(c.close),'t')}</div>`}
  let ms=0,mb=0;D.med.forEach(e=>{if(!sd||dk(e.ts)===sd)e.k==='buy'?mb+=e.amt:ms+=e.amt});let rb=0;D.rec.forEach(e=>{if(!sd||dk(e.ts)===sd)rb+=rs(e)});
  h+=`<div class="hd" style="margin:14px 2px 8px">মেডিসিন ও রিচার্জ</div><div class="card">${sr('মেডিসিন বিক্রি',fmt(ms))}${sr('মেডিসিন ক্রয়',fmt(mb))}${sr('রিচার্জ (+/−)',fmt(rb))}</div><button class="b w" onclick="shareSum()">হোয়াটসঅ্যাপে পাঠান</button>`;return h}
 function shareSum(){let t='*সামারি — '+(sd?dlab(sd):'সব তারিখ')+'*';sumData().forEach(g=>{t+='\n\n*'+g[0]+'*';g[1].forEach(x=>{t+='\n\n_'+x[0]+'_'+aLines(x[1]).filter((l,i)=>i===7||l[1]!==0).map(l=>'\n'+l[0]+': '+nf(l[1])).join('')})});wa(t)}
 /* ইনপুট */
 function tg(i){const e=$(i);e.style.display=e.style.display==='block'?'none':'block'}
-function setK(k){kind=k;document.querySelectorAll('.fx').forEach(e=>e.style.display=e.id==='f-'+k?'block':'none');document.querySelectorAll('#kseg button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));if(k==='rec')$('rl').innerHTML=[...new Set([...D.rnames,...D.rec.map(e=>e.name)])].map(n=>`<option value="${E(n)}">`).join('');if(!$('edate').value)$('edate').value=today()}
+function setK(k){kind=k;document.querySelectorAll('.fx').forEach(e=>e.style.display=e.id==='f-'+k?'block':'none');document.querySelectorAll('#kseg button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));if(k==='rec')fillR();if(!$('edate').value)$('edate').value=today()}
 function setT(t){tbl=t;document.querySelectorAll('#tseg button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));const o=$('oth').querySelector('[value=paybill]');o.hidden=o.disabled=t!=='dokan';fillAcc()}
 function fillAcc(){const v=$('acc').value,n=accNames(tbl==='bank'?['bank']:['dokan','wp']);$('acc').innerHTML='<option value="">অ্যাকাউন্ট বাছাই করুন</option>'+n.map(x=>`<option${x===v?' selected':''}>${E(x)}</option>`).join('')}
 function setIO(v){io=v;document.querySelectorAll('#ioseg button').forEach(b=>b.classList.toggle('on',b.dataset.i===v));if(v)$('oth').value=''}
@@ -177,12 +144,11 @@ function saveTx(){const n=$('acc').value,a=parseFloat($('amt').value),t=$('oth')
 function ed(tb,id){const e=D[tb].find(x=>x.id===id);if(!e)return;if(e.type==='cash')return toast('পুরনো ক্যাশ এন্ট্রি ডিলিট করে ক্যাশ ± থেকে দিন',1);pg='in';kind='tx';tbl=tb;render();fillAcc();$('acc').value=e.name;$('num').value=e.num||'';$('amt').value=e.amt;$('edate').value=dk(e.ts);if(e.type==='in'||e.type==='out'){$('oth').value='';setIO(e.type)}else{setIO('');$('oth').value=e.type}eid={tb,id};$('svtx').textContent='আপডেট';scrollTo(0,0)}
 function saveAdj(sg){const a=parseFloat($('ca').value);if(isNaN(a)||a<=0)return toast('টাকা লিখুন',1);D.adj.unshift({id:Date.now(),amt:sg*a,note:$('cn').value.trim(),ts:tsOf()});save();$('ca').value='';$('cn').value='';toast('✓ ক্যাশ '+(sg>0?'যোগ':'বিয়োগ')+' হয়েছে')}
 function saveMed(k){const a=parseFloat($('ma').value);if(isNaN(a)||a<=0)return toast('টাকা লিখুন',1);D.med.unshift({id:Date.now(),amt:a,k,note:$('mn').value.trim(),ts:tsOf()});save();$('ma').value='';$('mn').value='';toast('✓ মেডিসিন '+(k==='buy'?'ক্রয়':'বিক্রি')+' সেভ হয়েছে')}
+function fillR(){const v=$('rn').value;$('rn').innerHTML='<option value="">অ্যাকাউন্ট বাছাই করুন</option>'+[...new Set([...D.rnames,...D.rec.map(e=>e.name)])].map(x=>`<option${x===v?' selected':''}>${E(x)}</option>`).join('')}
+function addRAcc(){const n=$('rnn').value.trim();if(!n)return toast('নাম লিখুন',1);if(!D.rnames.includes(n))D.rnames.push(n);save();$('rnn').value='';$('rna').style.display='none';fillR();$('rn').value=n;toast('✓ অ্যাকাউন্ট যোগ হয়েছে')}
+function delRAcc(){const n=$('rn').value;if(!n)return toast('আগে অ্যাকাউন্ট বাছাই করুন',1);if(dl!=='y'+n){dl='y'+n;return toast('"'+n+'" মুছতে আবার চাপুন — এর সব এন্ট্রি মুছে যাবে',1)}dl=null;D.rnames=D.rnames.filter(x=>x!==n);D.rec=D.rec.filter(e=>e.name!==n);if(rf===n)rf='';save();fillR();toast('✓ মুছে ফেলা হয়েছে')}
+function openRA(){pg='in';kind='rec';render();$('rna').style.display='block';$('rnn').focus();scrollTo(0,0)}
 function saveRec(sg){const n=$('rn').value.trim(),a=parseFloat($('ra').value);if(!n)return toast('অ্যাকাউন্টের নাম লিখুন',1);if(isNaN(a)||a<=0)return toast('টাকা লিখুন',1);if(!D.rnames.includes(n))D.rnames.push(n);D.rec.unshift({id:Date.now(),name:n,amt:a,sg,note:$('rt').value.trim(),ts:tsOf()});save();$('ra').value='';$('rt').value='';toast('✓ রিচার্জ সেভ হয়েছে')}
 $('edate').value=today();render();
 setInterval(()=>{if(today()!==go.ld){const o=go.ld;go.ld=today();if(o&&day===o)day=go.ld;if(o&&sd===o)sd=go.ld;if(pg!=='in')render()}},30000);go.ld=today();
-/* লাইভ ঘড়ি (তারিখ + সময়, প্রতি সেকেন্ডে আপডেট) */
-function tick(){const n=new Date();
- $('ck-t').textContent=n.toLocaleTimeString('bn-BD',{hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true});
- $('ck-d').textContent=n.toLocaleDateString('bn-BD',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}
-tick();setInterval(tick,1000);
 </script></body></html>
