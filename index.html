@@ -2,7 +2,7 @@
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Account Book</title>
 <style>
 :root{--bg:#f3f5fb;--c:#fff;--tx:#0f1b3d;--m:#64708f;--bd:#e3e8f4;--ac:#4f46e5;--g:#059669;--r:#dc2626;color-scheme:light}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#e8ecff,#f3f5fb 240px) fixed;color:var(--tx);font:15px system-ui,"Segoe UI",sans-serif;max-width:680px;margin:auto;padding:12px 12px 88px}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#e8ecff,#f3f5fb 240px) fixed;color:var(--tx);font:15px system-ui,"Noto Sans Bengali","Segoe UI",sans-serif;max-width:680px;margin:auto;padding:12px 12px 88px}
 .h{display:flex;align-items:center;gap:10px;margin:2px 0 12px}.h i{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:grid;place-items:center;font-style:normal;font-size:21px}.h b{font-size:20px}.h span{display:block;font-size:12px;color:var(--m)}
 .card{background:var(--c);border:1px solid var(--bd);border-radius:18px;padding:14px;margin-bottom:12px;box-shadow:0 8px 24px rgba(15,27,61,.06)}
 .big{border-radius:18px;padding:16px;color:#fff;background:linear-gradient(135deg,#4f46e5,#7c3aed);margin-bottom:12px;box-shadow:0 10px 24px rgba(79,70,229,.3)}.big small{opacity:.9}.big>b{display:block;font-size:28px;margin-top:4px}
@@ -10,6 +10,7 @@
 input,select{width:100%;height:46px;padding:0 12px;margin-top:8px;border:1.5px solid var(--bd);border-radius:12px;background:#f8f9fe;font-size:16px;color:var(--tx);outline:0}input:focus,select:focus{border-color:#6366f1}
 button{font:inherit;cursor:pointer;transition:transform .12s}button:active{transform:scale(.95)}
 .b{height:46px;border:0;border-radius:12px;padding:0 18px;font-weight:700;color:#fff;background:linear-gradient(135deg,#4f46e5,#6d5ef0)}.b.g{background:linear-gradient(135deg,#059669,#10b981)}.b.r{background:linear-gradient(135deg,#dc2626,#ef4444)}.b.w{width:100%;margin-bottom:12px;background:linear-gradient(135deg,#16a34a,#22c55e)}
+.b.cb{background:#e3e8f4;color:var(--m)}.b.cb.on{background:linear-gradient(135deg,#059669,#10b981);color:#fff}
 .seg{display:flex;gap:6px;margin-top:8px}.seg button{flex:1;height:44px;border:1.5px solid var(--bd);border-radius:12px;background:#fff;font-weight:700;color:var(--m);padding:0 4px}.seg button.on{background:var(--ac);border-color:var(--ac);color:#fff}
 .row2{display:flex;gap:8px;align-items:center}.row2>*{min-width:0}.row2 input,.row2 select{flex:1}.row2 .b{flex:none}
 .sr{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd)}.sr:last-child{border:0}.sr span{color:var(--m)}.sr.t{font-size:17px}.sr.t span{color:var(--tx);font-weight:700}.sr.t b{color:var(--ac)}
@@ -25,23 +26,21 @@ button{font:inherit;cursor:pointer;transition:transform .12s}button:active{trans
 <div class="h"><i>📒</i><div><b>Account Book</b><span>Shop · WP · Bank</span></div></div>
 
 <div id="pg-in" class="pgx">
-<div class="seg" id="kseg"><button data-k="tx" onclick="setK('tx')">Transaction</button><button data-k="cash" onclick="setK('cash')">Cash ±</button><button data-k="med" onclick="setK('med')">Medicine</button><button data-k="rec" onclick="setK('rec')">Recharge</button></div>
+<div class="seg" id="kseg"><button data-k="tx" onclick="setK('tx')">Transaction</button><button data-k="cash" onclick="setK('cash')">Cash ±</button><button data-k="med" onclick="setK('med')">Medicine</button></div>
 <div class="card" style="margin-top:12px"><span class="lb" style="margin:0">Date</span><input type="date" id="edate"></div>
 
-<div class="card fx" id="f-tx"><div class="hd" id="txh">Transaction Input</div>
+<div class="card fx" id="f-tx"><div class="hd">Transaction Input</div>
 <div class="seg" id="tseg"><button data-t="dokan" onclick="setT('dokan')">Shop</button><button data-t="wp" onclick="setT('wp')">WP</button><button data-t="bank" onclick="setT('bank')">Bank</button></div>
 <div class="row2"><select id="acc"></select><button class="b" onclick="tg('na')">+</button><button class="b r" onclick="delAcc()">🗑</button></div>
-<div id="na" class="sub" style="display:none"><input id="nn" placeholder="Account name"><div class="seg"><button id="nt-a" class="on" onclick="setNT('a')">Agent (auto commission)</button><button id="nt-p" onclick="setNT('p')">Personal (no commission)</button></div><input id="nl" inputmode="decimal" placeholder="Last balance (opening balance)"><button class="b g" style="width:100%;margin-top:8px" onclick="addAcc()">Add Account</button></div>
+<div id="na" class="sub" style="display:none"><input id="nn" placeholder="Account name"><div class="seg"><button id="nt-a" class="on" onclick="setNT('a')">Agent (auto commission)</button><button id="nt-p" onclick="setNT('p')">Personal (no commission)</button></div><input id="nl" inputmode="decimal" placeholder="Last balance (opening balance)"><button class="b g" style="width:100%;margin-top:8px" onclick="addAcc()">Add account</button></div>
 <input id="num" inputmode="tel" placeholder="Number">
 <div class="row2"><input id="amt" inputmode="decimal" placeholder="Amount"><div class="seg" style="margin:8px 0 0;flex:none;width:170px" id="ioseg"><button data-i="in" onclick="setIO('in')">In (−)</button><button data-i="out" onclick="setIO('out')">Out (+)</button></div></div>
-<select id="oth" onchange="if(this.value)setIO('')"><option value="">Other (if needed)</option><option value="b2bin">B2B In (+)</option><option value="b2bout">B2B Out</option><option value="last">Last Balance (manual)</option><option value="comm">Commission (manual)</option><option value="paybill">Pay Bill (−) — shop only</option></select>
+<div class="row2" style="margin-top:8px"><select id="oth" style="margin:0"><option value="">Other (purpose, if needed)</option><option value="Recharge">Recharge</option><option value="Pay Bill">Pay Bill</option><option value="Medicine">Medicine</option><option value="Other">Other</option></select><button class="b cb" id="cbtn" onclick="togCash()">Cash</button></div>
 <button class="b" id="svtx" onclick="saveTx()" style="width:100%;margin-top:10px">Save</button></div>
 
 <div class="card fx" id="f-cash" style="display:none"><div class="hd">Shop Cash (+/−)</div><input id="ca" inputmode="decimal" placeholder="Amount"><input id="cn" placeholder="Note (optional)"><div class="row2" style="margin-top:10px"><button class="b r" onclick="saveAdj(-1)">− Subtract</button><button class="b g" onclick="saveAdj(1)">+ Add</button></div></div>
 
 <div class="card fx" id="f-med" style="display:none"><div class="hd">Medicine</div><input id="ma" inputmode="decimal" placeholder="Amount"><input id="mn" placeholder="Note (optional)"><div class="row2" style="margin-top:10px"><button class="b r" onclick="saveMed('buy')">Buy (−)</button><button class="b g" onclick="saveMed('sell')">Sell (+)</button></div></div>
-
-<div class="card fx" id="f-rec" style="display:none"><div class="hd">Recharge</div><div class="row2"><select id="rn"></select><button class="b" onclick="tg('rna')">+</button><button class="b r" onclick="delRAcc()">🗑</button></div><div id="rna" class="sub" style="display:none"><input id="rnn" placeholder="Account name"><button class="b g" style="width:100%;margin-top:8px" onclick="addRAcc()">Add Account</button></div><input id="ra" inputmode="decimal" placeholder="Amount"><input id="rt" placeholder="Note (optional)"><div class="row2" style="margin-top:10px"><button class="b r" onclick="saveRec(-1)">− Subtract</button><button class="b g" onclick="saveRec(1)">+ Add</button></div></div>
 </div>
 
 <div id="main" class="pgx"></div>
@@ -53,21 +52,24 @@ const $=i=>document.getElementById(i),E=s=>String(s).replace(/[&<>"]/g,c=>({'&':
 const fmt=n=>(Math.round(n*100)/100).toLocaleString('en-US'),nf=n=>String(Math.round(n*100)/100);
 const LC=d=>{const x=new Date(d);x.setMinutes(x.getMinutes()-x.getTimezoneOffset());return x.toISOString()},dk=t=>LC(t).slice(0,10),today=()=>dk(new Date());
 const dlab=k=>new Date(k+'T00:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}),tlab=t=>new Date(t).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
-const mlab=m=>new Date(m+'-01T00:00:00').toLocaleDateString('en-US',{month:'long',year:'numeric'});
-const TL={in:'Cash In',out:'Cash Out',b2bin:'B2B In',b2bout:'B2B Out',last:'Last Balance',comm:'Commission',cash:'Cash',paybill:'Pay Bill'},POS={out:1,b2bin:1,last:1,comm:1,cash:1};
+const mlab=m=>new Date(m+'-01T00:00:00').toLocaleDateString('en-GB',{month:'long',year:'numeric'});
+/* Legacy types (b2bin, b2bout, last, comm, cash, paybill) are kept only so old saved data still works */
+const TL={in:'In',out:'Out',b2bin:'B2B In',b2bout:'B2B Out',last:'Last Balance',comm:'Commission',cash:'Cash',paybill:'Pay Bill'},POS={out:1,b2bin:1,last:1,comm:1,cash:1};
 let D={dokan:[],wp:[],bank:[],names:[],bnames:[],med:[],rec:[],rnames:[],adj:[],acc:{},ts:0};
 try{const s=JSON.parse(localStorage.getItem('hisab1'));if(s)D=Object.assign(D,s)}catch(e){}
 ['dokan','wp','bank','names','bnames','med','rec','rnames','adj'].forEach(k=>{if(!Array.isArray(D[k]))D[k]=[]});if(!D.acc||typeof D.acc!=='object')D.acc={};D.ts=D.ts||0;
-let pg='in',ds='cash',day=today(),sd=today(),mon=today().slice(0,7),rf='',kind='tx',tbl='dokan',io='',nt='a',eid=null,dl=null;
+let pg='in',ds='cash',day=today(),sd=today(),mon=today().slice(0,7),kind='tx',tbl='dokan',io='',nt='a',eid=null,dl=null,cashOn=false;
 function toast(m,bad){const t=$('toast');t.textContent=m;t.className=bad?'bad show':'show';setTimeout(()=>t.className='',2400)}
-/* calculations */
+/* Calculation */
 const isAg=e=>!(D.acc[e.name]&&D.acc[e.name].t==='p');
 const ac=e=>{if(e.cm===false||!(D.dokan.includes(e)||D.wp.includes(e))||!isAg(e))return 0;return e.type==='in'?e.amt*.00375:e.type==='out'?e.amt*.004:0};
 function sm(rows){const s={in:0,out:0,b2bin:0,b2bout:0,last:0,comm:0,paybill:0,cash:0};rows.forEach(e=>{s[e.type]+=e.amt;s.comm+=ac(e)});return s}
+/* Account balance: last + out + commission - in */
 const bal=(l,s)=>l+s.out+s.b2bin+s.comm-s.in-s.paybill;
 const rs=e=>e.sg!=null?e.sg*e.amt:(e.type==='in'?e.amt:0);
+/* Shop cash: only entries with the Cash button ON count. In = (+), Out = (−). Old entries (no cs flag) still count as before. */
 function cashDay(d){const days={};const add=(k,f,v)=>{(days[k]=days[k]||{cin:0,pb:0,man:0,med:0,rec:0,cout:0})[f]+=v};
- D.dokan.forEach(e=>{const k=dk(e.ts);if(e.type==='in')add(k,'cin',e.amt);else if(e.type==='out')add(k,'cout',e.amt);else if(e.type==='paybill')add(k,'pb',e.amt);else if(e.type==='cash')add(k,'man',e.amt)});
+ D.dokan.forEach(e=>{const k=dk(e.ts);if(e.type==='cash')add(k,'man',e.amt);else if(e.type==='paybill')add(k,'pb',e.amt);else if(e.cs!==false){if(e.type==='in')add(k,'cin',e.amt);else if(e.type==='out')add(k,'cout',e.amt)}});
  D.adj.forEach(e=>add(dk(e.ts),'man',e.amt));D.med.forEach(e=>add(dk(e.ts),'med',e.k==='buy'?-e.amt:e.amt));D.rec.forEach(e=>add(dk(e.ts),'rec',rs(e)));
  const open=0;
  const x=days[d]||{cin:0,pb:0,man:0,med:0,rec:0,cout:0};return {...x,open,close:open+x.cin+x.pb+x.man+x.med+x.rec-x.cout}}
@@ -80,20 +82,19 @@ function acct(n,tbs,d){const rows=[];tbs.forEach(k=>D[k].forEach(e=>{if(e.name==
 const accNames=tbs=>{const s=new Set(tbs[0]==='bank'?D.bnames:D.names);tbs.forEach(k=>D[k].forEach(e=>{if(e.type!=='cash')s.add(e.name)}));return[...s]};
 const GR=[['Shop + WP',['dokan','wp']],['Bank',['bank']]];
 function sumData(){return GR.map(g=>[g[0],accNames(g[1]).map(n=>[n,acct(n,g[1],sd)]).filter(x=>!sd||x[1].act>0||x[1].last!==0)]).filter(g=>g[1].length)}
-/* save and cloud */
-const OFF='Data is saved in this browser only';
+/* Save & cloud */
 let DB=null,UID=null,TM=null;const ref=k=>DB.collection('data/users/'+UID).doc(k),syn=t=>$('syn').textContent=t;
 function save(){D.ts=Date.now();try{localStorage.setItem('hisab1',JSON.stringify(D))}catch(e){}push()}
-function push(){if(!DB||!UID)return;clearTimeout(TM);TM=setTimeout(()=>Promise.all([ref('dokan').set({items:D.dokan}),ref('wp').set({items:D.wp}),ref('bank').set({items:D.bank}),ref('med').set({items:D.med}),ref('rec').set({items:D.rec,names:D.rnames}),ref('meta').set({names:D.names,bnames:D.bnames,adj:D.adj,acc:Object.entries(D.acc).map(([n,a])=>({n,t:a.t,o:a.o})),ts:D.ts})]).then(()=>syn('✓ Data is saved to the cloud')).catch(()=>syn(OFF)),600)}
-(async()=>{try{if(!window.claude||!claude.use){syn(OFF);return}
- const[db,us]=await Promise.all([claude.use('db'),claude.use('user')]);if(!db||!us){syn(OFF);return}
- const id=await us.id();if(!id){syn(OFF);return}DB=db;UID=id;
+function push(){if(!DB||!UID)return;clearTimeout(TM);TM=setTimeout(()=>Promise.all([ref('dokan').set({items:D.dokan}),ref('wp').set({items:D.wp}),ref('bank').set({items:D.bank}),ref('med').set({items:D.med}),ref('rec').set({items:D.rec,names:D.rnames}),ref('meta').set({names:D.names,bnames:D.bnames,adj:D.adj,acc:Object.entries(D.acc).map(([n,a])=>({n,t:a.t,o:a.o})),ts:D.ts})]).then(()=>syn('✓ Data saved to cloud')).catch(()=>syn('Data saved in this browser only')),600)}
+(async()=>{try{if(!window.claude||!claude.use){syn('Data saved in this browser only');return}
+ const[db,us]=await Promise.all([claude.use('db'),claude.use('user')]);if(!db||!us){syn('Data saved in this browser only');return}
+ const id=await us.id();if(!id){syn('Data saved in this browser only');return}DB=db;UID=id;
  const[d,w,m,b,md,rc]=await Promise.all(['dokan','wp','meta','bank','med','rec'].map(k=>ref(k).get())),cp=x=>JSON.parse(JSON.stringify(x||[]));
  if(d.exists||w.exists||m.exists){const rm=m.exists?m.data():{},rts=rm.ts||0;
-  if(rts>=D.ts){D={dokan:d.exists?cp(d.data().items):[],wp:w.exists?cp(w.data().items):[],bank:b.exists?cp(b.data().items):[],med:md.exists?cp(md.data().items):[],rec:rc.exists?cp(rc.data().items):[],rnames:rc.exists?cp(rc.data().names):[],names:cp(rm.names),bnames:cp(rm.bnames),adj:cp(rm.adj),acc:{},ts:rts};cp(rm.acc).forEach(a=>D.acc[a.n]={t:a.t,o:a.o});try{localStorage.setItem('hisab1',JSON.stringify(D))}catch(e){}render();syn('✓ Data is saved to the cloud')}
-  else{push();syn('✓ Saving to the cloud')}}
- else if(D.dokan.length||D.wp.length||D.bank.length||D.med.length||D.rec.length||D.names.length){push();syn('✓ Saving to the cloud')}else syn('✓ Data will be saved to the cloud')}catch(e){syn(OFF)}})();
-/* navigation */
+  if(rts>=D.ts){D={dokan:d.exists?cp(d.data().items):[],wp:w.exists?cp(w.data().items):[],bank:b.exists?cp(b.data().items):[],med:md.exists?cp(md.data().items):[],rec:rc.exists?cp(rc.data().items):[],rnames:rc.exists?cp(rc.data().names):[],names:cp(rm.names),bnames:cp(rm.bnames),adj:cp(rm.adj),acc:{},ts:rts};cp(rm.acc).forEach(a=>D.acc[a.n]={t:a.t,o:a.o});try{localStorage.setItem('hisab1',JSON.stringify(D))}catch(e){}render();syn('✓ Data saved to cloud')}
+  else{push();syn('✓ Saving to cloud')}}
+ else if(D.dokan.length||D.wp.length||D.bank.length||D.med.length||D.rec.length||D.names.length){push();syn('✓ Saving to cloud')}else syn('✓ Data will be saved to cloud')}catch(e){syn('Data saved in this browser only')}})();
+/* Navigation */
 function go(p){pg=p;eid=null;$('svtx').textContent='Save';render();scrollTo(0,0)}
 function render(){document.querySelectorAll('.pgx').forEach(e=>e.style.display='none');document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.p===pg));
  if(pg==='in'){$('pg-in').style.display='block';setK(kind);setT(tbl);return}
@@ -101,55 +102,50 @@ function render(){document.querySelectorAll('.pgx').forEach(e=>e.style.display='
 const sday=v=>{day=v||today();render()},ssd=v=>{sd=v;render()};
 const dbar=(v,f,all)=>`<div class="row2" style="margin:0 0 12px"><input type="date" value="${v}" onchange="${f}(this.value)" style="margin:0"><button class="b" onclick="${f}('${all?'':today()}')">${all?'All dates':'Today'}</button></div>`;
 function dd(k,fn){if(dl!==k){dl=k;render();return}dl=null;fn();save();render()}
-const dbtn=k=>`<button class="lk" onclick="dd('${k}',()=>del('${k}'))">${dl===k?'<b style="color:var(--r)">Tap again</b>':'Delete'}</button>`;
+const dbtn=k=>`<button class="lk" onclick="dd('${k}',()=>del('${k}'))">${dl===k?'<b style="color:var(--r)">Press again</b>':'Delete'}</button>`;
 function del(k){const t=k[0],id=+k.slice(1);if(t==='t')['dokan','wp','bank'].forEach(x=>D[x]=D[x].filter(e=>e.id!==id));else if(t==='m')D.med=D.med.filter(e=>e.id!==id);else if(t==='r')D.rec=D.rec.filter(e=>e.id!==id);else D.adj=D.adj.filter(e=>e.id!==id)}
-/* shop */
-function rDokan(){const c=cashDay(day);return dbar(day,'sday')+`<div class="big"><small>Shop Cash — ${dlab(day)}</small><b>${fmt(c.close)}</b></div><div class="seg">${[['cash','Cash'],['med','Medicine'],['rec','Recharge'],['tx','Transactions']].map(x=>`<button class="${ds===x[0]?'on':''}" onclick="ds='${x[0]}';render()">${x[1]}</button>`).join('')}</div><div style="height:12px"></div>`+{cash:()=>vCash(c),med:vMed,rec:vRec,tx:()=>vTx('dokan')}[ds]()}
+/* Shop */
+function rDokan(){const c=cashDay(day);return dbar(day,'sday')+`<div class="big"><small>Shop cash — ${dlab(day)}</small><b>${fmt(c.close)}</b></div><div class="seg">${[['cash','Cash'],['med','Medicine'],['tx','Transactions']].map(x=>`<button class="${ds===x[0]?'on':''}" onclick="ds='${x[0]}';render()">${x[1]}</button>`).join('')}</div><div style="height:12px"></div>`+{cash:()=>vCash(c),med:vMed,tx:()=>vTx('dokan')}[ds]()}
 const sr=(l,v,c='')=>`<div class="sr ${c}"><span>${l}</span><b>${v}</b></div>`;
-function vCash(c){const ad=D.adj.filter(e=>dk(e.ts)===day);return `<div class="card"><div class="hd">Cash Summary</div>${sr('Cash In',fmt(c.cin))}${sr('Pay Bill',fmt(c.pb))}${sr('Manual Cash (+/−)',fmt(c.man))}${sr('Medicine (+/−)',fmt(c.med))}${sr('Recharge (+/−)',fmt(c.rec))}${sr('Cash Out (−)',fmt(-c.cout))}${sr('Cash',fmt(c.close),'t')}</div><div class="card"><div class="hd">Manual Cash Entries</div>${ad.length?ad.map(e=>`<div class="ln"><div><small>${E(e.note||'—')} · ${tlab(e.ts)}</small>${dbtn('a'+e.id)}</div><div class="am ${e.amt>0?'p':'m'}">${e.amt>0?'+':'−'}${fmt(Math.abs(e.amt))}</div></div>`).join(''):'<small style="color:var(--m)">No entries on this day</small>'}</div>`}
+function vCash(c){const ad=D.adj.filter(e=>dk(e.ts)===day);return `<div class="card"><div class="hd">Cash Summary</div>${sr('Cash In (+)',fmt(c.cin))}${sr('Cash Out (−)',fmt(-c.cout))}${c.pb?sr('Pay Bill (old)',fmt(c.pb)):''}${sr('Manual Cash (+/−)',fmt(c.man))}${sr('Medicine (+/−)',fmt(c.med))}${c.rec?sr('Recharge (old, +/−)',fmt(c.rec)):''}${sr('Cash',fmt(c.close),'t')}</div><div class="card"><div class="hd">Manual Cash Entries</div>${ad.length?ad.map(e=>`<div class="ln"><div><small>${E(e.note||'—')} · ${tlab(e.ts)}</small>${dbtn('a'+e.id)}</div><div class="am ${e.amt>0?'p':'m'}">${e.amt>0?'+':'−'}${fmt(Math.abs(e.amt))}</div></div>`).join(''):'<small style="color:var(--m)">No entries on this day</small>'}</div>`}
 function vMed(){const ents=D.med.filter(e=>dk(e.ts).slice(0,7)===mon).sort((a,b)=>new Date(b.ts)-new Date(a.ts));let se=0,bu=0,ds1=0,db=0;ents.forEach(e=>e.k==='buy'?bu+=e.amt:se+=e.amt);D.med.forEach(e=>{if(dk(e.ts)===day)e.k==='buy'?db+=e.amt:ds1+=e.amt});
  const days={};ents.forEach(e=>(days[dk(e.ts)]=days[dk(e.ts)]||[]).push(e));
- return `<input type="month" value="${mon}" onchange="mon=this.value||mon;render()" style="margin:0 0 12px"><div class="big"><small>Medicine — ${mlab(mon)} (Sales − Purchases)</small><b>${fmt(se-bu)}</b><div class="ts"><div><span>Sales this month</span><b>${fmt(se)}</b></div><div><span>Purchases this month</span><b>${fmt(bu)}</b></div></div><div class="ts"><div><span>${dlab(day)} sales</span><b>${fmt(ds1)}</b></div><div><span>${dlab(day)} purchases</span><b>${fmt(db)}</b></div></div></div><div class="card">${Object.keys(days).length?Object.keys(days).sort().reverse().map(k=>{let n=0;days[k].forEach(e=>n+=e.k==='buy'?-e.amt:e.amt);return `<div class="sr t"><span>${dlab(k)}</span><b>${fmt(n)}</b></div>`+days[k].map(e=>`<div class="ln"><div><small>${e.k==='buy'?'Buy':'Sell'} · ${E(e.note||'—')} · ${tlab(e.ts)}</small>${dbtn('m'+e.id)}</div><div class="am ${e.k==='buy'?'m':'p'}">${e.k==='buy'?'−':'+'}${fmt(e.amt)}</div></div>`).join('')}).join(''):'<small style="color:var(--m)">No entries this month</small>'}</div>`}
-function vRec(){const nm=[...new Set([...D.rnames,...D.rec.map(e=>e.name)])],rows=D.rec.filter(e=>!rf||e.name===rf).sort((a,b)=>new Date(b.ts)-new Date(a.ts));let b=0;rows.forEach(e=>b+=rs(e));
- return `<button class="b w" onclick="openRA()">+ Add New Recharge Account</button><select onchange="rf=this.value;render()" style="margin:0 0 12px"><option value="">All accounts</option>${nm.map(n=>`<option${n===rf?' selected':''}>${E(n)}</option>`).join('')}</select><div class="big"><small>Recharge Balance — ${rf?E(rf):'All'}</small><b>${fmt(b)}</b></div><div class="card">${rows.length?rows.map(e=>{const v=rs(e);return `<div class="ln"><div><b>${E(e.name)}</b><small>${E(e.note||'—')} · ${dlab(dk(e.ts))} ${tlab(e.ts)}</small>${dbtn('r'+e.id)}</div><div class="am ${v>=0?'p':'m'}">${v>=0?'+':'−'}${fmt(Math.abs(v))}</div></div>`}).join(''):'<small style="color:var(--m)">No entries</small>'}</div>`}
-function trow(tb,e){const a=ac(e),p=POS[e.type];return `<div class="ln"><div><b>${E(e.name)}</b><small>${E(e.num||'-')} · ${TL[e.type]}${a?` · Commission +${fmt(a)}`:''}</small><button class="lk" onclick="ed('${tb}',${e.id})">Edit</button>${dbtn('t'+e.id)}</div><div class="am ${p?'p':'m'}">${p?'+':'−'}${fmt(e.amt)}<small>${tlab(e.ts)}</small></div></div>`}
+ return `<input type="month" value="${mon}" onchange="mon=this.value||mon;render()" style="margin:0 0 12px"><div class="big"><small>Medicine — ${mlab(mon)} (Sell − Buy)</small><b>${fmt(se-bu)}</b><div class="ts"><div><span>Sold this month</span><b>${fmt(se)}</b></div><div><span>Bought this month</span><b>${fmt(bu)}</b></div></div><div class="ts"><div><span>${dlab(day)} sold</span><b>${fmt(ds1)}</b></div><div><span>${dlab(day)} bought</span><b>${fmt(db)}</b></div></div></div><div class="card">${Object.keys(days).length?Object.keys(days).sort().reverse().map(k=>{let n=0;days[k].forEach(e=>n+=e.k==='buy'?-e.amt:e.amt);return `<div class="sr t"><span>${dlab(k)}</span><b>${fmt(n)}</b></div>`+days[k].map(e=>`<div class="ln"><div><small>${e.k==='buy'?'Buy':'Sell'} · ${E(e.note||'—')} · ${tlab(e.ts)}</small>${dbtn('m'+e.id)}</div><div class="am ${e.k==='buy'?'m':'p'}">${e.k==='buy'?'−':'+'}${fmt(e.amt)}</div></div>`).join('')}).join(''):'<small style="color:var(--m)">No entries this month</small>'}</div>`}
+function trow(tb,e){const a=ac(e),p=POS[e.type],ct=tb==='dokan'&&(e.type==='in'||e.type==='out')&&e.cs!==false?` · Cash ${e.type==='in'?'+':'−'}`:'';return `<div class="ln"><div><b>${E(e.name)}</b><small>${E(e.num||'-')} · ${TL[e.type]}${e.pp?' · '+E(e.pp):''}${ct}${a?` · Commission +${fmt(a)}`:''}</small><button class="lk" onclick="ed('${tb}',${e.id})">Edit</button>${dbtn('t'+e.id)}</div><div class="am ${p?'p':'m'}">${p?'+':'−'}${fmt(e.amt)}<small>${tlab(e.ts)}</small></div></div>`}
 function vTx(tb){const rows=D[tb].filter(e=>dk(e.ts)===day).sort((a,b)=>new Date(b.ts)-new Date(a.ts)),s=sm(rows);
- return `<div class="card"><div class="ts" style="margin:0">${[['Cash In',s.in],['Cash Out',s.out],['Commission',s.comm]].map(x=>`<div style="background:#f3f5fb"><span style="color:var(--m)">${x[0]}</span><b>${fmt(x[1])}</b></div>`).join('')}</div></div><div class="card">${rows.length?rows.map(e=>trow(tb,e)).join(''):'<small style="color:var(--m)">No transactions on this day</small>'}</div>`}
+ return `<div class="card"><div class="ts" style="margin:0">${[['In',s.in],['Out',s.out],['Commission',s.comm]].map(x=>`<div style="background:#f3f5fb"><span style="color:var(--m)">${x[0]}</span><b>${fmt(x[1])}</b></div>`).join('')}</div></div><div class="card">${rows.length?rows.map(e=>trow(tb,e)).join(''):'<small style="color:var(--m)">No transactions on this day</small>'}</div>`}
 function rTb(tb){const ls=wpStart(day,tb),s=sm(D[tb].filter(e=>dk(e.ts)===day));
- return dbar(day,'sday')+`<div class="big"><small>${tb==='wp'?'WP':'Bank'} — Balance on ${dlab(day)}</small><b>${fmt(ls+s.out-s.in)}</b><div class="ts"><div><span>Previous balance</span><b>${fmt(ls)}</b></div></div></div>`+(tb==='wp'?'<button class="b w" onclick="shareWP()">Send WP Text</button>':'')+vTx(tb)}
+ return dbar(day,'sday')+`<div class="big"><small>${tb==='wp'?'WP':'Bank'} — balance on ${dlab(day)}</small><b>${fmt(ls+s.out-s.in)}</b><div class="ts"><div><span>Previous balance</span><b>${fmt(ls)}</b></div></div></div>`+(tb==='wp'?'<button class="b w" onclick="shareWP()">Send WP text</button>':'')+vTx(tb)}
 function shareWP(){const rows=D.wp.filter(e=>dk(e.ts)===day),s=sm(rows),l=rows.slice().sort((a,b)=>new Date(b.ts)-new Date(a.ts))[0],dg=(l?String(l.num||'').replace(/\D/g,'').slice(-4):'')||'----',lb=wpStart(day,'wp'),m=lb+s.out;
  wa(new Date(day+'T00:00:00').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})+'\n'+dg+'-'+nf(s.in)+'\njoma-'+nf(s.out)+'\nBalance - '+nf(lb)+'+'+nf(s.out)+'='+nf(m)+'-'+nf(s.in)+'='+nf(m-s.in))}
 function wa(t){const a=document.createElement('a');a.href='https://wa.me/8801866212500?text='+encodeURIComponent(t);a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()}
-/* summary */
-const aLines=a=>[['Last Balance',a.last],['Cash In',a.in],['Cash Out',a.out],['B2B In',a.b2bin],['B2B Out',a.b2bout],['Commission',a.comm],['Pay Bill',a.paybill],['Balance',a.tot]];
+/* Summary */
+const aLines=a=>[['Last balance',a.last],['In',a.in],['Out',a.out],['Commission',a.comm],['B2B In (old)',a.b2bin],['B2B Out (old)',a.b2bout],['Pay Bill (old)',a.paybill],['Balance',a.tot,1]].filter(l=>l[2]||['Last balance','In','Out','Commission'].includes(l[0])||l[1]!==0);
 function rSum(){const G=sumData();let h=dbar(sd,'ssd',1)+`<div class="mut" style="margin:0 2px 8px;color:var(--m)">${sd?dlab(sd):'All dates'}</div>`;
- G.forEach(g=>{h+=`<div class="hd" style="margin:14px 2px 8px">${g[0]}</div>`;g[1].forEach(x=>{h+=`<div class="card"><div class="hd">${E(x[0])} <small style="color:var(--m);font-weight:400">· ${(D.acc[x[0]]||{}).t==='p'?'Personal':'Agent'}</small></div>${aLines(x[1]).map((l,i)=>sr(l[0],fmt(l[1]),i===7?'t':'')).join('')}</div>`})});
+ G.forEach(g=>{h+=`<div class="hd" style="margin:14px 2px 8px">${g[0]}</div>`;g[1].forEach(x=>{h+=`<div class="card"><div class="hd">${E(x[0])} <small style="color:var(--m);font-weight:400">· ${(D.acc[x[0]]||{}).t==='p'?'Personal':'Agent'}</small></div>${aLines(x[1]).map(l=>sr(l[0],fmt(l[1]),l[2]?'t':'')).join('')}</div>`})});
  if(!G.length)h+='<div class="card"><small style="color:var(--m)">No entries</small></div>';
  if(sd){const c=cashDay(sd);h+=`<div class="hd" style="margin:14px 2px 8px">Shop Cash</div><div class="card">${sr('Cash',fmt(c.close),'t')}</div>`}
  let ms=0,mb=0;D.med.forEach(e=>{if(!sd||dk(e.ts)===sd)e.k==='buy'?mb+=e.amt:ms+=e.amt});let rb=0;D.rec.forEach(e=>{if(!sd||dk(e.ts)===sd)rb+=rs(e)});
- h+=`<div class="hd" style="margin:14px 2px 8px">Medicine &amp; Recharge</div><div class="card">${sr('Medicine Sales',fmt(ms))}${sr('Medicine Purchases',fmt(mb))}${sr('Recharge (+/−)',fmt(rb))}</div><button class="b w" onclick="shareSum()">Send via WhatsApp</button>`;return h}
-function shareSum(){let t='*Summary — '+(sd?dlab(sd):'All dates')+'*';sumData().forEach(g=>{t+='\n\n*'+g[0]+'*';g[1].forEach(x=>{t+='\n\n_'+x[0]+'_'+aLines(x[1]).filter((l,i)=>i===7||l[1]!==0).map(l=>'\n'+l[0]+': '+nf(l[1])).join('')})});wa(t)}
-/* input */
+ h+=`<div class="hd" style="margin:14px 2px 8px">Medicine</div><div class="card">${sr('Medicine sold',fmt(ms))}${sr('Medicine bought',fmt(mb))}${rb?sr('Recharge (old, +/−)',fmt(rb)):''}</div><button class="b w" onclick="shareSum()">Send on WhatsApp</button>`;return h}
+function shareSum(){let t='*Summary — '+(sd?dlab(sd):'All dates')+'*';sumData().forEach(g=>{t+='\n\n*'+g[0]+'*';g[1].forEach(x=>{t+='\n\n_'+x[0]+'_'+aLines(x[1]).filter(l=>l[2]||l[1]!==0).map(l=>'\n'+l[0]+': '+nf(l[1])).join('')})});wa(t)}
+/* Input */
 function tg(i){const e=$(i);e.style.display=e.style.display==='block'?'none':'block'}
-function setK(k){kind=k;document.querySelectorAll('.fx').forEach(e=>e.style.display=e.id==='f-'+k?'block':'none');document.querySelectorAll('#kseg button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));if(k==='rec')fillR();if(!$('edate').value)$('edate').value=today()}
-function setT(t){tbl=t;document.querySelectorAll('#tseg button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));const o=$('oth').querySelector('[value=paybill]');o.hidden=o.disabled=t!=='dokan';fillAcc()}
+function setK(k){kind=k;document.querySelectorAll('.fx').forEach(e=>e.style.display=e.id==='f-'+k?'block':'none');document.querySelectorAll('#kseg button').forEach(b=>b.classList.toggle('on',b.dataset.k===k));if(!$('edate').value)$('edate').value=today()}
+function updCash(){const b=$('cbtn');b.style.display=tbl==='dokan'?'':'none';b.classList.toggle('on',cashOn);b.textContent=cashOn?'Cash ✓':'Cash'}
+function togCash(){cashOn=!cashOn;updCash()}
+function setT(t){tbl=t;if(t!=='dokan')cashOn=false;document.querySelectorAll('#tseg button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));updCash();fillAcc()}
 function fillAcc(){const v=$('acc').value,n=accNames(tbl==='bank'?['bank']:['dokan','wp']);$('acc').innerHTML='<option value="">Select account</option>'+n.map(x=>`<option${x===v?' selected':''}>${E(x)}</option>`).join('')}
-function setIO(v){io=v;document.querySelectorAll('#ioseg button').forEach(b=>b.classList.toggle('on',b.dataset.i===v));if(v)$('oth').value=''}
+function setIO(v){io=v;document.querySelectorAll('#ioseg button').forEach(b=>b.classList.toggle('on',b.dataset.i===v))}
 function setNT(t){nt=t;$('nt-a').classList.toggle('on',t==='a');$('nt-p').classList.toggle('on',t==='p')}
 function addAcc(){const n=$('nn').value.trim();if(!n)return toast('Enter a name',1);const l=parseFloat($('nl').value)||0,L=tbl==='bank'?D.bnames:D.names;if(!L.includes(n))L.push(n);D.acc[n]={t:nt,o:l};save();$('nn').value='';$('nl').value='';$('na').style.display='none';fillAcc();$('acc').value=n;toast('✓ Account added')}
-function delAcc(){const n=$('acc').value;if(!n)return toast('Select an account first',1);if(dl!=='x'+n){dl='x'+n;return toast('Tap again to delete “'+n+'” — all its entries will be deleted',1)}dl=null;const g=tbl==='bank'?['bank']:['dokan','wp'];g.forEach(k=>D[k]=D[k].filter(e=>e.name!==n));D.names=D.names.filter(x=>x!==n);D.bnames=D.bnames.filter(x=>x!==n);delete D.acc[n];save();fillAcc();toast('✓ Deleted')}
+function delAcc(){const n=$('acc').value;if(!n)return toast('Select an account first',1);if(dl!=='x'+n){dl='x'+n;return toast('Press again to delete "'+n+'" — all its entries will be deleted',1)}dl=null;const g=tbl==='bank'?['bank']:['dokan','wp'];g.forEach(k=>D[k]=D[k].filter(e=>e.name!==n));D.names=D.names.filter(x=>x!==n);D.bnames=D.bnames.filter(x=>x!==n);delete D.acc[n];save();fillAcc();toast('✓ Deleted')}
 function tsOf(){const d=$('edate').value||today();return d===today()?new Date().toISOString():new Date(d+'T'+new Date().toTimeString().slice(0,8)).toISOString()}
-function saveTx(){const n=$('acc').value,a=parseFloat($('amt').value),t=$('oth').value||io;if(!n)return toast('Select an account',1);if(isNaN(a))return toast('Enter an amount',1);if(!t)return toast('Select In/Out or Other',1);if(t==='paybill'&&tbl!=='dokan')return toast('Pay Bill is for the shop only',1);
- const e={id:Date.now(),name:n,num:$('num').value.trim(),amt:a,type:t,ts:tsOf()};if(eid){D[eid.tb]=D[eid.tb].filter(x=>x.id!==eid.id);e.id=eid.id;eid=null;$('svtx').textContent='Save'}
- D[tbl].unshift(e);save();$('amt').value='';$('num').value='';$('oth').value='';setIO('');toast('✓ Saved')}
-function ed(tb,id){const e=D[tb].find(x=>x.id===id);if(!e)return;if(e.type==='cash')return toast('Delete the old cash entry and add it again from Cash ±',1);pg='in';kind='tx';tbl=tb;render();fillAcc();$('acc').value=e.name;$('num').value=e.num||'';$('amt').value=e.amt;$('edate').value=dk(e.ts);if(e.type==='in'||e.type==='out'){$('oth').value='';setIO(e.type)}else{setIO('');$('oth').value=e.type}eid={tb,id};$('svtx').textContent='Update';scrollTo(0,0)}
+function saveTx(){const n=$('acc').value,a=parseFloat($('amt').value);if(!n)return toast('Select an account',1);if(isNaN(a))return toast('Enter an amount',1);if(!io)return toast('Select In or Out',1);
+ const cs=tbl==='dokan'&&cashOn,e={id:Date.now(),name:n,num:$('num').value.trim(),amt:a,type:io,pp:$('oth').value,cs,ts:tsOf()};if(eid){D[eid.tb]=D[eid.tb].filter(x=>x.id!==eid.id);e.id=eid.id;eid=null;$('svtx').textContent='Save'}
+ D[tbl].unshift(e);save();$('amt').value='';$('num').value='';$('oth').value='';setIO('');cashOn=false;updCash();toast(cs?'✓ Saved (Cash '+(e.type==='in'?'+':'−')+')':'✓ Saved')}
+function ed(tb,id){const e=D[tb].find(x=>x.id===id);if(!e)return;if(e.type!=='in'&&e.type!=='out')return toast('Old entry type — delete it and add again with In/Out',1);pg='in';kind='tx';tbl=tb;render();fillAcc();$('acc').value=e.name;$('num').value=e.num||'';$('amt').value=e.amt;$('edate').value=dk(e.ts);$('oth').value=e.pp||'';setIO(e.type);cashOn=tb==='dokan'&&e.cs!==false;updCash();eid={tb,id};$('svtx').textContent='Update';scrollTo(0,0)}
 function saveAdj(sg){const a=parseFloat($('ca').value);if(isNaN(a)||a<=0)return toast('Enter an amount',1);D.adj.unshift({id:Date.now(),amt:sg*a,note:$('cn').value.trim(),ts:tsOf()});save();$('ca').value='';$('cn').value='';toast('✓ Cash '+(sg>0?'added':'subtracted'))}
-function saveMed(k){const a=parseFloat($('ma').value);if(isNaN(a)||a<=0)return toast('Enter an amount',1);D.med.unshift({id:Date.now(),amt:a,k,note:$('mn').value.trim(),ts:tsOf()});save();$('ma').value='';$('mn').value='';toast('✓ Medicine '+(k==='buy'?'purchase':'sale')+' saved')}
-function fillR(){const v=$('rn').value;$('rn').innerHTML='<option value="">Select account</option>'+[...new Set([...D.rnames,...D.rec.map(e=>e.name)])].map(x=>`<option${x===v?' selected':''}>${E(x)}</option>`).join('')}
-function addRAcc(){const n=$('rnn').value.trim();if(!n)return toast('Enter a name',1);if(!D.rnames.includes(n))D.rnames.push(n);save();$('rnn').value='';$('rna').style.display='none';fillR();$('rn').value=n;toast('✓ Account added')}
-function delRAcc(){const n=$('rn').value;if(!n)return toast('Select an account first',1);if(dl!=='y'+n){dl='y'+n;return toast('Tap again to delete “'+n+'” — all its entries will be deleted',1)}dl=null;D.rnames=D.rnames.filter(x=>x!==n);D.rec=D.rec.filter(e=>e.name!==n);if(rf===n)rf='';save();fillR();toast('✓ Deleted')}
-function openRA(){pg='in';kind='rec';render();$('rna').style.display='block';$('rnn').focus();scrollTo(0,0)}
-function saveRec(sg){const n=$('rn').value.trim(),a=parseFloat($('ra').value);if(!n)return toast('Enter the account name',1);if(isNaN(a)||a<=0)return toast('Enter an amount',1);if(!D.rnames.includes(n))D.rnames.push(n);D.rec.unshift({id:Date.now(),name:n,amt:a,sg,note:$('rt').value.trim(),ts:tsOf()});save();$('ra').value='';$('rt').value='';toast('✓ Recharge saved')}
+function saveMed(k){const a=parseFloat($('ma').value);if(isNaN(a)||a<=0)return toast('Enter an amount',1);D.med.unshift({id:Date.now(),amt:a,k,note:$('mn').value.trim(),ts:tsOf()});save();$('ma').value='';$('mn').value='';toast('✓ Medicine '+(k==='buy'?'buy':'sell')+' saved')}
 $('edate').value=today();render();
 setInterval(()=>{if(today()!==go.ld){const o=go.ld;go.ld=today();if(o&&day===o)day=go.ld;if(o&&sd===o)sd=go.ld;if(pg!=='in')render()}},30000);go.ld=today();
 </script></body></html>
